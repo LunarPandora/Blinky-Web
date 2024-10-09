@@ -6,14 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
+use App\Models\Mahasiswa;
+
 class MahasiswaController extends Controller
 {
+    // Untuk ambil semua data mahasiswa beserta kelas dan prodi yang bersangkutan
     public function fetch(){
-        $data = DB::table('tb_mahasiswa')
-        ->join('tb_kelas', 'tb_mahasiswa.id_kelas', '=', 'tb_kelas.id_kelas')
-        ->join('tb_prodi', 'tb_mahasiswa.id_prodi', '=', 'tb_prodi.id_prodi')
-        ->select('tb_mahasiswa.*', 'tb_kelas.nm_kelas', 'tb_prodi.nm_prodi')
-        ->get();
+        $data = Mahasiswa::with(['kelas', 'prodi'])->get();
 
         return response($data);
     }
@@ -37,22 +36,28 @@ class MahasiswaController extends Controller
         return response($m[0]->is_scanning);
     }
 
+    // Ini mau disesuaikan dengan model yang baru nanti - WY
+
     public function insert(Request $request){
-        $data = [
-            'id_mhswa' => $request->nim,
-            'id_kelas' => $request->kelas,
-            'id_prodi' => $request->prodi,
+        $mhswa = Mahasiswa::create([
+            'nim' => $request->nim,
+            'id_kelas' => $request->id_kelas,
+            'id_prodi' => $request->id_prodi,
             'id_admin' => '201',
-            'nm_mahasiswa' => $request->nama,
-            'pw_mahasiswa' => Hash::make($request->pw),
+            'nm_mhswa' => $request->nm_mhswa,
+            'pw_mhswa' => Hash::make($request->pw_mhswa),
             'angkatan' => $request->angkatan,
             'uid_rfid' => '-'
-        ];
+        ])->id();
 
-        $query = DB::table('tb_mahasiswa')
-        ->insert($data);
+        $users = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->pw_mhswa),
+            'role_id' => '3',
+            'acc_id' => $mhswa,
+        ]);
 
-        if($query > 0){
+        if($users > 0){
             return response('success');
         }
         else{
