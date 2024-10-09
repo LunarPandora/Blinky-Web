@@ -18,5 +18,4 @@ Route::get('/mahasiswa/delete', [MahasiswaController::class, 'delete']);
 Route::get('/prodi', [ProdiController::class, 'fetch']);
 Route::get('/prodi/add', [ProdiController::class, 'create']);
 
-
 Route::get('/kelas', [KelasController::class, 'fetch']);

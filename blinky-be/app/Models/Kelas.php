@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Prodi extends Model
+class Kelas extends Model
 {
     use HasFactory;
 
-    protected $table = "prodi";
-    protected $primaryKey = 'id_prodi';
+    protected $table = "kelas";
+    protected $primaryKey = "id_kelas";
 
-    protected $fillable = [
-        'nm_prodi'
+    protected $fillable =[
+        'nm_kelas',
     ];
 }

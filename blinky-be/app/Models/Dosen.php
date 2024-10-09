@@ -13,10 +13,12 @@ class Dosen extends Model
     protected $primaryKey = "id";
 
     protected $fillable =[
-        'nm_dosen',
-        'email_dosen',
-        'pw_dosen',
+        'id_prodi',
+        'id_jabatan',
         'nidn',
-        'foto_dosen',
+        'nm_dosen',
+        'u_dosen',
+        'pw_dosen',
+        // 'foto_dosen',
     ];
 }

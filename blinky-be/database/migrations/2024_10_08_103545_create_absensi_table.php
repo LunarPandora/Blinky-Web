@@ -12,17 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('absensi', function (Blueprint $table) {
-            $table->id('id_absen');
-            $table->bigInteger('id_jadwal');
-            $table->bigInteger('id_mhswa');
-            $table->bigInteger('kode_status_absensi');
+            $table->id('id_absensi');
+            $table->integer('id_mhswa');
+            $table->integer('id_jadwal');
+            $table->dateTime('waktu_absen');
+            $table->integer('kode_status_absensi');
             $table->timestamps();
-        });
-
-        Schema::table('absensi', function (Blueprint $table) {
-            $table->foreign('id_jadwal')->references('id')->on('jadwal');
-            $table->foreign('id_mhswa')->references('id')->on('mahasiswa');
-            $table->foreign('kode_status_absesnsi')->references('kode_status_absensi')->on('status_absen');
         });
     }
 
