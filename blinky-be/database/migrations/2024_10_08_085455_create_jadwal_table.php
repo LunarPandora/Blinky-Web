@@ -13,13 +13,19 @@ return new class extends Migration
     {
         Schema::create('jadwal', function (Blueprint $table) {
             $table->id('id_jadwal');
-            $table->date('jam_mulai');
-            $table->date('jam_selesai');
+            $table->integer('id_kelas', length: 20);
+            $table->integer('id_dosen', length: 20);
+            $table->integer('id_matkul', length: 20);
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
             $table->integer('hari');
-            $table->integer('id_kelas');
-            $table->integer('id_dosen');
-            $table->integer('id_matkul');
             $table->timestamps();
+        });
+
+        Schema::create('jadwal', function (Blueprint $table) {
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
+            $table->foreign('id_dosen')->references('id_dosen')->on('dosen');
+            $table->foreign('id_matkul')->references('id_matkul')->on('matkul');
         });
     }
 
