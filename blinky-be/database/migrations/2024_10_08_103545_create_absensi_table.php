@@ -6,18 +6,32 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id('id_absensi');
-            $table->integer('id_mhswa');
-            $table->integer('id_jadwal');
+            $table->bigInteger('id_kelas', length:20);
+            $table->bigInteger('id_mhswa', length:20);
+            $table->bigInteger('id_jadwal', length:20);
+            $table->bigInteger('kode_status_absensi', length:20);
             $table->dateTime('waktu_absen');
-            $table->integer('kode_status_absensi');
             $table->timestamps();
+        });
+
+        Schema::table('absensi', function (Blueprint $table) {
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
+            $table->foreign('id_mhswa')->references('id_mhswa')->on('mahasiswa');
+            $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal');
+            $table->foreign('kode_status_absesnsi')->references('kode_status_absensi')->on('status_absen');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('absensi');

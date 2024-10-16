@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('email');
+            $table->bigInteger('role_id', length: 20);
+            $table->string('email', length: 60);
+            $table->bigInteger('acc_id', length: 20);
             $table->string('password');
-            $table->integer('role_id');
-            $table->integer('acc_id');
             $table->timestamps();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 
