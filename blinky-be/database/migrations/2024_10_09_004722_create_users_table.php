@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('email');
             $table->string('password');
-            $table->integer('role_id');
+            $table->foreignId('role_id');
             $table->integer('acc_id');
             $table->timestamps();
         });

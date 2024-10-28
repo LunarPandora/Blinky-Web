@@ -16,7 +16,8 @@ class Jadwal extends Model
         'id_kelas',
         'id_dosen',
         'id_matkul',
-        'jam',
-        'hari',
+        'jam_mulai',
+        'jam_selesai',
+        'hari'
     ];
 }

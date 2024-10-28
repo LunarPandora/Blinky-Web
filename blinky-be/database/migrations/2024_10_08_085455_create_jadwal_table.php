@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('jadwal', function (Blueprint $table) {
             $table->id('id_jadwal');
-            $table->foreignId('id_kelas', length: 20);
-            $table->foreignId('id_dosen', length: 20);
-            $table->foreignId('id_matkul', length: 20);
+            $table->foreignId('id_kelas');
+            $table->foreignId('id_dosen');
+            $table->foreignId('id_matkul');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->integer('hari');

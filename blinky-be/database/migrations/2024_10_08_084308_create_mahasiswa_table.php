@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
             $table->id('id_mhswa');
-            $table->foreignId('id_kelas', length: 20);
-            $table->foreignId('id_prodi', length: 20);
             $table->integer('nim');
+            $table->foreignId('id_kelas');
+            $table->foreignId('id_prodi');
             $table->string('nm_mhswa');
             $table->integer('angkatan');
             $table->string('uid_rfid');

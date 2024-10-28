@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('absensi', function (Blueprint $table) {
             $table->id('id_absensi');
-            $table->integer('id_mhswa');
-            $table->integer('id_jadwal');
+            $table->foreignId('id_mhswa');
+            $table->foreignId('id_jadwal');
             $table->dateTime('waktu_absen');
             $table->integer('kode_status_absensi');
             $table->timestamps();

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('dosen', function (Blueprint $table) {
             $table->id('id_dosen');
-            $table->foreignId('id_prodi', length: 20);
+            $table->foreignId('id_prodi');
             $table->string('nm_dosen');
             $table->string('jabatan');
             $table->string('nidn');
@@ -22,7 +22,6 @@ return new class extends Migration
 
         Schema::table('dosen', function (Blueprint $table) {
             $table->foreign('id_prodi')->references('id_prodi')->on('prodi');
-            $table->foreign('id_jabatan')->references('id_jabatan')->on('jabatan');
         });
     }
 
