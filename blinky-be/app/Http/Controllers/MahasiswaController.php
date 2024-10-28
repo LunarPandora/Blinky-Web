@@ -45,7 +45,6 @@ class MahasiswaController extends Controller
             'id_prodi' => $request->id_prodi,
             'id_admin' => '201',
             'nm_mhswa' => $request->nm_mhswa,
-            'pw_mhswa' => Hash::make($request->pw_mhswa),
             'angkatan' => $request->angkatan,
             'uid_rfid' => '-'
         ])->id();

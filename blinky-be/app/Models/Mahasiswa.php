@@ -22,7 +22,6 @@ class Mahasiswa extends Model
         'id_prodi',
         'id_admin',
         'nm_mhswa',
-        'pw_mhswa',
         'angkatan',
         // 'foto_mhswa',
     ];

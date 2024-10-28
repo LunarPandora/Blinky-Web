@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('nm_dosen');
             $table->string('nidn');
             $table->integer('id_jabatan');
-            $table->string('u_dosen')->unique();
-            $table->string('pw_dosen');
             // $table->text('foto_dosen');
             $table->timestamps();
+
+            $table->foreign('id_jabatan')->references('id_jabatan')->on('jabatan');
         });
+
+        
     }
 
     /**
