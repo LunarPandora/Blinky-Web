@@ -3,38 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Kelas;
+use App\Models\Matkul;
 
-class KelasController extends Controller
+class MatkulController extends Controller
 {
     public function fetch(){
-        $kelas = Kelas::all();
+        $matkul = Matkul::all();
 
-        return response($kelas);
+        return response($matkul);
     }
 
     public function create(Request $request){
-        $kelas = Kelas::create([
-            'nm_kelas' => $request->nama_kelas
+        $matkul = Matkul::create([
+            'nm_matkul' => $request->nama_matkul
         ]);
 
-        if($kelas){
+        if($matkul){
             return response('Success!');
         }
-        else {
+        else{
             return response('Failed!');
         }
     }
 
     public function update(Request $request){
-        $kelas = Kelas::find($request->id_kelas);
+        $matkul = Matkul::find($request->id_matkul);
 
-        $kelas->nm_kelas = $request->nama_kelas;
+        $matkul->nm_matkul = $request->nama_matkul;
 
-        $kelas->save();
+        $matkul->save();
 
-        if($kelas){
+        if($matkul){
             return response('Success!');
         }
         else{
@@ -43,10 +42,10 @@ class KelasController extends Controller
     }
 
     public function delete(Request $request){
-        $kelas = Kelas::find($request->id_kelas);
-        $kelas->delete();
+        $matkul = Matkul::find($request->id_matkul);
+        $matkul->delete();
 
-        if($kelas){
+        if($matkul){
             return response('Success!');
         }
         else{

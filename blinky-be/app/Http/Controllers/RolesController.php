@@ -3,38 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\Kelas;
+use App\Models\Roles;
 
-class KelasController extends Controller
+class RolesController extends Controller
 {
     public function fetch(){
-        $kelas = Kelas::all();
+        $roles = Roles::all();
 
-        return response($kelas);
+        return response($roles);
     }
 
     public function create(Request $request){
-        $kelas = Kelas::create([
-            'nm_kelas' => $request->nama_kelas
+        $roles = Roles::create([
+            'role_name' => $request->role_name
         ]);
 
-        if($kelas){
+        if($roles){
             return response('Success!');
         }
-        else {
+        else{
             return response('Failed!');
         }
     }
 
     public function update(Request $request){
-        $kelas = Kelas::find($request->id_kelas);
+        $roles = Roles::find($request->id);
 
-        $kelas->nm_kelas = $request->nama_kelas;
+        $roles->role_name = $request->role_name;
 
-        $kelas->save();
+        $roles->save();
 
-        if($kelas){
+        if($roles){
             return response('Success!');
         }
         else{
@@ -43,10 +42,10 @@ class KelasController extends Controller
     }
 
     public function delete(Request $request){
-        $kelas = Kelas::find($request->id_kelas);
-        $kelas->delete();
+        $roles = Roles::find($request->id);
+        $roles->delete();
 
-        if($kelas){
+        if($roles){
             return response('Success!');
         }
         else{
