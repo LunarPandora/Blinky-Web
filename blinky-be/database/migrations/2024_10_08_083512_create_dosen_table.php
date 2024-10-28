@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('dosen', function (Blueprint $table) {
             $table->id('id_dosen');
-            $table->integer('id_prodi');
+            $table->foreignId('id_prodi', length: 20);
             $table->string('nm_dosen');
+            $table->string('jabatan');
             $table->string('nidn');
-            $table->integer('id_jabatan');
-            // $table->text('foto_dosen');
             $table->timestamps();
-
-            $table->foreign('id_jabatan')->references('id_jabatan')->on('jabatan');
         });
 
-        
+        Schema::table('dosen', function (Blueprint $table) {
+            $table->foreign('id_prodi')->references('id_prodi')->on('prodi');
+            $table->foreign('id_jabatan')->references('id_jabatan')->on('jabatan');
+        });
     }
 
     /**

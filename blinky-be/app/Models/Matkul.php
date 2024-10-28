@@ -12,7 +12,7 @@ class Matkul extends Model
     protected $table = "matkul";
     protected $primaryKey = "id_matkul";
 
-    protected $fillable = [
+    protected $fillable =[
         'nm_matkul',
     ];
 }
