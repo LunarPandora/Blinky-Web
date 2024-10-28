@@ -15,7 +15,7 @@ class MatkulController extends Controller
 
     public function create(Request $request){
         $matkul = Matkul::create([
-            'nm_matkul' => $request->nama_matkul
+            'nm_matkul' => $request->nm_matkul
         ]);
 
         if($matkul){
@@ -29,7 +29,7 @@ class MatkulController extends Controller
     public function update(Request $request){
         $matkul = Matkul::find($request->id_matkul);
 
-        $matkul->nm_matkul = $request->nama_matkul;
+        $matkul->nm_matkul = $request->nm_matkul;
 
         $matkul->save();
 

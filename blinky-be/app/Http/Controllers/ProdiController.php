@@ -15,7 +15,7 @@ class ProdiController extends Controller
 
     public function create(Request $request){
         $prodi = Prodi::create([
-            'nm_prodi' => $request->nama_prodi
+            'nm_prodi' => $request->nm_prodi
         ]);
 
         if($prodi){
@@ -29,7 +29,7 @@ class ProdiController extends Controller
     public function update(Request $request){
         $prodi = Prodi::find($request->id_prodi);
 
-        $prodi->nm_prodi = $request->nama_prodi;
+        $prodi->nm_prodi = $request->nm_prodi;
 
         $prodi->save();
 

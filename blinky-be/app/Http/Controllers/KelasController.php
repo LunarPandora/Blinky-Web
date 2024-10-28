@@ -16,7 +16,7 @@ class KelasController extends Controller
 
     public function create(Request $request){
         $kelas = Kelas::create([
-            'nm_kelas' => $request->nama_kelas
+            'nm_kelas' => $request->nm_kelas
         ]);
 
         if($kelas){
@@ -30,7 +30,7 @@ class KelasController extends Controller
     public function update(Request $request){
         $kelas = Kelas::find($request->id_kelas);
 
-        $kelas->nm_kelas = $request->nama_kelas;
+        $kelas->nm_kelas = $request->nm_kelas;
 
         $kelas->save();
 
