@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal', function (Blueprint $table) {
-            $table->id('id_jadwal');
+            $table->integerIncrements('id_jadwal')->primary();
             $table->foreignId('id_kelas');
             $table->foreignId('id_dosen');
             $table->foreignId('id_matkul');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
-            $table->integer('hari');
+            $table->smallInteger('hari');
             $table->timestamps();
         });
 

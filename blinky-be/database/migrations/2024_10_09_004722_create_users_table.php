@@ -12,12 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
+            $table->integerIncrements('id')->primary();
+            $table->foreignId('role_id');
+            $table->foreignId('acc_id');
             $table->string('email');
             $table->string('password');
-            $table->foreignId('role_id');
-            $table->integer('acc_id');
             $table->timestamps();
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 

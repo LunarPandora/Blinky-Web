@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Absensi extends Model
 {
-    protected $table = "absensi";
-    protected $primaryKey = "id_absensi";
+    use HasFactory;
 
-    protected $fillable =[
+    protected $table = "absensi";
+    protected $primaryKey = "id_absensi"; 
+
+    protected $fillable = [
         'id_mhswa',
         'id_jadwal',
         'waktu_absen',
