@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('role_id', length: 20);
+            $table->integer('id', 10)->primary()->autoIncrement();
+            $table->foreignId('role_id');
             $table->string('email', length: 60);
             $table->bigInteger('acc_id', length: 20);
             $table->string('password');
