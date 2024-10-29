@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('status_absensi', function (Blueprint $table) {
-            $table->smallIncrements('kode_status_absensi')->primary();
+            $table->smallInteger('kode_status_absensi')->primary();
             $table->string('status_absensi');
             $table->timestamps();
         });

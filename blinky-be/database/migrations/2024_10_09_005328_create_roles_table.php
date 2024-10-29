@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->mediumIncrements('id')->primary();
+            $table->mediumInteger('id')->primary();
             $table->string('role_name');
             $table->timestamps();
         });

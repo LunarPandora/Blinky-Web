@@ -12,9 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('absensi', function (Blueprint $table) {
-            $table->bigIncrements('id_absensi')->primary();
-            $table->foreignId('id_mhswa');
-            $table->foreignId('id_jadwal');
+            $table->bigInteger('id_absensi')->primary()->autoIncrement();
+            $table->mediumInteger('id_kelas');
+            $table->integer('id_mhswa');
+            $table->integer('id_jadwal');
+            $table->smallInteger('kode_status_absensi');
             $table->dateTime('waktu_absen');
             $table->timestamps();
         });
