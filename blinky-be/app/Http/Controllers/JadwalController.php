@@ -15,7 +15,12 @@ class JadwalController extends Controller
 
     public function create(Request $request){
         $jadwal = Jadwal::create([
-            'id_jadwal' => $request->id_jadwal
+            'id_kelas' => $request->id_kelas,
+            'id_dosen' => $request->id_dosen,
+            'id_matkul' => $request->id_matkul,
+            'jam_mulai' => $request->jam_mulai,
+            'jam_selesai' => $request->jam_selesai,
+            'hari' => $request->hari
         ]);
 
         if($jadwal){
@@ -29,7 +34,12 @@ class JadwalController extends Controller
     public function update(Request $request){
         $jadwal = Jadwal::find($request->id_jadwal);
 
-        $jadwal->id_jadwal = $request->id_jadwal;
+        $jadwal->id_kelas = $request->id_kelas;
+        $jadwal->id_dosen = $request->id_dosen;
+        $jadwal->id_matkul = $request->id_matkul;
+        $jadwal->jam_mulai = $request->jam_mulai;
+        $jadwal->jam_selesai = $request->jam_selesai;
+        $jadwal->hari = $request->hari;
 
         $jadwal->save();
 
