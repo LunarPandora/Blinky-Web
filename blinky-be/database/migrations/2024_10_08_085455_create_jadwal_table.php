@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwal', function (Blueprint $table) {
-            $table->integerIncrements('id_jadwal')->primary();
-            $table->foreignId('id_kelas');
-            $table->foreignId('id_dosen');
-            $table->foreignId('id_matkul');
+            $table->integer('id_jadwal')->primary()->autoIncrement();
+            $table->mediumInteger('id_kelas');
+            $table->integer('id_dosen');
+            $table->integer('id_matkul');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->smallInteger('hari');
