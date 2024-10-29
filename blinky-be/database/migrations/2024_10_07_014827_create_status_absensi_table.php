@@ -8,12 +8,12 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     */
+     */ 
     public function up(): void
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->mediumIncrements('id')->primary();
-            $table->string('role_name');
+        Schema::create('status_absensi', function (Blueprint $table) {
+            $table->smallInteger('kode_status_absensi')->primary()->autoIncrement();
+            $table->string('status_absensi');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('status_absensi');
     }
 };

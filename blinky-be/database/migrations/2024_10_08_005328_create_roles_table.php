@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('status_absensi', function (Blueprint $table) {
-            $table->smallIncrements('kode_status_absensi')->primary();
-            $table->string('status_absensi');
+        Schema::create('roles', function (Blueprint $table) {
+            $table->mediumInteger('id')->primary()->autoIncrement();
+            $table->string('role_name');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('status_absensi');
+        Schema::dropIfExists('roles');
     }
 };

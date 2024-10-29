@@ -9,6 +9,8 @@ use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StatusAbsensiController;
+use App\Http\Controllers\DosenController;
+use App\Http\Controllers\JadwalController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -48,3 +50,13 @@ Route::get('/statusabsensi', [StatusAbsensiController::class, 'fetch']);
 Route::get('/statusabsensi/add', [StatusAbsensiController::class, 'create']);
 Route::get('/statusabsensi/update', [StatusAbsensiController::class, 'update']);
 Route::get('/statusabsensi/delete', [StatusAbsensiController::class, 'delete']);
+
+Route::get('/dosen', [DosenController::class, 'fetch']);
+Route::get('/dosen/add', [DosenController::class, 'create']);
+Route::get('/dosen/update', [DosenController::class, 'update']);
+Route::get('/dosen/delete', [DosenController::class, 'delete']);
+
+Route::get('/jadwal', [JadwalController::class, 'fetch']);
+Route::get('/jadwal/add', [JadwalController::class, 'create']);
+Route::get('/jadwal/update', [JadwalController::class, 'update']);
+Route::get('/jadwal/delete', [JadwalController::class, 'delete']);
