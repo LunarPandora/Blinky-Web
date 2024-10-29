@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
             $table->foreign('id_mhswa')->references('id_mhswa')->on('mahasiswa');
             $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal');
-            $table->foreign('kode_status_absensi')->references('kode_status_absensi')->on('status_absen');
+            $table->foreign('kode_status_absensi')->references('kode_status_absensi')->on('status_absensi');
         });
     }
 
