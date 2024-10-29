@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Prodi;
+use App\Models\Roles;
 
-class ProdiController extends Controller
+class RolesController extends Controller
 {
     public function fetch(){
-        $prodi = Prodi::all();
+        $roles = Roles::all();
 
-        return response($prodi);
+        return response($roles);
     }
 
     public function create(Request $request){
-        $prodi = Prodi::create([
-            'nm_prodi' => $request->nm_prodi
+        $roles = Roles::create([
+            'role_name' => $request->role_name
         ]);
 
-        if($prodi){
+        if($roles){
             return response('Success!');
         }
         else{
@@ -27,13 +27,13 @@ class ProdiController extends Controller
     }
 
     public function update(Request $request){
-        $prodi = Prodi::find($request->id_prodi);
+        $roles = Roles::find($request->id);
 
-        $prodi->nm_prodi = $request->nm_prodi;
+        $roles->role_name = $request->role_name;
 
-        $prodi->save();
+        $roles->save();
 
-        if($prodi){
+        if($roles){
             return response('Success!');
         }
         else{
@@ -42,10 +42,10 @@ class ProdiController extends Controller
     }
 
     public function delete(Request $request){
-        $prodi = Prodi::find($request->id_prodi);
-        $prodi->delete();
+        $roles = Roles::find($request->id);
+        $roles->delete();
 
-        if($prodi){
+        if($roles){
             return response('Success!');
         }
         else{

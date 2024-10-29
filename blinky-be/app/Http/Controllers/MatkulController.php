@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Prodi;
+use App\Models\Matkul;
 
-class ProdiController extends Controller
+class MatkulController extends Controller
 {
     public function fetch(){
-        $prodi = Prodi::all();
+        $matkul = Matkul::all();
 
-        return response($prodi);
+        return response($matkul);
     }
 
     public function create(Request $request){
-        $prodi = Prodi::create([
-            'nm_prodi' => $request->nm_prodi
+        $matkul = Matkul::create([
+            'nm_matkul' => $request->nm_matkul
         ]);
 
-        if($prodi){
+        if($matkul){
             return response('Success!');
         }
         else{
@@ -27,13 +27,13 @@ class ProdiController extends Controller
     }
 
     public function update(Request $request){
-        $prodi = Prodi::find($request->id_prodi);
+        $matkul = Matkul::find($request->id_matkul);
 
-        $prodi->nm_prodi = $request->nm_prodi;
+        $matkul->nm_matkul = $request->nm_matkul;
 
-        $prodi->save();
+        $matkul->save();
 
-        if($prodi){
+        if($matkul){
             return response('Success!');
         }
         else{
@@ -42,10 +42,10 @@ class ProdiController extends Controller
     }
 
     public function delete(Request $request){
-        $prodi = Prodi::find($request->id_prodi);
-        $prodi->delete();
+        $matkul = Matkul::find($request->id_matkul);
+        $matkul->delete();
 
-        if($prodi){
+        if($matkul){
             return response('Success!');
         }
         else{
