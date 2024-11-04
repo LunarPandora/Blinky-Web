@@ -15,7 +15,10 @@ class DosenController extends Controller
 
     public function create(Request $request){
         $dosen = Dosen::create([
-            'nm_dosen' => $request->nama_dosen
+            'id_prodi' => $request->id_prodi,
+            'nm_dosen' => $request->nm_dosen,
+            'jabatan' => $request->jabatan,
+            'nidn' => $request->nidn
         ]);
 
         if($dosen){
@@ -29,7 +32,10 @@ class DosenController extends Controller
     public function update(Request $request){
         $dosen = Dosen::find($request->id_dosen);
 
-        $dosen->nm_dosen = $request->nama_dosen;
+        $dosen->id_prodi = $request->id_prodi;
+        $dosen->nm_dosen = $request->nm_dosen;
+        $dosen->jabatan = $request->jabatan;
+        $dosen->nidn = $request->nidn;
 
         $dosen->save();
 
