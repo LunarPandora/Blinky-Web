@@ -9,23 +9,35 @@ class LoginController extends Controller
 {
     public function login(Request $request){
         $cred = $request->validate([
-            'email' => ['required'],
-            'pass' => ['required'],
+            'email' => 'required',
+            'password' => 'required',
             // 'role' => ['required'] (Untuk bedakan mahasiswa dan dosen)
         ]);
 
-        $auth_mhswa = Auth::attempt([
-            'email' => $request->email,
-            'password' => $request->pass,   
-        ]);
+        $auth_mhswa = Auth::attempt($cred);
 
         if($auth_mhswa){
             $request->session()->regenerate();
+            $ud = Auth::user();
 
-            return response('Berhasil masuk!');
+            $session_dt = array(
+                'id' => $ud->id,
+                'role' => $ud->roles->role_name,
+                'acc' => ''
+            );
+
+            if($ud->roles->role_name == 'Dosen'){
+                $session_dt['acc'] = $ud->dosen_acc;
+            }
+            elseif($ud->roles->role_name == 'Mahasiswa'){
+                $session_dt['acc'] = $ud->mhswa_acc;
+            }
+
+            return response(['LOGIN_SUCCESS', $session_dt]);
         }
-
-        return response($auth_mhswa);
+        else{
+            return response('LOGIN_FAILED');
+        }
     }
 
     public function logout(Request $request){
@@ -34,6 +46,6 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return response('Berhasil logout!');
+        return response('LOGOUT_SUCCESS');
     }
 }

@@ -8,6 +8,10 @@ export default {
     extend: {
       colors: {
         "indigo": "#5A4FDF",
+        "darkpurple": "#221d66",
+        "lapizblue": "#19154f",
+        "blueprism": "#201a75",
+        "darkslate": "#090721"
       }
     },
   },

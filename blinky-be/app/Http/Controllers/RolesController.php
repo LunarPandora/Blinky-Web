@@ -13,6 +13,10 @@ class RolesController extends Controller
         return response($roles);
     }
 
+    // public function get(Request $request){
+    //     $roles = Roles::where(['id' => $request->id])
+    // }
+
     public function create(Request $request){
         $roles = Roles::create([
             'role_name' => $request->role_name

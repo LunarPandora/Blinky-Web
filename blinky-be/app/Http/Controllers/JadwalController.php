@@ -8,7 +8,17 @@ use App\Models\Jadwal;
 class JadwalController extends Controller
 {
     public function fetch(){
-        $jadwal = Jadwal::all();
+        $jadwal = Jadwal::with(['kelas', 'dosen', 'matkul'])->get();
+
+        return response($jadwal);
+    }
+
+    public function find(Request $request){
+        $jadwal = Jadwal::where([
+            ['id_jadwal', '=', $request->id_jadwal],
+        ])
+        ->with(['kelas', 'dosen', 'matkul'])
+        ->get();
 
         return response($jadwal);
     }

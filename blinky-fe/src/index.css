@@ -4,6 +4,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body{
     font-family: "Wix Madefor Display", Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+    .scrollbar::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }
+  
+    .scrollbar::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: transparent;
+    }
+  
+    .scrollbar::-webkit-scrollbar-thumb {
+        background: #5A4FDF;
+        /* padding: 10px; */
+        border-radius: 100vh;
+        border: 3px solid #221d66;
+    }
+  
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #5A4FDF;
+    }
 }

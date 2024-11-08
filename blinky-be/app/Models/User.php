@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -30,6 +31,18 @@ class User extends Authenticatable
         'password',
         // 'remember_token',
     ];
+
+    public function roles(): BelongsTo{
+        return $this->belongsTo(Roles::class, 'role_id', 'id');
+    }
+
+    public function dosen_acc(): BelongsTo{
+        return $this->belongsTo(Dosen::class, 'dosen_id', 'id_dosen');
+    }
+
+    public function mhswa_acc(): BelongsTo{
+        return $this->belongsTo(Mahasiswa::class, 'mhswa_id', 'id_mhswa');
+    }
 
     /**
      * Get the attributes that should be cast.

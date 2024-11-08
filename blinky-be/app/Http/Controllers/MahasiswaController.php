@@ -17,6 +17,14 @@ class MahasiswaController extends Controller
         return response($data);
     }
 
+    public function list(Request $request){
+        $data = Mahasiswa::where('id_kelas', '=', $request->id_kelas)
+        ->with(['kelas', 'prodi'])
+        ->get();
+
+        return response($data);
+    }
+
     public function register_card(Request $request){
         $tmp_ms = DB::table('machine')->update([
             'last_rec_rfid' => $request->uid_rfid

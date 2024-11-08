@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->integer('id')->primary()->autoIncrement();
             $table->mediumInteger('role_id');
-            $table->integer('acc_id');
+            $table->integer('dosen_id')->nullable();
+            $table->integer('mhswa_id')->nullable();
             $table->string('email');
             $table->string('password');
             $table->timestamps();
@@ -22,6 +23,8 @@ return new class extends Migration
 
         Schema::table('users', function (Blueprint $table) {
             $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('dosen_id')->references('id_dosen')->on('dosen');
+            $table->foreign('mhswa_id')->references('id_mhswa')->on('mahasiswa');
         });
     }
 

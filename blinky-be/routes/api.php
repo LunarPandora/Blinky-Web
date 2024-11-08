@@ -11,12 +11,17 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\StatusAbsensiController;
 use App\Http\Controllers\DosenController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\LoginController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout']);
+
 Route::get('/mahasiswa', [MahasiswaController::class, 'fetch']);
+Route::get('/mahasiswa/list', [MahasiswaController::class, 'list']);
 Route::get('/mahasiswa/add', [MahasiswaController::class, 'insert']);
 Route::get('/mahasiswa/update', [MahasiswaController::class, 'update']);
 Route::get('/mahasiswa/delete', [MahasiswaController::class, 'delete']);
@@ -37,6 +42,8 @@ Route::get('/matkul/update', [MatkulController::class, 'update']);
 Route::get('/matkul/delete', [MatkulController::class, 'delete']);
 
 Route::get('/absensi', [AbsensiController::class, 'fetch']);
+Route::get('/absensi/list', [AbsensiController::class, 'list']);
+Route::get('/absensi/list_pertemuan', [AbsensiController::class, 'list_pertemuan']);
 Route::get('/absensi/add', [AbsensiController::class, 'create']);
 Route::get('/absensi/update', [AbsensiController::class, 'update']);
 Route::get('/absensi/delete', [AbsensiController::class, 'delete']);
@@ -57,6 +64,7 @@ Route::get('/dosen/update', [DosenController::class, 'update']);
 Route::get('/dosen/delete', [DosenController::class, 'delete']);
 
 Route::get('/jadwal', [JadwalController::class, 'fetch']);
+Route::get('/jadwal/find', [JadwalController::class, 'find']);
 Route::get('/jadwal/add', [JadwalController::class, 'create']);
 Route::get('/jadwal/update', [JadwalController::class, 'update']);
 Route::get('/jadwal/delete', [JadwalController::class, 'delete']);

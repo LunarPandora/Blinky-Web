@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,4 +21,16 @@ class Jadwal extends Model
         'jam_selesai',
         'hari'
     ];
+
+    public function kelas(): BelongsTo{
+        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
+    }
+
+    public function dosen(): BelongsTo{
+        return $this->belongsTo(Dosen::class, 'id_dosen', 'id_dosen');
+    }
+
+    public function matkul(): BelongsTo{
+        return $this->belongsTo(Matkul::class, 'id_matkul', 'id_matkul');
+    }
 }

@@ -13,12 +13,36 @@ class AbsensiController extends Controller
         return response($absensi);
     }
 
+    public function list(Request $request){
+        $absensi = Absensi::where([
+            ['id_jadwal', '=', $request->id_jadwal],
+            ['pertemuan', '=', $request->pertemuan]
+        ])
+        ->with(['kelas', 'mahasiswa', 'jadwal'])
+        ->get();
+
+        return response($absensi);
+    }
+
+    public function list_pertemuan(Request $request){
+        $absensi = Absensi::selectRaw('pertemuan, count(*) as total')
+        ->where([
+            ['id_jadwal', '=', $request->id_jadwal] 
+        ])
+        ->groupBy('pertemuan')
+        ->get();
+
+        return response($absensi);
+    }
+
     public function create(Request $request){
         $absensi = Absensi::create([
-            'id_mhswa' => $request->id_mahasiswa,
+            'id_mhswa' => $request->id_mhswa,
+            'id_kelas' => $request->id_kelas,
             'id_jadwal' => $request->id_jadwal,
-            'waktu_absen' => $request->waktu_absen,
-            'kode_status_absensi' => $request->kode_status_absensi
+            'waktu_absen' => $request->date . " " . $request->time,
+            'kode_status_absensi' => $request->kode_status_absensi,
+            'pertemuan' => $request->pertemuan
         ]);
 
         if($absensi){
@@ -32,11 +56,8 @@ class AbsensiController extends Controller
     public function update(Request $request){
         $absensi = Absensi::find($request->id_absensi);
 
-        $absensi->id_mhswa = $request->id_mhswa;
-        $absensi->id_jadwal = $request->id_jadwal;
-        $absensi->waktu_absen = $request->waktu_absen;
+        // $absensi->waktu_absen = $request->waktu_absen;
         $absensi->kode_status_absensi = $request->kode_status_absensi;
-
         $absensi->save();
 
         if($absensi){
