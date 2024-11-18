@@ -19,7 +19,8 @@ class Jadwal extends Model
         'id_matkul',
         'jam_mulai',
         'jam_selesai',
-        'hari'
+        'hari',
+        'pertemuan'
     ];
 
     public function kelas(): BelongsTo{

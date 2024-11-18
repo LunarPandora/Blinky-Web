@@ -9,6 +9,8 @@ import Dosen_TableMatkulPage from '../pages/Dosen/TableMatkul.vue'
 import Dosen_TableTanggalPage from '../pages/Dosen/TableTanggal.vue'
 import Dosen_TableAbsensiPage from '../pages/Dosen/TableAbsensi.vue'
 
+import Mahasiswa_TableMatkulPage from '../pages/Mahasiswa/TableMatkul.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -32,14 +34,17 @@ const router = createRouter({
             {
               path: '/dashboard/dosen/matkul',
               component: Dosen_TableMatkulPage,
+              // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/absensi/:id_jadwal',
+              path: '/dashboard/dosen/matkul/absensi/:id_jadwal',
               component: Dosen_TableTanggalPage,
+              // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/absensi/:id_jadwal/:id_tanggal',
+              path: '/dashboard/dosen/matkul/absensi/:id_jadwal/:id_tanggal',
               component: Dosen_TableAbsensiPage,
+              // alias: '/dashboard/'
             }
           ]
         },
@@ -50,6 +55,11 @@ const router = createRouter({
             path: '/dashboard/mahasiswa/kelas'
           },
           children: [
+            {
+              path: '/dashboard/mahasiswa/matkul',
+              component: Mahasiswa_TableMatkulPage,
+              // alias: '/dashboard/'
+            },
             // {
             //   path: '/dashboard/dosen/mahasiswa',
             //   component: Dosen_TableMahasiswaPage,

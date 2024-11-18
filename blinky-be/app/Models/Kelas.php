@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Model;
+
+use App\Models\Mahasiswa;
 
 class Kelas extends Model
 {
@@ -15,4 +18,8 @@ class Kelas extends Model
     protected $fillable =[
         'nm_kelas',
     ];
+
+    public function mahasiswa(): BelongsTo{
+        return $this->hasMany(Mahasiswa::class, 'id_kelas', 'id_kelas');
+    }
 }

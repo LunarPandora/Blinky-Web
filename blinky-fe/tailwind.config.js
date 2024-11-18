@@ -11,7 +11,8 @@ export default {
         "darkpurple": "#221d66",
         "lapizblue": "#19154f",
         "blueprism": "#201a75",
-        "darkslate": "#090721"
+        "darkslate": "#090721",
+        // "w"
       }
     },
   },

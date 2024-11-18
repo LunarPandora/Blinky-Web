@@ -10,6 +10,7 @@
   const router = useRouter()
 
   const role = sessionStore.session.role
+  const currentPage = route.path
 
   async function logout(){
     let a = confirm('Apakah anda yakin ingin logout?')
@@ -30,7 +31,7 @@
 </script>
 
 <template>
-  <div class="flex w-full h-screen justify-center p-7 bg-darkslate gap-6">
+  <div class="flex w-full h-screen justify-center p-7 bg-gray-200 gap-6 font-light">
     <div class="flex w-[15%] h-full flex-col gap-12 sticky top-0 left-0">
       <img src="@/assets/icon.png" class="w-1/2 h-fit">
 
@@ -40,9 +41,9 @@
             <fa icon="fas fa-clock" fixed-width class="text-xl text-white"></fa>
             <p class="font-medium text-white">Jadwal</p>
           </RouterLink> -->
-          <RouterLink to='/dashboard/dosen/matkul' class="flex items-center gap-3 p-3 rounded-xl" :active-class="'bg-white *:text-indigo'">
+          <RouterLink to='/dashboard/dosen/matkul' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-indigo *:text-white': currentPage.includes('/dashboard/dosen/matkul')}">
             <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
-            <p class="font-medium text-white">Mata Kuliah</p>
+            <p class="text-white">Mata Kuliah</p>
           </RouterLink>
           <!-- <RouterLink to='/dashboard/dosen/absensi' class="flex items-center gap-3 p-3 rounded-xl" :active-class="'bg-white *:text-indigo'">
             <fa icon="fas fa-user-graduate" fixed-width class="text-xl text-white"></fa>
@@ -50,7 +51,7 @@
           </RouterLink> -->
         </div>
         <div class="flex flex-col w-full gap-5">
-          <div @click="logout()" class="flex items-center gap-3 p-3 rounded-xl bg-indigo">
+          <div @click="logout()" class="flex items-center gap-3 p-3 rounded-xl bg-red-500">
             <fa icon="fas fa-door-open" fixed-width class="text-xl text-white"></fa>
             <p class="font-medium text-white">Logout</p>
           </div>
@@ -58,7 +59,7 @@
       </div>
     </div>
 
-    <div class="flex flex-col w-[85%] bg-darkpurple rounded-xl">
+    <div class="flex flex-col w-[85%] h-full overflow-hidden bg-white rounded-xl">
       <RouterView :key="route.path" />
     </div>
   </div>

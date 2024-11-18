@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\Jadwal;
+use App\Models\Pertemuan;
 
 class JadwalController extends Controller
 {
@@ -30,10 +32,18 @@ class JadwalController extends Controller
             'id_matkul' => $request->id_matkul,
             'jam_mulai' => $request->jam_mulai,
             'jam_selesai' => $request->jam_selesai,
-            'hari' => $request->hari
+            'hari' => $request->hari,
+            'pertemuan' => $request->pertemuan,
         ]);
 
         if($jadwal){
+            for($i = 1; $i <= $request->pertemuan; $i++){
+                $pertemuan = Pertemuan::create([
+                    'id_jadwal' => $jadwal->id_jadwal,
+                    // 'tanggal_pertemuan' => 
+                ])
+            }
+
             return response('Success!');
         }
         else{

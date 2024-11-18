@@ -1,12 +1,14 @@
 /* @import url(https://fonts.googleapis.com/css?family=Figtree:300,regular,500,600,700,800,900,300italic,italic,500italic,600italic,700italic,800italic,900italic); */
-@import url(https://fonts.googleapis.com/css?family=Wix+Madefor+Display:regular,500,600,700,800);
+/* @import url(https://fonts.googleapis.com/css?family=Wix+Madefor+Display:regular,500,600,700,800); */
+@import url(https://fonts.googleapis.com/css?family=Outfit:100,200,300,regular,500,600,700,800,900);
+@import url(https://fonts.googleapis.com/css?family=Lexend+Deca:100,200,300,regular,500,600,700,800,900);
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body{
-    font-family: "Wix Madefor Display", Arial, Helvetica, sans-serif;
+    font-family: "Lexend Deca", Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
@@ -24,7 +26,7 @@ body{
         background: #5A4FDF;
         /* padding: 10px; */
         border-radius: 100vh;
-        border: 3px solid #221d66;
+        border: 1px solid #5A4FDF;
     }
   
     .scrollbar::-webkit-scrollbar-thumb:hover {
