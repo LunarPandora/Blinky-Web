@@ -10,6 +10,7 @@ import Dosen_TableTanggalPage from '../pages/Dosen/TableTanggal.vue'
 import Dosen_TableAbsensiPage from '../pages/Dosen/TableAbsensi.vue'
 
 import Mahasiswa_TableMatkulPage from '../pages/Mahasiswa/TableMatkul.vue'
+import Mahasiswa_TableAbsensiPage from '../pages/Mahasiswa/TableAbsensi.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -58,6 +59,11 @@ const router = createRouter({
             {
               path: '/dashboard/mahasiswa/matkul',
               component: Mahasiswa_TableMatkulPage,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/mahasiswa/absensi',
+              component: Mahasiswa_TableAbsensiPage,
               // alias: '/dashboard/'
             },
             // {
