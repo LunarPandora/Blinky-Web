@@ -41,7 +41,7 @@ class JadwalController extends Controller
                 $pertemuan = Pertemuan::create([
                     'id_jadwal' => $jadwal->id_jadwal,
                     // 'tanggal_pertemuan' => 
-                ])
+                ]);
             }
 
             return response('Success!');
