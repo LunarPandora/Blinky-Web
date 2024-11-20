@@ -5,10 +5,12 @@ import { useSessionStore } from '@/stores/session';
 
 import DashboardView from '../views/Dashboard/Admin/DashboardView.vue'
 
+import Dosen_ProfilPage from '../pages/Dosen/ProfilDosen.vue'
 import Dosen_TableMatkulPage from '../pages/Dosen/TableMatkul.vue'
 import Dosen_TableTanggalPage from '../pages/Dosen/TableTanggal.vue'
 import Dosen_TableAbsensiPage from '../pages/Dosen/TableAbsensi.vue'
 
+import Mahasiswa_ProfilPage from '../pages/Mahasiswa/ProfilMahasiswa.vue'
 import Mahasiswa_TableMatkulPage from '../pages/Mahasiswa/TableMatkul.vue'
 import Mahasiswa_TableAbsensiPage from '../pages/Mahasiswa/TableAbsensi.vue'
 
@@ -33,6 +35,11 @@ const router = createRouter({
           },
           children: [
             {
+              path: '/dashboard/dosen/profil',
+              component: Dosen_ProfilPage,
+              // alias: '/dashboard/'
+            },
+            {
               path: '/dashboard/dosen/matkul',
               component: Dosen_TableMatkulPage,
               // alias: '/dashboard/'
@@ -56,6 +63,11 @@ const router = createRouter({
             path: '/dashboard/mahasiswa/kelas'
           },
           children: [
+            {
+              path: '/dashboard/mahasiswa/profil',
+              component: Mahasiswa_ProfilPage,
+              // alias: '/dashboard/'
+            },
             {
               path: '/dashboard/mahasiswa/matkul',
               component: Mahasiswa_TableMatkulPage,
