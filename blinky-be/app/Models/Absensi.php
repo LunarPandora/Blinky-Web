@@ -16,7 +16,7 @@ class Absensi extends Model
     protected $fillable = [
         'id_mhswa',
         'id_kelas',
-        'id_jadwal',
+        'id_pertemuan',
         'waktu_absen',
         'kode_status_absensi',
         'pertemuan'
@@ -30,7 +30,7 @@ class Absensi extends Model
         return $this->belongsTo(Mahasiswa::class, 'id_mhswa', 'id_mhswa');
     }
 
-    public function jadwal(): BelongsTo{
-        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
+    public function pertemuan(): BelongsTo{
+        return $this->belongsTo(Pertemuan::class, 'id_pertemuan', 'id_pertemuan');
     }
 }

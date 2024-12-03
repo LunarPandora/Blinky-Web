@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigInteger('id_absensi')->primary()->autoIncrement();
             $table->mediumInteger('id_kelas');
             $table->integer('id_mhswa');
-            $table->integer('id_jadwal');
+            $table->integer('id_pertemuan');
             $table->smallInteger('kode_status_absensi');
             $table->dateTime('waktu_absen');
             $table->timestamps();
@@ -24,7 +24,7 @@ return new class extends Migration
         Schema::table('absensi', function (Blueprint $table) {
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
             $table->foreign('id_mhswa')->references('id_mhswa')->on('mahasiswa');
-            $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal');
+            $table->foreign('id_pertemuan')->references('id_pertemuan')->on('pertemuan');
             $table->foreign('kode_status_absensi')->references('kode_status_absensi')->on('status_absensi');
         });
     }
