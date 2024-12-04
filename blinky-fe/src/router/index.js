@@ -5,6 +5,10 @@ import { useSessionStore } from '@/stores/session';
 
 import DashboardView from '../views/Dashboard/Admin/DashboardView.vue'
 
+import Admin_TableProdiPage from '../pages/Dosen/TableProdi.vue'
+import Admin_StatusAbsensiPage from '../pages/Dosen/StatusAbsensi.vue'
+import Admin_UsersPage from '../pages/Dosen/Users.vue'
+
 import Dosen_ProfilPage from '../pages/Dosen/ProfilDosen.vue'
 import Dosen_TableMatkulPage from '../pages/Dosen/TableMatkul.vue'
 import Dosen_TableTanggalPage from '../pages/Dosen/TableTanggal.vue'
@@ -37,6 +41,21 @@ const router = createRouter({
             {
               path: '/dashboard/dosen/profil',
               component: Dosen_ProfilPage,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/dosen/prodi',
+              component: Admin_TableProdiPage,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/dosen/statusabsensi',
+              component: Admin_StatusAbsensiPage,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/dosen/users',
+              component: Admin_UsersPage,
               // alias: '/dashboard/'
             },
             {
