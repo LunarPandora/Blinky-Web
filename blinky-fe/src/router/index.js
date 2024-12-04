@@ -5,6 +5,11 @@ import { useSessionStore } from '@/stores/session';
 
 import DashboardView from '../views/Dashboard/Admin/DashboardView.vue'
 
+import Admin_TableMahasiswa from '../pages/Admin/TableMahasiswa.vue'
+import Admin_TableDosen from '../pages/Admin/TableDosen.vue'
+import Admin_TableKelas from '../pages/Admin/TableKelas.vue'
+import Admin_TableMatkul from '../pages/Admin/TableMatkul.vue'
+
 import Dosen_ProfilPage from '../pages/Dosen/ProfilDosen.vue'
 import Dosen_TableMatkulPage from '../pages/Dosen/TableMatkul.vue'
 import Dosen_TableTanggalPage from '../pages/Dosen/TableTanggal.vue'
@@ -27,6 +32,35 @@ const router = createRouter({
       name: 'dashboard',
       component: DashboardView,
       children: [
+        {
+          path: '/dashboard/admin',
+          name: 'dashboard_admin',
+          redirect: {
+            path: '/dashboard/admin/mahasiswa'
+          },
+          children: [
+            {
+              path: '/dashboard/admin/mahasiswa',
+              component: Admin_TableMahasiswa,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/admin/dosen',
+              component: Admin_TableDosen,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/admin/kelas',
+              component: Admin_TableKelas,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/admin/matkul',
+              component: Admin_TableMatkul,
+              // alias: '/dashboard/'
+            }
+          ]
+        },
         {
           path: '/dashboard/dosen',
           name: 'dashboard_dosen',
