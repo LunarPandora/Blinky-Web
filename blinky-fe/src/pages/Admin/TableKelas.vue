@@ -2,23 +2,14 @@
     import { ref, onMounted, watch } from 'vue'
     import { useRoute } from 'vue-router'
 
+    import apiClient from '@/services/api'
     import DateConverter from '@/services/date'
-    import apiClient from '@/services/api';
 
     const route = useRoute()
 
-    const dataAbsensi = ref()
-    const dataMahasiswa = ref()
-    const dataStatus = ref()
+    const dataKelas = ref()
+    const temp_id = ref(0)
 
-    const jadwal = ref()
-    const mahasiswa = ref(0)
-    const status = ref(0)
-    const date = ref()
-    const time = ref(new Date())
-
-    const temp_id = ref()
-    
     const isModalOn = ref(false)
     const modeModal = ref()
 
@@ -27,38 +18,10 @@
     })
 
     async function fetchData(){
-        console.log(route.params.id_pertemuan)
-
-        await apiClient.get('absensi/list', {
-            params: {
-                id_pertemuan: route.params.id_pertemuan
-            }
-        })
+        await apiClient.get('kelas/')
         .then(resp => {
-            dataAbsensi.value = resp.data
-        })
-
-        await apiClient.get('jadwal/find', {
-            params: {
-                id_jadwal: route.params.id_jadwal,
-            }
-        })
-        .then(resp => {
-            jadwal.value = resp.data[0]
-        })
-
-        await apiClient.get('mahasiswa/list', {
-            params: {
-                id_kelas: jadwal.value.kelas.id_kelas,
-            }
-        })
-        .then(resp => {
-            dataMahasiswa.value = resp.data
-        })
-        
-        await apiClient.get('statusabsensi')
-        .then(resp => {
-            dataStatus.value = resp.data
+            dataKelas.value = resp.data
+            console.log(resp.data)
         })
     }
 
@@ -73,89 +36,66 @@
         fetchData()
     }
 
-    // Template cara tambah / edit / update data
-    async function editAbsensi(){
-        await apiClient.get('absensi/update', {
-            params: {
-                id_mhswa: mahasiswa.value,
-                id_jadwal: route.params.id_jadwal,
-                id_kelas: jadwal.value.kelas.id_kelas,
-                date: date.value,
-                time: time.value,
-                kode_status_absensi: status.value,
-                pertemuan: route.params.id_tanggal
-            }
-        })
-        .then(resp => {
-            if(resp.data == 'Success!'){
-                alert("Absensi berhasil diupdate!")
-            }
-            else{
-                alert("Absensi gagal diupdate!")
-            }
-        })
-    }
+    // async function tambahAbsensi(){
+    //     await apiClient.get('absensi/add', {
+    //         params: {
+    //             id_mhswa: mahasiswa.value,
+    //             id_jadwal: route.params.id_jadwal,
+    //             id_kelas: jadwal.value.kelas.id_kelas,
+    //             date: date.value,
+    //             time: time.value,
+    //             kode_status_absensi: status.value,
+    //             pertemuan: route.params.id_tanggal
+    //         }
+    //     })
+    //     .then(resp => {
+    //         if(resp.data == 'Success!'){
+    //             alert('Absensi berhasil ditambahkan!')
+    //         }
+    //         else{
+    //             alert('Absensi gagal ditambahkan!')
+    //         }
 
-    async function tambahAbsensi(){
-        await apiClient.get('absensi/add', {
-            params: {
-                id_mhswa: mahasiswa.value,
-                id_jadwal: route.params.id_jadwal,
-                id_kelas: jadwal.value.kelas.id_kelas,
-                date: date.value,
-                time: time.value,
-                kode_status_absensi: status.value,
-                pertemuan: route.params.id_tanggal
-            }
-        })
-        .then(resp => {
-            if(resp.data == 'Success!'){
-                alert('Absensi berhasil ditambahkan!')
-            }
-            else{
-                alert('Absensi gagal ditambahkan!')
-            }
+    //         toggleModal('', 0)
+    //     })
+    // }
 
-            toggleModal('', 0)
-        })
-    }
+    // async function updateStatus(x, index){
+    //     let newStatus = document.getElementById('select-' + index).value
 
-    async function updateStatus(x, index){
-        let newStatus = document.getElementById('select-' + index).value
+    //     await apiClient.get('absensi/update', {
+    //         params: {
+    //             id_absensi: x.id_absensi,
+    //             kode_status_absensi: newStatus,
+    //         }
+    //     })
+    //     .then(resp => {
+    //         if(resp.data == 'Success!'){
+    //             alert('Absensi berhasil diupdate!')
+    //         }
+    //         else{
+    //             alert('Absensi gagal diupdate!')
+    //         }
+    //     })
+    // }
 
-        await apiClient.get('absensi/update', {
-            params: {
-                id_absensi: x.id_absensi,
-                kode_status_absensi: newStatus,
-            }
-        })
-        .then(resp => {
-            if(resp.data == 'Success!'){
-                alert('Absensi berhasil diupdate!')
-            }
-            else{
-                alert('Absensi gagal diupdate!')
-            }
-        })
-    }
+    // async function hapusAbsensi(){
+    //     await apiClient.get('absensi/delete', {
+    //         params: {
+    //             id_absensi: temp_id.value,
+    //         }
+    //     })
+    //     .then(resp => {
+    //         if(resp.data == 'Success!'){
+    //             alert('Absensi berhasil dihapus!')
+    //         }
+    //         else{
+    //             alert('Absensi gagal dihapus!')
+    //         }
 
-    async function hapusAbsensi(){
-        await apiClient.get('absensi/delete', {
-            params: {
-                id_absensi: temp_id.value,
-            }
-        })
-        .then(resp => {
-            if(resp.data == 'Success!'){
-                alert('Absensi berhasil dihapus!')
-            }
-            else{
-                alert('Absensi gagal dihapus!')
-            }
-
-            toggleModal('', 0)
-        })    
-    }
+    //         toggleModal('', 0)
+    //     })    
+    // }
 </script>
 
 <template>
@@ -164,11 +104,7 @@
             <h1 class="text-indigo font-medium text-lg">
             Dashboard
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                Mata Kuliah
-                <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                <span v-if="jadwal">{{ jadwal.matkul.nm_matkul }} - {{ jadwal.kelas.nm_kelas }}</span>
-                <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                <span v-if="route.params.id_tanggal">Pertemuan ke-{{ route.params.id_tanggal }}</span>
+                Kelas
             </h1>
         </div>
     </div>
@@ -181,7 +117,7 @@
         <div class="flex items-center justify-end gap-5">
             <button @click="toggleModal('add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
                 <fa icon="fas fa-plus"></fa>
-                Tambahkan absensi baru
+                Tambahkan kelas baru
             </button>
             <!-- <div class="flex p-3 bg-indigo rounded-lg items-center gap-2 max-w-[50%]">
                 <fa icon="fas fa-door-closed" class="text-white"></fa>
@@ -204,11 +140,10 @@
         <table class="w-full">
             <thead>
                 <tr class="*:p-3 *:border-y-2 *:text-left *:font-medium sticky top-0 bg-indigo text-white">
-                    <th width="15%">NIM</th>
-                    <th width="35%">Nama</th>
-                    <th width="5%">Angkatan</th>
+                    <th width="15%">No</th>
+                    <th width="35%">Nama Kelas</th>
                     <th width="25%">Terakhir kali diedit</th>
-                    <th width="20%">Kehadiran</th>
+                    <th width="20%">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -225,7 +160,7 @@
                             </select>
                         </div>
 
-                        <button @click="toggleModal('delete', x.id_absensi)" c  lass="flex p-2 bg-red-500 rounded-lg items-center gap-2 h-fit text-sm">
+                        <button @click="toggleModal('delete', x.id_absensi)" class="flex p-2 bg-red-500 rounded-lg items-center gap-2 h-fit text-sm">
                             <fa icon="fas fa-trash"></fa>
                             <p>Hapus</p>
                         </button>

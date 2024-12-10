@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Jadwal;
 use App\Models\Pertemuan;
 
+use Illuminate\Support\Carbon;
+
 class JadwalController extends Controller
 {
     public function fetch(){
@@ -37,12 +39,16 @@ class JadwalController extends Controller
         ]);
 
         if($jadwal){
-        //     for($i = 1; $i <= $request->pertemuan; $i++){
-        //         $pertemuan = Pertemuan::create([
-        //             'id_jadwal' => $jadwal->id_jadwal,
-        //             // 'tanggal_pertemuan' => 
-        //         ])
-        //     }
+            $cur = Carbon::createFromFormat('d-m-Y H:i:s', $request->date);
+
+            for($i = 0; $i < $request->pertemuan; $i++){
+                $pertemuan = Pertemuan::create([
+                    'id_jadwal' => $jadwal->id_jadwal,
+                    'tanggal_pertemuan' => $cur->format('Y-m-d'),
+                ]);
+
+                $cur = $cur->add(7, 'day');
+            }
 
             return response('Success!');
         }
@@ -60,10 +66,20 @@ class JadwalController extends Controller
         $jadwal->jam_mulai = $request->jam_mulai;
         $jadwal->jam_selesai = $request->jam_selesai;
         $jadwal->hari = $request->hari;
+        $jadwal->pertemuan = $request->pertemuan;
 
         $jadwal->save();
 
         if($jadwal){
+            $cur = Carbon::createFromFormat('d-m-Y H:i:s', $request->date);
+            $pertemuan_list = Pertemuan::where(['id_jadwal', '=', $request->id_jadwal])->get();
+
+            for($i = 0; $i < count($pertemuan_list); $i++){
+                $pertemuan_list[$i]->tanggal_pertemuan = $cur->format('Y-m-d');
+
+                $cur = $cur->add(7, 'day');
+            }
+            
             return response('Success!');
         }
         else{

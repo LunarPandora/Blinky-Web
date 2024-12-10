@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\User;
+
 class LoginController extends Controller
 {
     public function login(Request $request){
@@ -18,12 +20,15 @@ class LoginController extends Controller
 
         if($auth_mhswa){
             $request->session()->regenerate();
-            $ud = Auth::user();
+            $ud = User::find(Auth::id())->with(['dosen_acc', 'mhswa_acc'])->first();
 
             $session_dt = array(
                 'id' => $ud->id,
                 'role' => $ud->roles->role_name,
-                'acc' => ''
+                'dosen' => $ud->dosen,
+                'mhswa' => $ud->mhswa,
+                'email' => $ud->dosen,
+                'user_picture' => $ud->user_picture,
             );
 
             if($ud->roles->role_name == 'Dosen'){

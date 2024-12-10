@@ -24,7 +24,7 @@
             jadwal.value = resp.data[0]
         })
 
-        await apiClient.get('absensi/list_pertemuan', {
+        await apiClient.get('pertemuan', {
             params: {
                 id_jadwal: route.params.id_jadwal
             }
@@ -51,13 +51,13 @@
         </div>
     </div>      
     <div class="grid grid-cols-2 gap-3 w-full h-full p-5 overflow-y-scroll scrollbar">
-        <div @click="openAbsensi(x.pertemuan)" v-for="x in listPertemuan" class="bg-indigo p-4 rounded-xl text-white flex flex-col gap-2 h-fit">
+        <div @click="openAbsensi(x.id_pertemuan)" v-for="(x, index) in listPertemuan" class="bg-indigo p-4 rounded-xl text-white flex flex-col gap-2 h-fit">
             <div class="flex w-full items-center justify-between">
-                <p class="text-lg font-medium">Pertemuan ke-{{ x.pertemuan }}</p>
+                <p class="text-lg font-medium">Pertemuan ke-{{ index + 1 }}</p>
 
                 <p class="flex gap-2 items-center">
                     <fa icon="fas fa-users"></fa>
-                    {{ x.total }}
+                    <!-- {{ x.total }} -->
                 </p>
             </div>
         </div>

@@ -4,10 +4,12 @@ import { defineStore } from 'pinia'
 export const useSessionStore = defineStore('session', () => {
     const isAuthenticated = ref(false)
     const session = ref({
-        id: '-',
-        role: '-',
-        acc_id: '-',
-        // username: '',
+        'id': '-',
+        'role': '-',
+        'dosen': '-',
+        'mhswa': '-',
+        'email': '-',
+        'user_pic': '-'
     })
 
     // ===================================================================
@@ -27,14 +29,24 @@ export const useSessionStore = defineStore('session', () => {
 
     function resetSession(){
         session.value = {
-            id: '-',
-            role: '-',
-            acc_id: '-',
+            'id': '-',
+            'role': '-',
+            'dosen': '-',
+            'mhswa': '-',
+            'email': '-',
+            'user_pic': '-'
         }
     }
 
     function registerSession(user){
-        session.value = user
+        session.value = {
+            'id': user.id,
+            'role': user.role,
+            'dosen': user.dosen,
+            'mhswa': user.mhswa,
+            'email': user.email,
+            'user_pic': user.user_picture
+        }
     }
 
     function authenticate(){

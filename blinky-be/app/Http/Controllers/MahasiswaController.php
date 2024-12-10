@@ -19,7 +19,7 @@ class MahasiswaController extends Controller
 
     public function list(Request $request){
         $data = Mahasiswa::where('id_kelas', '=', $request->id_kelas)
-        ->with(['kelas', 'prodi'])
+        ->with(['kelas', 'prodi', 'absensi'])
         ->get();
 
         return response($data);
