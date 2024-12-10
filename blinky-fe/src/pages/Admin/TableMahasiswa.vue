@@ -15,7 +15,7 @@
         </div>
 
         <div class="flex items-center justify-end gap-5">
-            <button @click="toggleModal('add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
+            <button @click="" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
                 <fa icon="fas fa-plus"></fa>
                 Tambahkan mahasiswa baru
             </button>

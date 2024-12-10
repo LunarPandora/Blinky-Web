@@ -27,39 +27,38 @@
     })
 
     async function fetchData(){
-        console.log(route.params.id_pertemuan)
-
-        await apiClient.get('absensi/list', {
+        await apiClient.get('pertemuan/find', {
             params: {
                 id_pertemuan: route.params.id_pertemuan
             }
         })
         .then(resp => {
+            console.log(resp.data)
             dataAbsensi.value = resp.data
         })
 
-        await apiClient.get('jadwal/find', {
-            params: {
-                id_jadwal: route.params.id_jadwal,
-            }
-        })
-        .then(resp => {
-            jadwal.value = resp.data[0]
-        })
+        // await apiClient.get('jadwal/find', {
+        //     params: {
+        //         id_jadwal: route.params.id_jadwal,
+        //     }
+        // })
+        // .then(resp => {
+        //     jadwal.value = resp.data[0]
+        // })
 
-        await apiClient.get('mahasiswa/list', {
-            params: {
-                id_kelas: jadwal.value.kelas.id_kelas,
-            }
-        })
-        .then(resp => {
-            dataMahasiswa.value = resp.data
-        })
+        // await apiClient.get('mahasiswa/list', {
+        //     params: {
+        //         id_kelas: jadwal.value.kelas.id_kelas,
+        //     }
+        // })
+        // .then(resp => {
+        //     dataMahasiswa.value = resp.data
+        // })
         
-        await apiClient.get('statusabsensi')
-        .then(resp => {
-            dataStatus.value = resp.data
-        })
+        // await apiClient.get('statusabsensi')
+        // .then(resp => {
+        //     dataStatus.value = resp.data
+        // })
     }
 
     function toggleModal(mode, val){
@@ -213,7 +212,7 @@
             </thead>
             <tbody>
                 <!-- <tr class="*:odd:bg-gray- *:even:bg-blueprism text-white *:p-3"></tr> -->
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataAbsensi" :key="index">
+                <!-- <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataAbsensi" :key="index">
                     <td>{{ x.mahasiswa.nim }}</td>
                     <td>{{ x.mahasiswa.nm_mhswa }}</td>
                     <td>{{ x.mahasiswa.angkatan }}</td>
@@ -230,7 +229,7 @@
                             <p>Hapus</p>
                         </button>
                     </td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </div>
