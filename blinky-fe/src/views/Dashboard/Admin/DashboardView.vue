@@ -16,13 +16,6 @@
   const role = sessionStore.session.role
   const currentPage = route.path
 
-  onMounted(() => {
-    getUser()
-
-    userEmail.value = userData.value.email
-    userRole.value = userData.value.roles.role_name
-  })
-
   async function getUser(){
     await apiClient.get('users/', {
       params: {
@@ -50,6 +43,8 @@
       })
     }
   }
+
+  getUser()
 </script>
 
 <template>
@@ -82,8 +77,8 @@
           <div class="flex items-center gap-3 bg-white p-3 rounded-xl">
             <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" class="rounded-full w-1/5">
             <div class="flex flex-col justify-center">
-              <p class="font-medium text-sm">{{ userEmail }}</p>
-              <p class="text-xs">{{ userRole }}</p>
+              <p class="font-medium text-sm">{{ userData.email }}</p>
+              <p class="text-xs">{{ userData.roles.role_name }}</p>
             </div>
           </div>
           <!-- <div @click="logout()" class="flex items-center gap-3 p-3 rounded-xl bg-red-500">
