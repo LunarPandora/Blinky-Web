@@ -15,10 +15,9 @@ class AbsensiController extends Controller
 
     public function list(Request $request){
         $absensi = Absensi::where([
-            ['id_jadwal', '=', $request->id_jadwal],
-            ['pertemuan', '=', $request->pertemuan]
+            ['id_pertemuan', '=', $request->id_pertemuan]
         ])
-        ->with(['kelas', 'mahasiswa', 'jadwal'])
+        ->with(['kelas', 'mahasiswa', 'pertemuan.jadwal.kelas'])
         ->get();
 
         return response($absensi);

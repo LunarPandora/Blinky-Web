@@ -1,5 +1,5 @@
 <script setup>
-  import { ref, onUpdated } from 'vue'
+  import { ref, onMounted } from 'vue'
 	import { RouterLink, RouterView, useRouter, useRoute } from 'vue-router'
 
   import apiClient from '@/services/api'
@@ -8,9 +8,31 @@
   const sessionStore = useSessionStore()
   const route = useRoute()
   const router = useRouter()
+  const userData = ref()
+
+  const userEmail = ref()
+  const userRole = ref()
 
   const role = sessionStore.session.role
   const currentPage = route.path
+
+  onMounted(() => {
+    getUser()
+
+    userEmail.value = userData.value.email
+    userRole.value = userData.value.roles.role_name
+  })
+
+  async function getUser(){
+    await apiClient.get('users/', {
+      params: {
+        'id': sessionStore.session.id,
+      }
+    })
+    .then(resp => {
+      userData.value = resp.data
+    })
+  }
 
   async function logout(){
     let a = confirm('Apakah anda yakin ingin logout?')
@@ -31,7 +53,7 @@
 </script>
 
 <template>
-  <div class="flex w-full h-screen justify-center p-7 bg-gray-200 gap-6 font-light">
+  <div class="flex w-full h-screen justify-center p-7 bg-indigo gap-6 font-light">
     <div class="flex w-[15%] h-full flex-col gap-12 sticky top-0 left-0">
       <img src="@/assets/icon.png" class="w-1/2 h-fit">
 
@@ -41,20 +63,32 @@
             <fa icon="fas fa-clock" fixed-width class="text-xl text-white"></fa>
             <p class="font-medium text-white">Jadwal</p>
           </RouterLink> -->
+          
           <RouterLink to='/dashboard/dosen/matkul' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-indigo *:text-white': currentPage.includes('/dashboard/dosen/matkul')}">
             <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
             <p class="text-white">Mata Kuliah</p>
           </RouterLink>
+
+          <!-- <RouterLink to='/dashboard/kelas' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-indigo *:text-white': currentPage.includes('/dashboard/kelas')}">
+            <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
+            <p class="text-white">Mata Kuliah</p>
+          </RouterLink> -->
           <!-- <RouterLink to='/dashboard/dosen/absensi' class="flex items-center gap-3 p-3 rounded-xl" :active-class="'bg-white *:text-indigo'">
             <fa icon="fas fa-user-graduate" fixed-width class="text-xl text-white"></fa>
             <p class="font-medium text-white">Absensi</p>
           </RouterLink> -->
         </div>
         <div class="flex flex-col w-full gap-5">
-          <div @click="logout()" class="flex items-center gap-3 p-3 rounded-xl bg-red-500">
-            <fa icon="fas fa-door-open" fixed-width class="text-xl text-white"></fa>
-            <p class="font-medium text-white">Logout</p>
+          <div class="flex items-center gap-3 bg-white p-3 rounded-xl">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" class="rounded-full w-1/5">
+            <div class="flex flex-col justify-center">
+              <p class="font-medium text-sm">{{ userEmail }}</p>
+              <p class="text-xs">{{ userRole }}</p>
+            </div>
           </div>
+          <!-- <div @click="logout()" class="flex items-center gap-3 p-3 rounded-xl bg-red-500">
+            <fa icon="fas fa-door-open" fixed-width class="text-xl text-white"></fa>
+          </div> -->
         </div>
       </div>
     </div>

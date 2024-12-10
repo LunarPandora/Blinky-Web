@@ -5,9 +5,13 @@ import { useSessionStore } from '@/stores/session';
 
 import DashboardView from '../views/Dashboard/Admin/DashboardView.vue'
 
-import Admin_TableProdiPage from '../pages/Dosen/TableProdi.vue'
-import Admin_StatusAbsensiPage from '../pages/Dosen/StatusAbsensi.vue'
-import Admin_UsersPage from '../pages/Dosen/Users.vue'
+import Admin_TableProdiPage from '../pages/Admin/TableProdi.vue'
+import Admin_StatusAbsensiPage from '../pages/Admin/StatusAbsensi.vue'
+import Admin_UsersPage from '../pages/Admin/Users.vue'
+import Admin_TableMahasiswa from '../pages/Admin/TableMahasiswa.vue'
+import Admin_TableDosen from '../pages/Admin/TableDosen.vue'
+import Admin_TableKelas from '../pages/Admin/TableKelas.vue'
+import Admin_TableMatkul from '../pages/Admin/TableMatkul.vue'
 
 import Dosen_ProfilPage from '../pages/Dosen/ProfilDosen.vue'
 import Dosen_TableMatkulPage from '../pages/Dosen/TableMatkul.vue'
@@ -32,17 +36,12 @@ const router = createRouter({
       component: DashboardView,
       children: [
         {
-          path: '/dashboard/dosen',
-          name: 'dashboard_dosen',
+          path: '/dashboard/admin',
+          name: 'dashboard_admin',
           redirect: {
-            path: '/dashboard/dosen/matkul'
+            path: '/dashboard/admin/mahasiswa'
           },
           children: [
-            {
-              path: '/dashboard/dosen/profil',
-              component: Dosen_ProfilPage,
-              // alias: '/dashboard/'
-            },
             {
               path: '/dashboard/dosen/prodi',
               component: Admin_TableProdiPage,
@@ -59,6 +58,40 @@ const router = createRouter({
               // alias: '/dashboard/'
             },
             {
+              path: '/dashboard/admin/mahasiswa',
+              component: Admin_TableMahasiswa,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/admin/dosen',
+              component: Admin_TableDosen,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/admin/kelas',
+              component: Admin_TableKelas,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/admin/matkul',
+              component: Admin_TableMatkul,
+              // alias: '/dashboard/'
+            }
+          ]
+        },
+        {
+          path: '/dashboard/dosen',
+          name: 'dashboard_dosen',
+          redirect: {
+            path: '/dashboard/dosen/matkul'
+          },
+          children: [
+            {
+              path: '/dashboard/dosen/profil',
+              component: Dosen_ProfilPage,
+              // alias: '/dashboard/'
+            },
+            {
               path: '/dashboard/dosen/matkul',
               component: Dosen_TableMatkulPage,
               // alias: '/dashboard/'
@@ -69,7 +102,7 @@ const router = createRouter({
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/matkul/absensi/:id_jadwal/:id_tanggal',
+              path: '/dashboard/dosen/matkul/absensi/:id_jadwal/:id_pertemuan',
               component: Dosen_TableAbsensiPage,
               // alias: '/dashboard/'
             }

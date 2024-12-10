@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
 class Pertemuan extends Model
 {
     use HasFactory;
@@ -16,4 +19,12 @@ class Pertemuan extends Model
         'id_jadwal',
         'tanggal_pertemuan',
     ];
+
+    public function jadwal(): BelongsTo{
+        return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
+    }
+
+    public function absensi(): HasMany{
+        return $this->hasMany(Absensi::class, 'id_pertemuan', 'id_pertemuan');
+    }
 }
