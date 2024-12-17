@@ -95,4 +95,5 @@ Route::prefix('jadwal')->group(function () {
 
 Route::prefix('pertemuan')->group(function () {
     Route::get('/', [PertemuanController::class, 'fetch']);
+    Route::get('/find', [PertemuanController::class, 'find']);
 });

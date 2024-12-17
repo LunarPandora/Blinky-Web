@@ -25,7 +25,7 @@
     })
 
     async function fetchData(){
-        await apiClient.get('absensi/list', {
+        await apiClient.get('prodi/list', {
             params: {
                 id_jadwal: route.params.id_jadwal,
                 pertemuan: route.params.id_tanggal
