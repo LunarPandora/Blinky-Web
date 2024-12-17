@@ -19,6 +19,8 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
+Route::get('/generate_pass', [LoginController::class, 'generate']);
+
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 

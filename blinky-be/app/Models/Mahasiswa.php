@@ -25,6 +25,7 @@ class Mahasiswa extends Model
         'id_admin',
         'nm_mhswa',
         'angkatan',
+        'uid_rfid',
         // 'foto_mhswa',
     ];
 

@@ -43,17 +43,17 @@ const router = createRouter({
           },
           children: [
             {
-              path: '/dashboard/dosen/prodi',
+              path: '/dashboard/admin/prodi',
               component: Admin_TableProdiPage,
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/statusabsensi',
+              path: '/dashboard/admin/statusabsensi',
               component: Admin_StatusAbsensiPage,
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/users',
+              path: '/dashboard/admin/users',
               component: Admin_UsersPage,
               // alias: '/dashboard/'
             },
@@ -112,7 +112,7 @@ const router = createRouter({
           path: '/dashboard/mahasiswa',
           name: 'dashboard_mahasiswa',
           redirect: {
-            path: '/dashboard/mahasiswa/kelas'
+            path: '/dashboard/mahasiswa/matkul'
           },
           children: [
             {

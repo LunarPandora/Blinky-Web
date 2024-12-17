@@ -17,6 +17,8 @@
 			'password': pass.value
 		})
 		.then(resp => {
+			console.log(resp.data)
+
 			if(resp.data[0] == 'LOGIN_SUCCESS'){
 				console.log(resp.data[1])
 
@@ -28,6 +30,9 @@
 				}
 				else if(sessionStore.session.role == 'Mahasiswa'){
 					router.push('/dashboard/mahasiswa')
+				}
+				else if(sessionStore.session.role == 'Admin'){
+					router.push('/dashboard/admin')
 				}
             }
             else{
