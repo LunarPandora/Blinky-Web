@@ -7,7 +7,7 @@
 
     const route = useRoute()
 
-    const dataAbsensi = ref()
+    const dataPertemuan = ref()
     const dataMahasiswa = ref()
     const dataStatus = ref()
 
@@ -34,19 +34,19 @@
         })
         .then(resp => {
             console.log(resp.data)
-            dataAbsensi.value = resp.data
+            dataPertemuan.value = resp.data
         })
 
-        // await apiClient.get('jadwal/find', {
-        //     params: {
-        //         id_jadwal: route.params.id_jadwal,
-        //     }
-        // })
-        // .then(resp => {
-        //     jadwal.value = resp.data[0]
-        // })
+        await apiClient.get('absensi/find', {
+            params: {
+                id_jadwal: route.params.id_jadwal,
+            }
+        })
+        .then(resp => {
+            jadwal.value = resp.data[0]
+        })
 
-        // await apiClient.get('mahasiswa/list', {
+        // await apiClient.get('mahasiswa/kelas', {
         //     params: {
         //         id_kelas: jadwal.value.kelas.id_kelas,
         //     }

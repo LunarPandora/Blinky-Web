@@ -21,7 +21,7 @@ class Kelas extends Model
         'nm_kelas',
     ];
 
-    public function mahasiswa(): BelongsTo{
+    public function mahasiswa(): HasMany{
         return $this->hasMany(Mahasiswa::class, 'id_kelas', 'id_kelas');
     }
 }
