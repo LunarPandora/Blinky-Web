@@ -19,7 +19,8 @@ class Absensi extends Model
         'id_pertemuan',
         'waktu_absen',
         'kode_status_absensi',
-        'pertemuan'
+        'pertemuan',
+        'keterangan'
     ];
 
     public function kelas(): BelongsTo{

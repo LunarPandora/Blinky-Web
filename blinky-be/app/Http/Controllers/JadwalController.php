@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Jadwal;
 use App\Models\Pertemuan;
+use App\Models\Kelas;
+use App\Models\Absensi;
 
 use Illuminate\Support\Carbon;
 
@@ -32,7 +34,7 @@ class JadwalController extends Controller
             ['id_jadwal', '=', $request->id_jadwal],
         ])
         ->with(['kelas', 'dosen', 'matkul'])
-        ->get();
+        ->first();
 
         return response($jadwal);
     }
@@ -50,12 +52,26 @@ class JadwalController extends Controller
 
         if($jadwal){
             $cur = Carbon::createFromFormat('d-m-Y H:i:s', $request->date);
+            $kel = Kelas::where('id_kelas', $request->id_kelas)
+            ->with(['mahasiswa'])
+            ->first();
 
             for($i = 0; $i < $request->pertemuan; $i++){
                 $pertemuan = Pertemuan::create([
                     'id_jadwal' => $jadwal->id_jadwal,
                     'tanggal_pertemuan' => $cur->format('Y-m-d'),
                 ]);
+
+                for($j = 0; $j < count($kel->mahasiswa); $j++){
+                    Absensi::create([
+                        'id_kelas' => $request->id_kelas,
+                        'id_mhswa' => $kel->mahasiswa[$j]->id_mhswa,
+                        'id_pertemuan' => $pertemuan->id_pertemuan,
+                        'kode_status_absensi' => 1,
+                        'waktu_absen' => null,
+                        'pertemuan' => $i + 1
+                    ]);
+                }
 
                 $cur = $cur->add(7, 'day');
             }

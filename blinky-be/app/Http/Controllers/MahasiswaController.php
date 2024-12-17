@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\Mahasiswa;
+use App\Models\User;
 
 class MahasiswaController extends Controller
 {
@@ -49,22 +50,21 @@ class MahasiswaController extends Controller
     public function insert(Request $request){
         $mhswa = Mahasiswa::create([
             'nim' => $request->nim,
+            'nm_mhswa' => $request->nm_mhswa,
             'id_kelas' => $request->id_kelas,
             'id_prodi' => $request->id_prodi,
-            'id_admin' => '201',
-            'nm_mhswa' => $request->nm_mhswa,
             'angkatan' => $request->angkatan,
-            'uid_rfid' => '-'
-        ])->id();
-
-        $users = User::create([
-            'email' => $request->email,
-            'password' => Hash::make($request->pw_mhswa),
-            'role_id' => '3',
-            'acc_id' => $mhswa,
+            'uid_rfid' => '-',
         ]);
 
-        if($users > 0){
+        $users = User::create([
+            'role_id' => 2,
+            'mhswa_id' => $mhswa->id,
+            'email' => $request->email,
+            'password' => Hash::make($request->pw_mhswa),
+        ]);
+
+        if($users){
             return response('success');
         }
         else{

@@ -34,8 +34,8 @@
         })
     }
 
-    function openAbsensi(id){
-        router.push(`/dashboard/dosen/matkul/absensi/${route.params.id_jadwal}/${id}`)
+    function openAbsensi(id, idx){
+        router.push(`/dashboard/dosen/matkul/absensi/${route.params.id_jadwal}/${id}/${idx}`)
     }
 </script>
 <template>
@@ -51,7 +51,7 @@
         </div>
     </div>      
     <div class="grid grid-cols-2 gap-3 w-full h-full p-5 overflow-y-scroll scrollbar">
-        <div @click="openAbsensi(x.id_pertemuan)" v-for="(x, index) in listPertemuan" class="bg-indigo p-4 rounded-xl text-white flex flex-col gap-2 h-fit">
+        <div @click="openAbsensi(x.id_pertemuan, index + 1)" v-for="(x, index) in listPertemuan" class="bg-indigo p-4 rounded-xl text-white flex flex-col gap-2 h-fit">
             <div class="flex w-full items-center justify-between">
                 <p class="text-lg font-medium">Pertemuan ke-{{ index + 1 }}</p>
 

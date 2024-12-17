@@ -10,9 +10,6 @@
   const router = useRouter()
   const userData = ref()
 
-  const userEmail = ref()
-  const userRole = ref()
-
   const role = sessionStore.session.role
   const currentPage = route.path
 
@@ -53,26 +50,57 @@
       <img src="@/assets/icon.png" class="w-1/2 h-fit">
 
       <div class="flex flex-col h-full items-center justify-between">
-        <div name="navbar" class="flex flex-col w-full h-full gap-5">
-          <!-- <RouterLink class="flex items-center gap-3 p-3 rounded-xl">
-            <fa icon="fas fa-clock" fixed-width class="text-xl text-white"></fa>
-            <p class="font-medium text-white">Jadwal</p>
-          </RouterLink> -->
-          
+        <div name="navbar_admin" class="flex flex-col w-full h-full gap-2" v-if="sessionStore.session.role == 'Admin'">
+          <RouterLink to='/dashboard/admin/mahasiswa' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-indigo': currentPage.includes('/dashboard/admin/mahasiswa')}">
+            <fa icon="fas fa-user-graduate" fixed-width class="text-xl text-white"></fa>
+            <p class="text-white">Mahasiswa</p>
+          </RouterLink>
+
+          <RouterLink to='/dashboard/admin/users' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-indigo': currentPage.includes('/dashboard/admin/users')}">
+            <fa icon="fas fa-users" fixed-width class="text-xl text-white"></fa>
+            <p class="text-white">User</p>
+          </RouterLink>
+
+          <RouterLink to='/dashboard/admin/prodi' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-indigo': currentPage.includes('/dashboard/admin/prodi')}">
+            <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
+            <p class="text-white">Prodi</p>
+          </RouterLink>
+
+          <RouterLink to='/dashboard/admin/jadwal' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-indigo': currentPage.includes('/dashboard/admin/jadwal')}">
+            <fa icon="fas fa-calendar" fixed-width class="text-xl text-white"></fa>
+            <p class="text-white">Jadwal</p>
+          </RouterLink>
+
+          <RouterLink to='/dashboard/admin/kelas' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-indigo': currentPage.includes('/dashboard/admin/kelas')}">
+            <fa icon="fas fa-door-closed" fixed-width class="text-xl text-white"></fa>
+            <p class="text-white">Kelas</p>
+          </RouterLink>
+
+          <RouterLink to='/dashboard/admin/dosen' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-indigo': currentPage.includes('/dashboard/admin/dosen')}">
+            <fa icon="fas fa-graduation-cap" fixed-width class="text-xl text-white"></fa>
+            <p class="text-white">Dosen</p>
+          </RouterLink>
+
+          <RouterLink to='/dashboard/admin/matkul' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-indigo': currentPage.includes('/dashboard/admin/matkul')}">
+            <fa icon="fas fa-book" fixed-width class="text-xl text-white"></fa>
+            <p class="text-white">Mata Kuliah</p>
+          </RouterLink>
+        </div>
+
+        <div name="navbar_dosen" class="flex flex-col w-full h-full gap-5" v-if="sessionStore.session.role == 'Dosen'">
           <RouterLink to='/dashboard/dosen/matkul' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-indigo *:text-white': currentPage.includes('/dashboard/dosen/matkul')}">
             <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
             <p class="text-white">Mata Kuliah</p>
           </RouterLink>
+        </div>
 
-          <!-- <RouterLink to='/dashboard/kelas' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-indigo *:text-white': currentPage.includes('/dashboard/kelas')}">
+        <div name="navbar_mhswa" class="flex flex-col w-full h-full gap-5" v-if="sessionStore.session.role == 'Mahasiswa'">
+          <RouterLink to='/dashboard/mahasiswa/matkul' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-indigo *:text-white': currentPage.includes('/dashboard/mahasiswa/matkul')}">
             <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
             <p class="text-white">Mata Kuliah</p>
-          </RouterLink> -->
-          <!-- <RouterLink to='/dashboard/dosen/absensi' class="flex items-center gap-3 p-3 rounded-xl" :active-class="'bg-white *:text-indigo'">
-            <fa icon="fas fa-user-graduate" fixed-width class="text-xl text-white"></fa>
-            <p class="font-medium text-white">Absensi</p>
-          </RouterLink> -->
+          </RouterLink>
         </div>
+
         <div class="flex flex-col w-full gap-5">
           <div class="flex items-center gap-3 bg-white p-3 rounded-xl">
             <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" class="rounded-full w-1/5">
@@ -81,9 +109,9 @@
               <p class="text-xs">{{ userData.roles.role_name }}</p>
             </div>
           </div>
-          <!-- <div @click="logout()" class="flex items-center gap-3 p-3 rounded-xl bg-red-500">
+          <div @click="logout()" class="flex items-center gap-3 p-3 rounded-xl bg-red-500">
             <fa icon="fas fa-door-open" fixed-width class="text-xl text-white"></fa>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>

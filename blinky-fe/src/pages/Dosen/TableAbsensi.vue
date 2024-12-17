@@ -7,115 +7,79 @@
 
     const route = useRoute()
 
-    const dataPertemuan = ref()
-    const dataMahasiswa = ref()
+    const jadwal = ref()
+
+    const dataAbsensi = ref()
     const dataStatus = ref()
 
-    const jadwal = ref()
-    const mahasiswa = ref(0)
-    const status = ref(0)
-    const date = ref()
-    const time = ref(new Date())
-
-    const temp_id = ref()
+    const search = ref()
     
+    const ket = ref()
+    const temp_mhs = ref()
+
     const isModalOn = ref(false)
-    const modeModal = ref()
 
     onMounted(() => {
         fetchData()
     })
 
+    watch(search, (x, y) => {
+        fetchData()
+    })
+
     async function fetchData(){
-        await apiClient.get('pertemuan/find', {
+        await apiClient.get('absensi/list', {
             params: {
-                id_pertemuan: route.params.id_pertemuan
+                id_pertemuan: route.params.id_pertemuan,
+                search: search.value
             }
         })
         .then(resp => {
-            console.log(resp.data)
-            dataPertemuan.value = resp.data
+            dataAbsensi.value = resp.data
         })
 
-        await apiClient.get('absensi/find', {
+        await apiClient.get('jadwal/find', {
             params: {
                 id_jadwal: route.params.id_jadwal,
             }
         })
         .then(resp => {
-            jadwal.value = resp.data[0]
+            jadwal.value = resp.data
         })
-
-        // await apiClient.get('mahasiswa/kelas', {
-        //     params: {
-        //         id_kelas: jadwal.value.kelas.id_kelas,
-        //     }
-        // })
-        // .then(resp => {
-        //     dataMahasiswa.value = resp.data
-        // })
         
-        // await apiClient.get('statusabsensi')
-        // .then(resp => {
-        //     dataStatus.value = resp.data
-        // })
+        await apiClient.get('statusabsensi')
+        .then(resp => {
+            dataStatus.value = resp.data
+        })
     }
 
-    function toggleModal(mode, val){
+    function toggleModal(val){
         isModalOn.value = !isModalOn.value
-        modeModal.value = mode
+        temp_mhs.value = val
 
-        if(mode == 'delete'){
-            temp_id.value = val
-        }
+        ket.value = val.keterangan
 
         fetchData()
     }
 
-    // Template cara tambah / edit / update data
-    async function editAbsensi(){
-        await apiClient.get('absensi/update', {
+    // Update keterangan
+    async function editKeterangan(){
+        await apiClient.get('absensi/update_ket', {
             params: {
-                id_mhswa: mahasiswa.value,
-                id_jadwal: route.params.id_jadwal,
-                id_kelas: jadwal.value.kelas.id_kelas,
-                date: date.value,
-                time: time.value,
-                kode_status_absensi: status.value,
-                pertemuan: route.params.id_tanggal
+                id_absensi: temp_mhs.value.id_absensi,
+                keterangan: ket.value
             }
         })
         .then(resp => {
             if(resp.data == 'Success!'){
-                alert("Absensi berhasil diupdate!")
+                alert("Keterangan absensi berhasil diupdate!")
             }
             else{
-                alert("Absensi gagal diupdate!")
-            }
-        })
-    }
-
-    async function tambahAbsensi(){
-        await apiClient.get('absensi/add', {
-            params: {
-                id_mhswa: mahasiswa.value,
-                id_jadwal: route.params.id_jadwal,
-                id_kelas: jadwal.value.kelas.id_kelas,
-                date: date.value,
-                time: time.value,
-                kode_status_absensi: status.value,
-                pertemuan: route.params.id_tanggal
-            }
-        })
-        .then(resp => {
-            if(resp.data == 'Success!'){
-                alert('Absensi berhasil ditambahkan!')
-            }
-            else{
-                alert('Absensi gagal ditambahkan!')
+                alert("Keterangan absensi gagal diupdate!")
             }
 
-            toggleModal('', 0)
+            ket.value = ""
+            toggleModal(0)
         })
     }
 
@@ -137,24 +101,6 @@
             }
         })
     }
-
-    async function hapusAbsensi(){
-        await apiClient.get('absensi/delete', {
-            params: {
-                id_absensi: temp_id.value,
-            }
-        })
-        .then(resp => {
-            if(resp.data == 'Success!'){
-                alert('Absensi berhasil dihapus!')
-            }
-            else{
-                alert('Absensi gagal dihapus!')
-            }
-
-            toggleModal('', 0)
-        })    
-    }
 </script>
 
 <template>
@@ -167,21 +113,21 @@
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
                 <span v-if="jadwal">{{ jadwal.matkul.nm_matkul }} - {{ jadwal.kelas.nm_kelas }}</span>
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                <span v-if="route.params.id_tanggal">Pertemuan ke-{{ route.params.id_tanggal }}</span>
+                <span v-if="route.params.pertemuan">Pertemuan ke-{{ route.params.pertemuan }}</span>
             </h1>
         </div>
     </div>
     <div class="flex items-center justify-between gap-3 px-5 py-3 border-b-[2px] border-b-gray-200">
         <div class="flex p-2 bg-gray-200 rounded-lg items-center gap-3 w-[30%] leading-relaxed tracking-wide text-sm">
             <fa icon="fas fa-search" class="text-gray-500"></fa>
-            <input class="bg-transparent border-0 outline-none w-full" type="text" placeholder="Cari nama mata kuliah...">
+            <input class="bg-transparent border-0 outline-none w-full" type="text" placeholder="Cari nama mahasiswa..." v-model="search">
         </div>
 
         <div class="flex items-center justify-end gap-5">
-            <button @click="toggleModal('add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
+            <!-- <button @click="toggleModal('add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
                 <fa icon="fas fa-plus"></fa>
                 Tambahkan absensi baru
-            </button>
+            </button> -->
             <!-- <div class="flex p-3 bg-indigo rounded-lg items-center gap-2 max-w-[50%]">
                 <fa icon="fas fa-door-closed" class="text-white"></fa>
                 <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full" v-model="kelas">
@@ -211,83 +157,63 @@
                 </tr>
             </thead>
             <tbody>
+                <TransitionGroup name="fade" mode="out-in">
                 <!-- <tr class="*:odd:bg-gray- *:even:bg-blueprism text-white *:p-3"></tr> -->
-                <!-- <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataAbsensi" :key="index">
-                    <td>{{ x.mahasiswa.nim }}</td>
-                    <td>{{ x.mahasiswa.nm_mhswa }}</td>
-                    <td>{{ x.mahasiswa.angkatan }}</td>
-                    <td>{{ new DateConverter(x.waktu_absen).format() }}</td>
-                    <td class="flex gap-2 text-white items-center">
-                        <div class="flex p-2 bg-indigo rounded-lg items-center gap-2 h-fit">
-                            <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full text-sm" :value="x.kode_status_absensi" :id="'select-' + index" @change="updateStatus(x, index)">
-                                <option v-for="y in dataStatus" :value="y.kode_status_absensi">{{ y.status_absensi}}</option>
-                            </select>
-                        </div>
+                    <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataAbsensi" :key="index" v-if="dataAbsensi">
+                        <td>{{ x.mahasiswa.nim }}</td>
+                        <td>{{ x.mahasiswa.nm_mhswa }}</td>
+                        <td>{{ x.mahasiswa.angkatan }}</td>
+                        <td>{{ x.waktu_absen != null ? new DateConverter(x.waktu_absen).format() : "Belum mengisi absen" }}</td>    
+                        <td class="flex gap-2 text-white items-center">
+                            <div class="flex p-2 bg-indigo rounded-lg items-center gap-2 h-fit">
+                                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full text-sm" :value="x.kode_status_absensi" :id="'select-' + index" @change="updateStatus(x, index)">
+                                    <option v-for="y in dataStatus" :value="y.kode_status_absensi">{{ y.status_absensi}}</option>
+                                </select>
+                            </div>
 
-                        <button @click="toggleModal('delete', x.id_absensi)" c  lass="flex p-2 bg-red-500 rounded-lg items-center gap-2 h-fit text-sm">
-                            <fa icon="fas fa-trash"></fa>
-                            <p>Hapus</p>
-                        </button>
+                            <button @click="toggleModal(x)" class="flex p-2 bg-orange-400 rounded-lg items-center gap-2 h-fit">
+                                <fa icon="fas fa-edit"></fa>
+                                Keterangan
+                            </button>
+                        </td>
+                    </tr>
+                </TransitionGroup>
+                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-10 *:text-sm *:tracking-wide" v-if="!dataAbsensi">
+                    <td colspan="5" class="text-center">
+                        <p class="pb-5">Harap menunggu...</p>
+                        <fa icon="fas fa-spinner" spin class="text-3xl"></fa>
                     </td>
-                </tr> -->
+                </tr>
             </tbody>
         </table>
     </div>
 
-    <div class="items-center justify-center w-screen h-screen bg-[#000000AA] z-50 absolute top-0 left-0" :class="isModalOn ? 'flex' : 'hidden'">
-        <div class="flex flex-col bg-white px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modeModal == 'add'">
+    <div class="items-center justify-center w-screen h-screen bg-[#000000AA] z-50 absolute top-0 left-0 flex" v-if="isModalOn">
+        <div class="flex flex-col bg-white px-5 py-7 rounded-xl gap-4 w-1/3 justify-center">
             <div class="flex w-full items-center justify-between pb-6">
-                <p class="text-2xl font-medium text-indigo">Tambah Absensi Baru</p>
+                <p class="text-2xl font-medium text-indigo">Edit Keterangan</p>
 
-                <fa @click="toggleModal('', 0)" icon="fas fa-times" class="text-2xl" fixed-width></fa>
+                <fa @click="toggleModal(0)" icon="fas fa-times" class="text-2xl" fixed-width></fa>
             </div>
 
             <div class="flex flex-col gap-8">
-                <div class="flex flex-col items-center w-full justify-center gap-2">
+                <div class="flex flex-col items-center w-full justify-center gap-3">
                     <div class="bg-indigo p-4 rounded-xl flex items-center w-full gap-3">
                         <fa icon="fas fa-user" class="text-white" fixed-width />
-                        <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full *:font-light" v-model="mahasiswa">
-                            <option readonly hidden value="0">Pilih mahasiswa</option>
-                            <option v-for="x in dataMahasiswa" :value="x.id_mhswa">{{ x.nm_mhswa }} - {{ x.nim }}</option>
-                        </select>
+                        <p class="text-white">{{ temp_mhs.mahasiswa.nm_mhswa }}</p>
                     </div>
-                    <div class="bg-indigo p-4 rounded-xl flex items-center w-full gap-3">
-                        <fa icon="fas fa-clipboard" class="text-white" fixed-width />
-                        <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full *:font-light" v-model="status">
-                            <option readonly hidden value="0">Pilih status absensi</option>
-                            <option v-for="x in dataStatus" :value="x.kode_status_absensi">{{ x.status_absensi }}</option>
-                        </select>
+                    <div class="bg-gray-300 p-4 rounded-xl flex flex-col justify-center w-full gap-3">
+                        <p class="flex gap-3 items-center">
+                            <fa icon="fas fa-clipboard" class="text-gray-500" fixed-width />
+                            <p class="text-gray-500 font-medium">Keterangan</p>
+                        </p>
+
+                        <textarea class="bg-transparent outline-none overflow-hidden text-sm h-32 resize-none" placeholder="Masukkan catatan disini..." v-model="ket"></textarea>
                     </div>
 
-                    <div class="bg-indigo p-4 rounded-xl flex items-center w-full gap-3">
-                        <fa icon="fas fa-clock" class="text-white" fixed-width />
-                        <DatePicker input-class-name="dateInput font-medium text-white" v-model="time" :time-picker="true" :hide-input-icon="true" minutes-increment="5" />
-                    </div>
-
-                    <button @click="tambahAbsensi()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-indigo text-white rounded-lg">
-                        <fa icon="fas fa-plus"></fa>
-                        Tambahkan
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="flex flex-col bg-darkpurple text-white px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-else>
-            <div class="flex w-full items-center justify-between pb-6">
-                <p class="text-2xl font-semibold">Hapus</p>
-
-                <fa @click="toggleModal('', 0)" icon="fas fa-times" class="text-white text-2xl" fixed-width></fa>
-            </div>
-
-            <div class="flex flex-col gap-8">
-                <p class="text-lg">Apakah anda yakin ingin <span class="font-bold text-red-500">menghapus</span> absensi ini?</p>
-
-                <div class="flex gap-3 items-center justify-end">
-                    <button class="bg-darkslate px-6 py-3 rounded-xl text-lg text-white" @click="toggleModal('', 0)">
-                        Kembali
-                    </button>
-                    <button class="bg-indigo px-6 py-3 rounded-xl text-lg text-white" @click="hapusAbsensi()">
-                        Hapus
+                    <button @click="editKeterangan()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-indigo text-white rounded-lg">
+                        <fa icon="fas fa-floppy-disk"></fa>
+                        Perbarui
                     </button>
                 </div>
             </div>
@@ -315,5 +241,15 @@
     .dp__input {
         background-color: transparent !important;
         border: none !important;
+    }
+
+    .fade-enter-active,
+    .fade-leave-active {
+        transition: opacity 0.5s ease;
+    }
+
+    .fade-enter-from,
+    .fade-leave-to {
+        opacity: 0;
     }
 </style>
