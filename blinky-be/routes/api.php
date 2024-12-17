@@ -58,9 +58,10 @@ Route::prefix('matkul')->group(function () {
 Route::prefix('absensi')->group(function () {
     Route::get('/', [AbsensiController::class, 'fetch']);
     Route::get('/list', [AbsensiController::class, 'list']);
-    Route::get('/list_pertemuan', [AbsensiController::class, 'list_pertemuan']);
+    // Route::get('/list_pertemuan', [AbsensiController::class, 'list_pertemuan']);
     Route::get('/add', [AbsensiController::class, 'create']);
     Route::get('/update', [AbsensiController::class, 'update']);
+    Route::get('/update_ket', [AbsensiController::class, 'update_ket']);
     Route::get('/delete', [AbsensiController::class, 'delete']);
 });
 

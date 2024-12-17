@@ -60,7 +60,7 @@
         }
     })
 
-    function openTanggal(id){
+    function openTanggal(id, idx){
         router.push(`/dashboard/dosen/matkul/absensi/${id}`)
     }
 

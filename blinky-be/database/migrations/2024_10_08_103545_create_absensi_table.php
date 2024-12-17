@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('id_mhswa');
             $table->integer('id_pertemuan');
             $table->smallInteger('kode_status_absensi');
-            $table->dateTime('waktu_absen');
+            $table->dateTime('waktu_absen')->nullable();
             $table->timestamps();
         });
 
