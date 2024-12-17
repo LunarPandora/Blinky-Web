@@ -4,8 +4,10 @@
 
     import apiClient from '@/services/api'
     import DayFormatter from '@/services/day.js'
+    import { useSessionStore } from '@/stores/session';
 
     const router = useRouter()
+    const sessionStore = useSessionStore()
 
     const dataKelas = ref()
     const dataJadwal = ref()
@@ -26,17 +28,25 @@
         })
     }
 
-    async function fetchJadwal(){
-        dataJadwal.value = []
+    async function fetchJadwal() {
+    dataJadwal.value = []; // Reset the data
 
-        await apiClient.get('jadwal', {
-            hari: hari.value,
-            id_kelas: kelas.value
+    await apiClient
+        .get('jadwal', {
+            params: {
+                hari: hari.value,
+                id_kelas: kelas.value,
+                id: sessionStore.session.id, // Add the 'id' parameter here
+                role: sessionStore.session.role
+            }
         })
         .then(resp => {
-            dataJadwal.value = resp.data
+            dataJadwal.value = resp.data; // Update the data
         })
-    }
+        .catch(err => {
+            console.error("Error fetching jadwal:", err); // Handle any errors
+        });
+}
 
     watch(kelas, async(x, y) => {
         if(x != y){

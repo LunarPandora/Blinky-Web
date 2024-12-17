@@ -18,44 +18,18 @@ class PertemuanController extends Controller
     }
 
     public function find(Request $request){
-        $ptmn = Pertemuan::where('id_pertemuan', '=', $request->id_pertemuan)
-        ->with(['jadwal'])
-        ->first();
-
-        // $attendanceList = [];
-
-        // $attendanceList = $pertemuan->map(function ($user) {
-        // for($i = 0; $i < count($ptmn->jadwal->kelas->mahasiswa); $i++){
-        $cekAbsensi = Mahasiswa::where([
-            ['id_kelas', '=', $ptmn->jadwal->id_kelas],
-        ])
-        ->with(['absensi'])
-        ->get();
-
-        $attendanceList = $cekAbsensi->map(function ($user) use ($request) {
-            for($i = 0; $i < count($user->absensi); $i++){
-                if($user->absensi[$i]->id_pertemuan == $request->id_pertemuan){
-                    return [$user->absensi[$i], 'success'];
-                }
-                else{
-                    return [$user->absensi[$i], 'fail'];
-                }
-            };
-        });
-
-        // $cekAbsensi = Absensi::where([
-        //     ['id_kelas', '=', $ptmn->jadwal->id_kelas],
-        //     ['id_mhswa', '=', $ptmn->jadwal->kelas->mahasiswa[$i]->id_mhswa],
-        //     ['id_pertemuan', '=', $ptmn->id_pertemuan]
+        // $pertemuan = Pertemuan::where([
+        //     ['id_pertemuan', '=', $request->id_pertemuan],
         // ])
-        // ->with(['mahasiswa']);
-                
-        // if($cekAbsensi->get()->isNotEmpty()){
-        // array_push($attendanceList, $cekAbsensi);
-            // }
-        // }
-        // });
+        // ->with(['jadwal', 'absensi'])
+        // ->get();
 
-        return response()->json($attendanceList);
+        // $pertemuan = Pertemuan::all();
+        // $pertemuan = Pertemuan::find($request->id_pertemuan);
+        $pertemuan = Pertemuan::where('id_pertemuan', $request->id_pertemuan)
+                    ->with(['jadwal', 'absensi'])
+                    ->get();
+
+        return response($pertemuan);
     }
 }
