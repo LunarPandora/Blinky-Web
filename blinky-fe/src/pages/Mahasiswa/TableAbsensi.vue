@@ -1,3 +1,50 @@
+<script setup>
+    import { ref, onMounted } from 'vue';
+    import { useRoute } from 'vue-router';
+    import DateConverter from '@/services/date'; // Pastikan ada utilitas ini
+    import apiClient from '@/services/api'; // API client untuk melakukan request
+
+    // Route parameters
+    const route = useRoute();
+
+    // State
+    const dataAbsensi = ref([]);
+    const dataStatus = ref([]);
+
+    const mahasiswa = ref(0);
+    const temp_id = ref(null);
+    const isModalOn = ref(false);
+    const modeModal = ref('');
+    const date = ref(new Date());
+    const time = ref(new Date());
+
+    // Fetch data on mount
+    onMounted(() => {
+        fetchData();
+    });
+
+    // Fetch all necessary data
+    async function fetchData() {
+        try {
+            // Fetch data absensi
+            const absensiResponse = await apiClient.get('pertemuan/find', {
+                params: { id_pertemuan: route.params.id_pertemuan },
+            });
+            dataAbsensi.value = absensiResponse.data.map(item => ({
+                pertemuan: item.pertemuan, // Nomor pertemuan
+                tanggal: item.tanggal_pertemuan, // Tanggal pertemuan
+                status_absensi: item.kode_status_absensi, // Status absensi
+            }));
+
+            // Fetch status absensi
+            const statusResponse = await apiClient.get('statusabsensi');
+            dataStatus.value = statusResponse.data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
+</script>
+
 <template>
     <div class="flex items-center justify-between sticky top-0 right-0 h-fit w-full p-5 border-b-[2px] border-b-gray-200">
         <div>
@@ -30,20 +77,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide *:text-center">
-                    <td>Pertemuan 1</td>
-                    <td>19/11/2024</td>
-                    <td>Hadir</td>
-                </tr>
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide *:text-center">
-                    <td>Pertemuan 2</td>
-                    <td>26/11/2024</td>
-                    <td>Hadir</td>
-                </tr>
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide *:text-center">
-                    <td>Pertemuan 3</td>
-                    <td>03/12/2024</td>
-                    <td>Hadir</td>
+                <tr class="bg-white border-b-2 border-b-gray-200 text-black :px-3:py-2 :text-sm:tracking-wide" v-for="(x, index) in dataAbsensi" :key="index">
+                    <td>{{ x.pertemuan }}</td>
+                    <td>{{ new DateConverter(x.tanggal).format() }}</td>
+                    <td>
+                        <select class="bg-transparent text-black outline-none w-full text-sm" :value="x.status_absensi" :id="'select-' + index" @change="updateStatus(x, index)">
+                            <option v-for="y in dataStatus" :value="y.kode_status_absensi">{{ y.status_absensi }}</option>
+                        </select>
+                    </td>
                 </tr>
             </tbody>
         </table>

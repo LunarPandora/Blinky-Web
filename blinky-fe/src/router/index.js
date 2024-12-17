@@ -5,6 +5,9 @@ import { useSessionStore } from '@/stores/session';
 
 import DashboardView from '../views/Dashboard/Admin/DashboardView.vue'
 
+import Admin_TableProdiPage from '../pages/Admin/TableProdi.vue'
+import Admin_StatusAbsensiPage from '../pages/Admin/StatusAbsensi.vue'
+import Admin_UsersPage from '../pages/Admin/Users.vue'
 import Admin_TableMahasiswa from '../pages/Admin/TableMahasiswa.vue'
 import Admin_TableDosen from '../pages/Admin/TableDosen.vue'
 import Admin_TableKelas from '../pages/Admin/TableKelas.vue'
@@ -39,6 +42,21 @@ const router = createRouter({
             path: '/dashboard/admin/mahasiswa'
           },
           children: [
+            {
+              path: '/dashboard/dosen/prodi',
+              component: Admin_TableProdiPage,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/dosen/statusabsensi',
+              component: Admin_StatusAbsensiPage,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/dosen/users',
+              component: Admin_UsersPage,
+              // alias: '/dashboard/'
+            },
             {
               path: '/dashboard/admin/mahasiswa',
               component: Admin_TableMahasiswa,
@@ -108,7 +126,7 @@ const router = createRouter({
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/mahasiswa/absensi',
+              path: '/dashboard/mahasiswa/absensi/:id_pertemuan',
               component: Mahasiswa_TableAbsensiPage,
               // alias: '/dashboard/'
             },

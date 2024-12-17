@@ -4,6 +4,7 @@
 
     import apiClient from '@/services/api'
     import DayFormatter from '@/services/day.js'
+    
     import { useSessionStore } from '@/stores/session';
 
     const router = useRouter()
@@ -28,25 +29,26 @@
         })
     }
 
-    async function fetchJadwal() {
-    dataJadwal.value = []; // Reset the data
 
-    await apiClient
-        .get('jadwal', {
-            params: {
-                hari: hari.value,
-                id_kelas: kelas.value,
-                id: sessionStore.session.id, // Add the 'id' parameter here
-                role: sessionStore.session.role
-            }
-        })
-        .then(resp => {
-            dataJadwal.value = resp.data; // Update the data
-        })
-        .catch(err => {
-            console.error("Error fetching jadwal:", err); // Handle any errors
-        });
-}
+    async function fetchJadwal() {
+        dataJadwal.value = []; // Reset the data
+
+        await apiClient
+            .get('jadwal', {
+                params: {
+                    hari: hari.value,
+                    id_kelas: kelas.value,
+                    id: sessionStore.session.id, // Add the 'id' parameter here
+                    role: sessionStore.session.role
+                }
+            })
+            .then(resp => {
+                dataJadwal.value = resp.data; // Update the data
+            })
+            .catch(err => {
+                console.error("Error fetching jadwal:", err); // Handle any errors
+            });
+    }
 
     watch(kelas, async(x, y) => {
         if(x != y){
@@ -84,7 +86,7 @@
             <h1 class="text-indigo font-medium text-lg">
             Dashboard
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                Mata Kuliah
+                Absensi
             </h1>
         </div>
     </div>  
