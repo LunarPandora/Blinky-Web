@@ -25,6 +25,6 @@ class Pertemuan extends Model
     }
 
     public function absensi(): HasMany{
-        return $this->hasMany(Absensi::class, 'id_pertemuan', 'id_pertemuan');
+        return $this->hasMany(Absensi::class, 'pertemuan', 'id_pertemuan');
     }
 }
