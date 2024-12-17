@@ -102,7 +102,7 @@ const router = createRouter({
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/matkul/absensi/:id_jadwal/:id_pertemuan',
+              path: '/dashboard/dosen/matkul/absensi/:id_jadwal/:id_pertemuan/:pertemuan',
               component: Dosen_TableAbsensiPage,
               // alias: '/dashboard/'
             }
@@ -112,7 +112,7 @@ const router = createRouter({
           path: '/dashboard/mahasiswa',
           name: 'dashboard_mahasiswa',
           redirect: {
-            path: '/dashboard/mahasiswa/kelas'
+            path: '/dashboard/mahasiswa/matkul'
           },
           children: [
             {

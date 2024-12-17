@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Absensi;
 
+use Illuminate\Support\Carbon;
+
 class AbsensiController extends Controller
 {
     public function fetch(){
@@ -14,9 +16,10 @@ class AbsensiController extends Controller
     }
 
     public function list(Request $request){
-        $absensi = Absensi::where([
+        $absensi = Absensi::join('mahasiswa', 'mahasiswa.id_mhswa', '=', 'absensi.id_mhswa')
+        ->where([
             ['id_pertemuan', '=', $request->id_pertemuan],
-            // ['id_jadwal', '=', $request->id_jadwal]
+            ['mahasiswa.nm_mhswa', 'like', '%' . $request->search . '%']
         ])
         ->with(['kelas', 'mahasiswa', 'pertemuan.jadwal.kelas'])
         ->get();
@@ -56,8 +59,22 @@ class AbsensiController extends Controller
     public function update(Request $request){
         $absensi = Absensi::find($request->id_absensi);
 
-        // $absensi->waktu_absen = $request->waktu_absen;
+        $absensi->waktu_absen = Carbon::now();
         $absensi->kode_status_absensi = $request->kode_status_absensi;
+        $absensi->save();
+
+        if($absensi){
+            return response('Success!');
+        }
+        else{
+            return response('Failed!');
+        }
+    }
+
+    public function update_ket(Request $request){
+        $absensi = Absensi::find($request->id_absensi);
+        
+        $absensi->keterangan = $request->keterangan;
         $absensi->save();
 
         if($absensi){

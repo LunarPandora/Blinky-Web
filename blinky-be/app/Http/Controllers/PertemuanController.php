@@ -18,17 +18,9 @@ class PertemuanController extends Controller
     }
 
     public function find(Request $request){
-        // $pertemuan = Pertemuan::where([
-        //     ['id_pertemuan', '=', $request->id_pertemuan],
-        // ])
-        // ->with(['jadwal', 'absensi'])
-        // ->get();
-
-        // $pertemuan = Pertemuan::all();
-        // $pertemuan = Pertemuan::find($request->id_pertemuan);
         $pertemuan = Pertemuan::where('id_pertemuan', $request->id_pertemuan)
                     ->with(['jadwal', 'absensi'])
-                    ->get();
+                    ->first();
 
         return response($pertemuan);
     }

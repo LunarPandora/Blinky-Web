@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 
@@ -16,11 +17,12 @@ class LoginController extends Controller
             // 'role' => ['required'] (Untuk bedakan mahasiswa dan dosen)
         ]);
 
-        $auth_mhswa = Auth::attempt($cred);
+        $auth = Auth::attempt($cred);
 
-        if($auth_mhswa){
+        if($auth){
             $request->session()->regenerate();
-            $ud = User::find(Auth::id())->with(['dosen_acc', 'mhswa_acc'])->first();
+
+            $ud = User::where('id', '=', Auth::id())->with(['dosen_acc', 'mhswa_acc'])->first();
 
             $session_dt = array(
                 'id' => $ud->id,
@@ -32,7 +34,7 @@ class LoginController extends Controller
             );
 
             if($ud->roles->role_name == 'Dosen'){
-                $session_dt['acc'] = $ud->dosen_acc;
+                $session_dt['acc'] = $ud->  dosen_acc;
             }
             elseif($ud->roles->role_name == 'Mahasiswa'){
                 $session_dt['acc'] = $ud->mhswa_acc;
@@ -52,5 +54,9 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return response('LOGOUT_SUCCESS');
+    }
+
+    public function generate(Request $request){
+        return response(Hash::make('admin456'));
     }
 }
