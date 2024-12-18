@@ -8,7 +8,15 @@ use App\Models\Dosen;
 class DosenController extends Controller
 {
     public function fetch(){
-        $dosen = Dosen::all();
+        $dosen = Dosen::with(['prodi'])->get();
+
+        return response($dosen);
+    }
+
+    public function list(Request $request){
+        $dosen = Dosen::where('id_dosen', '=', $request->id_dosen)
+        ->with(['prodi'])
+        ->get();
 
         return response($dosen);
     }
@@ -21,7 +29,14 @@ class DosenController extends Controller
             'nidn' => $request->nidn
         ]);
 
-        if($dosen){
+        $users = User::create([
+            'role_id' => 1,
+            'dosen_id' => $dosen->id,
+            'email' => $request->email,
+            'password' => Hash::make($request->pw_dosen),
+        ]);
+
+        if($users){
             return response('Success!');
         }
         else{

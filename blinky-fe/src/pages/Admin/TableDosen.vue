@@ -1,3 +1,68 @@
+<script setup>
+    import { ref, onMounted, watch } from 'vue'
+    import { useRoute } from 'vue-router'
+
+    import DateConverter from '@/services/date'
+    import apiClient from '@/services/api';
+
+    const dataDosen = ref()
+    const dataProdi = ref()
+
+    const nama = ref()
+    const prodi = ref("0")
+    const jabatan = ref()
+    const nidn = ref()
+    const email = ref()
+    const password = ref()
+
+    const isModalOn = ref(false)
+
+    async function fetchData(){
+        await apiClient.get('dosen')
+        .then(resp => {
+            dataDosen.value = resp.data
+        })
+
+        await apiClient.get('prodi')
+        .then(resp => {
+            dataProdi.value = resp.data
+        })
+    }
+
+    async function tambahDosen(){
+        await apiClient.get('dosen/add', {
+            params: {
+                'id_prodi': prodi.value,
+                'nm_dosen': nama.value,
+                'jabatan': jabatan.value,
+                'nidn': nidn.value,
+                'email': email.value,
+                'password': password.value
+            }
+        })
+        .then(resp => {
+            if(resp.data == "Success!"){
+                alert('Data dosen berhasil didaftarkan!')
+            }
+            else{
+                alert('Data dosen gagal didaftarkan!')
+            }
+
+            toggleModal(0)
+        })
+    }
+
+    function toggleModal(val){
+        isModalOn.value = !isModalOn.value
+
+        fetchData()
+    }
+
+    onMounted(() => {
+        fetchData()
+    })
+</script>
+
 <template>
     <div class="flex items-center justify-between sticky top-0 right-0 h-fit w-full p-5 border-b-[2px] border-b-gray-200">
         <div>
@@ -50,52 +115,96 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide *:text-center">
-                    <td>Edgar Smith, S.Kom, M. Ti.</td>
-                    <td>9124819581</td>
-                    <td>Kaprodi</td>
-                    <td>STI</td>
-                    <td>11/06/2022, 09.00 AM</td>
-                    <td>11/06/2022, 09.00 AM</td>
-                    <td><fa icon="fas fa-edit"></fa>          <fa icon="fas fa-trash"></fa></td>
-                </tr>
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide *:text-center">
-                    <td>Tony Jason, S.Kom., M. Ti.</td>
-                    <td>9124819582</td>
-                    <td>Dosen</td>
-                    <td>STI</td>
-                    <td>11/06/2022, 09.00 AM</td>
-                    <td>11/06/2022, 09.00 AM</td>
-                    <td><fa icon="fas fa-edit"></fa>          <fa icon="fas fa-trash"></fa></td>
-                </tr>
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide *:text-center">
-                    <td>Jonathan Tim, S. T., M. Ti.</td>
-                    <td>9124819583</td>
-                    <td>Dosen</td>
-                    <td>STI</td>
-                    <td>11/06/2022, 09.01 AM</td>
-                    <td>11/06/2022, 09.01 AM</td>
-                    <td><fa icon="fas fa-edit"></fa>          <fa icon="fas fa-trash"></fa></td>
-                </tr>
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide *:text-center">
-                    <td>Ir. Thomas Erickson, PhD.</td>
-                    <td>9124819584</td>
-                    <td>Dosen</td>
-                    <td>STI</td>
-                    <td>11/06/2022, 09.01 AM</td>
-                    <td>11/06/2022, 09.01 AM</td>
-                    <td><fa icon="fas fa-edit"></fa>          <fa icon="fas fa-trash"></fa></td>
-                </tr>
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide *:text-center">
-                    <td>Harvey Kim, S.H., M. H.</td>
-                    <td>9124819585</td>
-                    <td>Dosen</td>
-                    <td>STI</td>
-                    <td>11/06/2022, 09.02 AM</td>
-                    <td>11/06/2022, 09.02 AM</td>
-                    <td><fa icon="fas fa-edit"></fa>          <fa icon="fas fa-trash"></fa></td>
+                <TransitionGroup name="fade" mode="out-in">
+                    <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataDosen" :key="index" v-if="dataDosen">
+                        <td>{{ x.nm_dosen }}</td>
+                        <td>{{ x.nidn }}</td>
+                        <td>{{ x.jabatan }}</td>
+                        <td>{{ x.prodi.nm_prodi }}</td>
+                        <td>{{ new DateConverter(x.created_at).format() }}</td>
+                        <td>{{ new DateConverter(x.updated_at).format() }}</td>
+                        <td class="text-white justify-center h-full">
+                            <div class="flex items-center gap-1">
+                                <button class="bg-orange-400 p-2 rounded-lg h-fit">
+                                    <fa icon="fas fa-edit" fixed-width></fa>
+                                </button>
+
+                                <button class="bg-red-600 p-2 rounded-lg h-fit">
+                                    <fa icon="fas fa-trash" fixed-width></fa>
+                                </button>
+                            </div>
+                            <!-- <div class="flex p-2 bg-indigo rounded-lg items-center gap-2 h-fit">
+                                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full text-sm" :value="x.kode_status_absensi" :id="'select-' + index" @change="updateStatus(x, index)">
+                                    <option v-for="y in dataStatus" :value="y.kode_status_absensi">{{ y.status_absensi}}</option>
+                                </select>
+                            </div>
+
+                            <button @click="toggleModal(x)" class="flex p-2 bg-orange-400 rounded-lg items-center gap-2 h-fit">
+                                <fa icon="fas fa-edit"></fa>
+                                Keterangan
+                            </button> -->
+                        </td>
+                    </tr>
+                </TransitionGroup>
+                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-10 *:text-sm *:tracking-wide" v-if="!dataDosen">
+                    <td colspan="8" class="text-center">
+                        <p class="pb-5">Harap menunggu...</p>
+                        <fa icon="fas fa-spinner" spin class="text-3xl"></fa>
+                    </td>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="items-center justify-center w-screen h-screen bg-[#000000AA] z-50 absolute top-0 left-0 flex" v-if="isModalOn">
+        <div class="flex flex-col bg-white px-5 py-7 rounded-xl gap-4 w-1/3 justify-center">
+            <div class="flex w-full items-center justify-between pb-6">
+                <p class="text-2xl font-medium text-indigo">Tambah Dosen</p>
+
+                <fa @click="toggleModal(0)" icon="fas fa-times" class="text-2xl" fixed-width></fa>
+            </div>
+
+            <div class="flex flex-col gap-8">
+                <div class="flex flex-col items-center w-full justify-center gap-3">
+                    <div class="bg-gray-200 p-4 rounded-xl flex items-center w-full gap-3">
+                        <fa icon="fas fa-user" class="text-gray-500" fixed-width />
+                        <input type="text" class="bg-transparent outline-none w-full" v-model="nama" placeholder="Masukkan nama dosen">
+                    </div>
+                    
+                    <div class="bg-gray-200 p-4 rounded-xl flex items-center w-full gap-3">
+                        <fa icon="fas fa-credit-card" class="text-gray-500" fixed-width />
+                        <input type="text" class="bg-transparent outline-none w-full" v-model="nidn" placeholder="Masukkan NIDN">
+                    </div>
+
+                    <div class="bg-gray-200 p-4 rounded-xl flex items-center w-full gap-3">
+                        <fa icon="fas fa-id-card" class="text-gray-500" fixed-width />
+                        <input type="text" class="bg-transparent outline-none w-full" v-model="jabatan" placeholder="Masukkan Jabatan">
+                    </div>
+
+                    <div class="flex p-4 bg-indigo rounded-lg items-center gap-3 w-full">
+                        <fa icon="fas fa-school" class="text-white"></fa>
+                        <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full" v-model="prodi">
+                            <option selected hidden value="0">Pilih prodi</option>
+                            <option v-for="x in dataProdi" :value="x.id_prodi">{{ x.nm_prodi }}</option>
+                        </select>
+                    </div>
+
+                    <div class="bg-gray-200 p-4 rounded-xl flex items-center w-full gap-3">
+                        <fa icon="fas fa-envelope" class="text-gray-500" fixed-width />
+                        <input type="text" class="bg-transparent outline-none w-full" v-model="email" placeholder="Masukkan email">
+                    </div>
+
+                    <div class="bg-gray-200 p-4 rounded-xl flex items-center w-full gap-3">
+                        <fa icon="fas fa-lock" class="text-gray-500" fixed-width />
+                        <input type="password" class="bg-transparent outline-none w-full" v-model="password" placeholder="Masukkan password">
+                    </div>
+
+                    <button @click="tambahDosen()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-indigo text-white rounded-lg">
+                        <fa icon="fas fa-plus"></fa>
+                        Tambahkan
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>

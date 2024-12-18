@@ -49,7 +49,7 @@
             }
         })
         .then(resp => {
-            if(resp.data == "success"){
+            if(resp.data == "Success!"){
                 alert('Data mahasiswa berhasil didaftarkan!')
             }
             else{
