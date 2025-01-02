@@ -28,7 +28,7 @@ class ProdiController extends Controller
 
     public function update(Request $request){
         $prodi = Prodi::find($request->id_prodi);
-
+        
         $prodi->nm_prodi = $request->nm_prodi;
 
         $prodi->save();

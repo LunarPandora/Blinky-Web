@@ -13,19 +13,9 @@ use Illuminate\Support\Carbon;
 
 class JadwalController extends Controller
 {
-    public function fetch(Request $request){
-        if($request->role == "Dosen"){
-            $jadwal = Jadwal::where([
-                ['id_dosen', '=', $request->id],
-            ])
-            ->with(['kelas', 'dosen', 'matkul'])->get();
-        } else if($request->role == "Mahasiswa"){
-            $jadwal = Jadwal::where([
-                ['id_mahasiswa', '=', $request->id],
-            ])
-            ->with(['kelas', 'dosen', 'matkul'])->get();
-        }
-        
+    public function fetch(){
+        $jadwal = Jadwal::with(['kelas', 'dosen', 'matkul'])->get();
+
         return response($jadwal);
     }
 
