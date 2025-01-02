@@ -13,7 +13,8 @@ class MahasiswaController extends Controller
 {
     // Untuk ambil semua data mahasiswa beserta kelas dan prodi yang bersangkutan
     public function fetch(){
-        $data = Mahasiswa::with(['kelas', 'prodi'])->get();
+        $data = Mahasiswa::join('users', 'mahasiswa.id_mhswa', '=', 'users.mhswa_id')
+        ->with(['kelas', 'prodi'])->get();
 
         return response($data);
     }
@@ -59,12 +60,12 @@ class MahasiswaController extends Controller
 
         $users = User::create([
             'role_id' => 2,
-            'mhswa_id' => $mhswa->id,
+            'mhswa_id' => $mhswa->id_mhswa,
             'email' => $request->email,
             'password' => Hash::make($request->pw_mhswa),
         ]);
 
-        if($users){
+        if($mhswa && $users){
             return response('success');
         }
         else{
@@ -73,28 +74,31 @@ class MahasiswaController extends Controller
     }
 
     public function update(Request $request){
-        $data = [
-            'id_mhswa' => $request->nim_baru,
-            'nm_mahasiswa' => $request->nama,
-            'id_kelas' => $request->kelas,
-            'id_prodi' => $request->prodi,
-            'angkatan' => $request->angkatan,
-        ];
+        $mhswa = Mahasiswa::find($request->id_mhswa);
+        $user = User::where('mhswa_id', $request->id_mhswa);
 
-        if($request->pw != ''){
-            $data['pw_mahasiswa'] = Hash::make($request->pw);
-        }
+        return response($mhswa);
 
-        $query = DB::table('tb_mahasiswa')
-        ->where('id_mhswa', $request->nim_lama)
-        ->update($data);
+        // $mhswa->nim = $request->nim;
+        // $mhswa->nm_mhswa = $request->nm_mhswa;
+        // $mhswa->id_kelas = $request->id_kelas;
+        // $mhswa->id_prodi = $request->id_prodi;
+        // $mhswa->angkatan = $request->angkatan;
 
-        if($query > 0){
-            return response('success');
-        }
-        else{
-            return response('error');
-        }
+        // $user->update(['email' => $request->email]);
+
+        // if(!empty($request->password)){
+        //     $user->update(['password' => Hash::make($request->password)]);
+        // }
+
+        // $mhswa->save();
+
+        // if($mhswa && $user){
+        //     return response('success');
+        // }
+        // else{
+        //     return response('error');
+        // }
     }
 
     public function delete(Request $request){

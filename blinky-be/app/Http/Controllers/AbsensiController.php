@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Absensi;
-
 use Illuminate\Support\Carbon;
+
+use App\Models\Absensi;
+use App\Models\Jadwal;
 
 class AbsensiController extends Controller
 {
@@ -16,15 +17,58 @@ class AbsensiController extends Controller
     }
 
     public function list(Request $request){
-        $absensi = Absensi::join('mahasiswa', 'mahasiswa.id_mhswa', '=', 'absensi.id_mhswa')
-        ->where([
-            ['id_pertemuan', '=', $request->id_pertemuan],
-            ['mahasiswa.nm_mhswa', 'like', '%' . $request->search . '%']
-        ])
-        ->with(['kelas', 'mahasiswa', 'pertemuan.jadwal.kelas'])
-        ->get();
+        $attendanceList = array();
 
-        return response($absensi);
+        $mhswa = Jadwal::where('id_jadwal', $request->id_jadwal)
+        ->with(['kelas', 'kelas.mahasiswa'])
+        ->first();
+
+        foreach($mhswa->kelas->mahasiswa as $x){
+            $absensi = Absensi::where([
+                ['id_kelas', '=', $mhswa->kelas->id_kelas],
+                ['id_mhswa', '=', $x->id_mhswa],
+                ['id_pertemuan', '=', $request->id_pertemuan]
+            ]);
+
+            if(!$absensi->exists()){
+                array_push($attendanceList, [
+                    'nim' => $x->nim,
+                    'id_mhswa' => $x->id_mhswa,
+                    'id_kelas' => $x->id_kelas,
+                    'nm_mhswa' => $x->nm_mhswa,
+                    'angkatan' => $x->angkatan,
+                    'waktu_absen' => null,
+                    'kode_status_absensi' => 0
+                ]);
+            }
+            else{
+                $absensi = $absensi->first();
+
+                array_push($attendanceList, [
+                    'nim' => $x->nim,
+                    'id_absensi' => $absensi->id_absensi,
+                    'id_mhswa' => $x->id_mhswa,
+                    'id_kelas' => $x->id_kelas,
+                    'nm_mhswa' => $x->nm_mhswa,
+                    'angkatan' => $x->angkatan,
+                    'updated_at' => $absensi->updated_at,
+                    'keterangan' => $absensi->keterangan,
+                    'kode_status_absensi' => $absensi->kode_status_absensi
+                ]);
+            }
+        }
+
+        // $absensi = Absensi::
+
+        // $absensi = Absensi::join('mahasiswa', 'mahasiswa.id_mhswa', '=', 'absensi.id_mhswa')
+        // ->where([
+        //     ['id_pertemuan', '=', $request->id_pertemuan],
+        //     ['mahasiswa.nm_mhswa', 'like', '%' . $request->search . '%']
+        // ])
+        // ->with(['kelas', 'mahasiswa', 'pertemuan.jadwal.kelas'])
+        // ->get();
+
+        return response($attendanceList);
     }
 
     public function list_pertemuan(Request $request){
@@ -40,11 +84,11 @@ class AbsensiController extends Controller
 
     public function create(Request $request){
         $absensi = Absensi::create([
-            'id_mhswa' => $request->id_mhswa,
             'id_kelas' => $request->id_kelas,
-            'id_jadwal' => $request->id_jadwal,
-            'waktu_absen' => $request->date . " " . $request->time,
+            'id_mhswa' => $request->id_mhswa,
+            'id_pertemuan' => $request->id_pertemuan,
             'kode_status_absensi' => $request->kode_status_absensi,
+            'waktu_absen' => Carbon::now(),
             'pertemuan' => $request->pertemuan
         ]);
 

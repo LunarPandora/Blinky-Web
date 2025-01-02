@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Kelas;
 use App\Models\Prodi;
 use App\Models\Absensi;
+use App\Models\User;
 
 class Mahasiswa extends Model
 {
