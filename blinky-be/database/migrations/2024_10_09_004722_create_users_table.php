@@ -18,13 +18,14 @@ return new class extends Migration
             $table->integer('mhswa_id')->nullable();
             $table->string('email');
             $table->string('password');
+            $table->text('user_picture');
             $table->timestamps();
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('role_id')->references('id')->on('roles');
-            $table->foreign('dosen_id')->references('id_dosen')->on('dosen');
-            $table->foreign('mhswa_id')->references('id_mhswa')->on('mahasiswa');
+            $table->foreign('role_id')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('dosen_id')->references('id_dosen')->on('dosen')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('mhswa_id')->references('id_mhswa')->on('mahasiswa')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

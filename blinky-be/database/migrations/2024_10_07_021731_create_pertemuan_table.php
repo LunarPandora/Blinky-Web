@@ -19,7 +19,7 @@ return new class extends Migration
         });
 
         Schema::table('pertemuan', function (Blueprint $table) {
-            $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal');
+            $table->foreign('id_jadwal')->references('id_jadwal')->on('jadwal')->onUpdate('cascade')->onDelete('cascade')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

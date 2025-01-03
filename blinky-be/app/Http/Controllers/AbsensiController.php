@@ -43,7 +43,7 @@ class AbsensiController extends Controller
             }
             else{
                 $absensi = $absensi->first();
-
+ 
                 array_push($attendanceList, [
                     'nim' => $x->nim,
                     'id_absensi' => $absensi->id_absensi,
@@ -60,7 +60,7 @@ class AbsensiController extends Controller
 
         // $absensi = Absensi::
 
-        // $absensi = Absensi::join('mahasiswa', 'mahasiswa.id_mhswa', '=', 'absensi.id_mhswa')
+        // $absensi = Absensi
         // ->where([
         //     ['id_pertemuan', '=', $request->id_pertemuan],
         //     ['mahasiswa.nm_mhswa', 'like', '%' . $request->search . '%']

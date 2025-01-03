@@ -21,7 +21,7 @@ export default class DateFormatter {
         return i;
     }
 
-    format(){
+    format(withJam = true){
         if(this.defaultDate != 'NaN'){
             let hari = this.hari
             let bulan = this.bulan
@@ -54,7 +54,12 @@ export default class DateFormatter {
             let tampilTanggal = hari + ", " + this.tanggal + " " + bulan + " " + this.tahun;
             let tampilWaktu = this.addZero(this.jam) + ":" + this.addZero(this.menit);
     
-            return tampilTanggal + " - " + tampilWaktu
+            if(withJam){
+                return tampilTanggal + " - " + tampilWaktu
+            }
+            else{
+                return tampilTanggal
+            }
         }
         else{
             return 'Tanggal tidak diketahui.'
