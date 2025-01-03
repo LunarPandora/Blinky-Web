@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,5 +34,9 @@ class Jadwal extends Model
 
     public function matkul(): BelongsTo{
         return $this->belongsTo(Matkul::class, 'id_matkul', 'id_matkul');
+    }
+
+    public function pertemuan(): HasMany{
+        return $this->hasMany(Pertemuan::class, 'id_jadwal', 'id_jadwal');
     }
 }

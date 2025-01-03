@@ -19,13 +19,14 @@ return new class extends Migration
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->smallInteger('hari');
+            $table->smallInteger('pertemuan');
             $table->timestamps();
         });
 
         Schema::table('jadwal', function (Blueprint $table) {
-            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
-            $table->foreign('id_dosen')->references('id_dosen')->on('dosen');
-            $table->foreign('id_matkul')->references('id_matkul')->on('matkul');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_dosen')->references('id_dosen')->on('dosen')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_matkul')->references('id_matkul')->on('matkul')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

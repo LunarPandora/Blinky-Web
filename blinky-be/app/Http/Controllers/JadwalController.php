@@ -15,11 +15,23 @@ class JadwalController extends Controller
 {
     public function fetch(Request $request){
         if($request->role == "Dosen"){
-            $jadwal = Jadwal::where([
-                ['id_dosen', '=', $request->id],
-            ])
-            ->with(['kelas', 'dosen', 'matkul'])->get();
-        } else if($request->role == "Mahasiswa"){
+            $jadwal = Jadwal::whereRelation('dosen', 'id_dosen', '=', $request->id);
+            
+            if($request->id_kelas != '0'){
+                $jadwal = $jadwal->whereRelation('kelas', 'id_kelas', '=', $request->id_kelas);
+            }
+
+            if($request->search != '' && !is_null($request->search)){
+                $jadwal = $jadwal->whereRelation('matkul', 'nm_matkul', 'LIKE', '%' . $request->search . '%');
+            }
+
+            if($request->hari != '0'){
+                $jadwal = $jadwal->where('hari', '=', $request->hari);
+            }
+
+            $jadwal = $jadwal->with(['kelas', 'dosen', 'matkul'])->get();
+        } 
+        else if($request->role == "Mahasiswa"){
             $jadwal = Jadwal::where([
                 ['id_mahasiswa', '=', $request->id],
             ])
@@ -33,7 +45,7 @@ class JadwalController extends Controller
         $jadwal = Jadwal::where([
             ['id_jadwal', '=', $request->id_jadwal],
         ])
-        ->with(['kelas', 'dosen', 'matkul'])
+        ->with(['kelas', 'dosen', 'matkul', 'kelas.mahasiswa'])
         ->first();
 
         return response($jadwal);
