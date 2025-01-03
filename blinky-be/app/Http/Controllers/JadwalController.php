@@ -74,17 +74,6 @@ class JadwalController extends Controller
                     'tanggal_pertemuan' => $cur->format('Y-m-d'),
                 ]);
 
-                for($j = 0; $j < count($kel->mahasiswa); $j++){
-                    Absensi::create([
-                        'id_kelas' => $request->id_kelas,
-                        'id_mhswa' => $kel->mahasiswa[$j]->id_mhswa,
-                        'id_pertemuan' => $pertemuan->id_pertemuan,
-                        'kode_status_absensi' => 1,
-                        'waktu_absen' => null,
-                        'pertemuan' => $i + 1
-                    ]);
-                }
-
                 $cur = $cur->add(7, 'day');
             }
 
