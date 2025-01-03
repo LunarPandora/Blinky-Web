@@ -89,7 +89,6 @@ class AbsensiController extends Controller
             'id_pertemuan' => $request->id_pertemuan,
             'kode_status_absensi' => $request->kode_status_absensi,
             'waktu_absen' => Carbon::now(),
-            'pertemuan' => $request->pertemuan
         ]);
 
         if($absensi){

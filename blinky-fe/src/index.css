@@ -35,14 +35,14 @@ tr:last-child td:last-child { border-bottom-right-radius: 0.5rem !important; }
     }
   
     .scrollbar::-webkit-scrollbar-thumb {
-        background: #5A4FDF;
+        background: #3D3D3D;
         /* padding: 10px; */
         border-radius: 100vh;
-        border: 1px solid #5A4FDF;
+        border: 1px solid #3D3D3D;
     }
   
     .scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #5A4FDF;
+        background: #3D3D3D;
     }
 }
 

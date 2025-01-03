@@ -134,7 +134,6 @@
                 id_mhswa: x.id_mhswa,
                 id_kelas: x.id_kelas,
                 id_pertemuan: route.params.id_pertemuan,
-                pertemuan: route.params.pertemuan,
                 kode_status_absensi: newStatus,
             }
         })
