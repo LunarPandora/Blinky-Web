@@ -84,23 +84,23 @@
 </script>
 
 <template>
-    <div class="flex items-center justify-between sticky top-0 right-0 h-fit w-full p-5 border-b-[2px] border-b-gray-200">
+    <div class="flex items-center justify-between bg-keppel sticky top-0 right-0 h-fit w-full p-5 border-b-[2px] border-b-gray-200">
         <div>
-            <h1 class="text-indigo font-medium text-lg">
+            <h1 class="text-darkbrown font-medium text-lg">
             Dashboard
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
                 Prodi
             </h1>
         </div>
     </div>  
-    <div class="flex items-center justify-between gap-3 px-5 py-3 border-b-[2px] border-b-gray-200 bg-white">
-        <div class="flex p-2 bg-gray-200 rounded-lg items-center gap-3 w-[30%] text-sm leading-relaxed tracking-wide">
-            <fa icon="fas fa-search" class="text-gray-500"></fa>
-            <input class="bg-transparent border-0 outline-none w-full" type="text" placeholder="Cari prodi...">
+    <div class="flex items-center justify-between gap-3 px-5 py-3 border-b-[2px] border-b-gray-200">
+        <div class="flex p-2 bg-cream rounded-lg items-center gap-3 w-[30%] text-sm leading-relaxed tracking-wide">
+            <fa icon="fas fa-search" class="text-darkbrown"></fa>
+            <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari prodi...">
         </div>
 
         <div class="flex items-center justify-end gap-5">
-            <button @click="toggleModal(0, 'Add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
+            <button @click="toggleModal(0, 'Add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-darkbrown text-white rounded-lg">
                 <fa icon="fas fa-plus"></fa>
                 Tambahkan prodi baru
             </button>
@@ -109,14 +109,14 @@
     <div class="flex flex-col w-full h-full overflow-y-scroll justify-between px-5 my-4 scrollbar">
         <table class="w-full">
             <thead>
-                <tr class="*:p-3 *:border-y-2 *:text-left *:font-medium sticky top-0 bg-indigo text-white *:text-center">
-                    <th width="90%">Nama Prodi</th>
-                    <th width="10%">Action</th>
+                <tr class="*:p-3 *:text-left *:font-medium sticky top-0 bg-darkbrown text-white">
+                    <th width="90%" class="rounded-tl-lg">Nama Prodi</th>
+                    <th width="10%" class="rounded-tr-lg">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <TransitionGroup name="fade" mode="out-in">
-                    <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataProdi" :key="index" v-if="dataProdi">
+                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataProdi" :key="index" v-if="dataProdi">
                         <td>{{ x.nm_prodi }}</td>
                         <td class="text-white justify-center h-full">
                             <div class="flex items-center gap-1">

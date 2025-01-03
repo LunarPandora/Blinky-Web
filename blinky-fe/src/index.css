@@ -9,7 +9,7 @@
 
 @font-face{
     font-family: Coolvetica;
-    src: url('src/assets/fonts/coolvetica rg.otf');
+    src: url('../src/assets/fonts/coolvetica rg.otf');
 }
 
 .logo{
