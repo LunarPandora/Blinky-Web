@@ -21,7 +21,7 @@ return new class extends Migration
         });
 
         Schema::table('dosen', function (Blueprint $table) {
-            $table->foreign('id_prodi')->references('id_prodi')->on('prodi');
+            $table->foreign('id_prodi')->references('id_prodi')->on('prodi')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

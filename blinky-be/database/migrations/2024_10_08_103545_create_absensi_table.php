@@ -18,14 +18,15 @@ return new class extends Migration
             $table->integer('id_pertemuan');
             $table->smallInteger('kode_status_absensi');
             $table->dateTime('waktu_absen')->nullable();
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
 
         Schema::table('absensi', function (Blueprint $table) {
-            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
-            $table->foreign('id_mhswa')->references('id_mhswa')->on('mahasiswa');
-            $table->foreign('id_pertemuan')->references('id_pertemuan')->on('pertemuan');
-            $table->foreign('kode_status_absensi')->references('kode_status_absensi')->on('status_absensi');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_mhswa')->references('id_mhswa')->on('mahasiswa')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_pertemuan')->references('id_pertemuan')->on('pertemuan')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('kode_status_absensi')->references('kode_status_absensi')->on('status_absensi')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

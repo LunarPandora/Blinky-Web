@@ -24,8 +24,8 @@ return new class extends Migration
         });
 
         Schema::table('mahasiswa', function (Blueprint $table) {
-            $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
-            $table->foreign('id_prodi')->references('id_prodi')->on('prodi');
+            $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_prodi')->references('id_prodi')->on('prodi')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

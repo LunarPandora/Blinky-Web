@@ -16,6 +16,7 @@
     "@fortawesome/vue-fontawesome": "^3.0.8",
     "@vuepic/vue-datepicker": "^10.0.0",
     "axios": "^1.7.7",
+    "gsap": "^3.12.5",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3"

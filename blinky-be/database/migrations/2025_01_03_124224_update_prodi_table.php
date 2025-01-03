@@ -11,13 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('absensi', function (Blueprint $table) {
-            $table->dropForeign(['id_jadwal']);
-            $table->dropColumn('id_jadwal');
+        Schema::table('prodi', function (Blueprint $table) {
             
-
-            $table->integer('id_pertemuan')->primary()->after('id_mhswa');
-            $table->foreign('id_pertemuan')->references('id_pertemuan')->on('pertemuan');
         });
     }
 
