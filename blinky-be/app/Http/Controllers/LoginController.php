@@ -22,23 +22,16 @@ class LoginController extends Controller
         if($auth){
             $request->session()->regenerate();
 
-            $ud = User::where('id', '=', Auth::id())->with(['dosen_acc', 'mhswa_acc'])->first();
+            $ud = User::where('id', '=', Auth::id())->with(['dosen_acc', 'mhswa_acc', 'dosen_acc.prodi', 'mhswa_acc.prodi'])->first();
 
             $session_dt = array(
                 'id' => $ud->id,
                 'role' => $ud->roles->role_name,
-                'dosen' => $ud->dosen,
-                'mhswa' => $ud->mhswa,
-                'email' => $ud->dosen,
+                'dosen' => $ud->dosen_acc,
+                'mhswa' => $ud->mhswa_acc,
+                'email' => $ud->email,
                 'user_picture' => $ud->user_picture,
             );
-
-            if($ud->roles->role_name == 'Dosen'){
-                $session_dt['acc'] = $ud->  dosen_acc;
-            }
-            elseif($ud->roles->role_name == 'Mahasiswa'){
-                $session_dt['acc'] = $ud->mhswa_acc;
-            }
 
             return response(['LOGIN_SUCCESS', $session_dt]);
         }
@@ -54,9 +47,5 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return response('LOGOUT_SUCCESS');
-    }
-
-    public function generate(Request $request){
-        return response(Hash::make('admin456'));
     }
 }

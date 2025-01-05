@@ -13,6 +13,12 @@ class DosenController extends Controller
         return response($dosen);
     }
 
+    public function get(Request $request){
+        $dosen = Dosen::find($request->id);
+
+        return response($dosen);
+    }
+
     public function create(Request $request){
         $dosen = Dosen::create([
             'id_prodi' => $request->id_prodi,

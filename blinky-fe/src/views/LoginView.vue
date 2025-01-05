@@ -17,11 +17,7 @@
 			'password': pass.value
 		})
 		.then(resp => {
-			console.log(resp.data)
-
 			if(resp.data[0] == 'LOGIN_SUCCESS'){
-				console.log(resp.data[1])
-
                 sessionStore.registerSession(resp.data[1])
                 sessionStore.authenticate()
 

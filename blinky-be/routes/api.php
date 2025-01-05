@@ -26,6 +26,7 @@ Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'get']);
+    Route::post('/update', [UserController::class, 'update']);
 });
 
 Route::prefix('mahasiswa')->group(function () {
@@ -83,6 +84,7 @@ Route::prefix('statusabsensi')->group(function () {
 
 Route::prefix('dosen')->group(function () {
     Route::get('/', [DosenController::class, 'fetch']);
+    Route::get('/get', [DosenController::class, 'get']);
     Route::get('/add', [DosenController::class, 'create']);
     Route::get('/update', [DosenController::class, 'update']);
     Route::get('/delete', [DosenController::class, 'delete']);

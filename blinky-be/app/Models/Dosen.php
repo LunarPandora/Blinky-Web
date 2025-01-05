@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Prodi;
+
 class Dosen extends Model
 {
     use HasFactory;
@@ -17,5 +20,14 @@ class Dosen extends Model
         'nm_dosen',
         'jabatan',
         'nidn',
+        'isActive',
+        'no_telp',
+        'alamat',
+        'gender',
+        'agama'
     ];
+
+    public function prodi(): BelongsTo{
+        return $this->belongsTo(Prodi::class, 'id_prodi', 'id_prodi');
+    }
 }

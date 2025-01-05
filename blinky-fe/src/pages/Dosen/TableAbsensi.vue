@@ -1,27 +1,24 @@
 <script setup>
-    import gsap from 'gsap'
     import { ref, onMounted, onUnmounted, watch } from 'vue'
     import { useRoute } from 'vue-router'
 
     import DateConverter from '@/services/date'
     import apiClient from '@/services/api';
-
+    
     const route = useRoute()
 
     const jadwal = ref()
+    const search = ref('')
 
     const dataAbsensi = ref()
     const filterDataAbsensi = ref([])
 
     const dataStatus = ref()
 
-    const search = ref('')
-    
     const ket = ref()
     const temp_mhs = ref()
 
     const interval = ref()
-
     const isModalOn = ref(false)
 
     onMounted(() => {
@@ -226,8 +223,7 @@
             </thead>
             <tbody>
                 <TransitionGroup name="slideUp" mode="out-in">
-                <!-- <tr class="*:odd:bg-gray- *:even:bg-blueprism text-white *:p-3"></tr> -->
-                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in filterDataAbsensi" :key="index" v-if="filterDataAbsensi">
+                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in filterDataAbsensi" :key="index" v-if="filterDataAbsensi.length > 0">
                         <td>{{ x.nim }}</td>
                         <td>{{ x.nm_mhswa }}</td>
                         <td>{{ x.angkatan }}</td>
@@ -250,7 +246,16 @@
                                 Keterangan
                             </button>
                         </td>
-                    </tr>                
+                    </tr>
+                    
+                    <tr class="odd:bg-[#f5f1e4] border-b-gray-200 text-darkbrown *:text-sm *:tracking-wide " v-else>
+                        <td colspan="5">
+                            <div class="flex flex-col items-center justify-center py-7">
+                                <fa icon="fas fa-face-sad-cry" bounce class="text-3xl"></fa>
+                                <p class="pt-3">Tidak ada data kelas!</p>
+                            </div>
+                        </td>
+                    </tr>
                 </TransitionGroup>
                 
                 <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-10 *:text-sm *:tracking-wide" v-if="!dataAbsensi">

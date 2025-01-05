@@ -23,10 +23,14 @@ class Mahasiswa extends Model
         'nim',
         'id_kelas',
         'id_prodi',
-        'id_admin',
         'nm_mhswa',
         'angkatan',
-        'uid_rfid',
+        'isActive',
+        'no_telp',
+        'alamat',
+        'gender',
+        'agama',
+        'uid_rfid'
         // 'foto_mhswa',
     ];
 
