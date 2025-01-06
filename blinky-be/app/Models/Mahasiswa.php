@@ -45,4 +45,8 @@ class Mahasiswa extends Model
     public function absensi(): HasMany{
         return $this->hasMany(Absensi::class, 'id_mhswa', 'id_mhswa');
     }
+
+    public function acc(): HasMany{
+        return $this->hasMany(User::class, 'mhswa_id', 'id_mhswa');
+    }
 }

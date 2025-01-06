@@ -57,13 +57,14 @@
             }
         })
         .then(resp => {
+            console.log(resp.data)
             dataAbsensi.value = resp.data
 
             if(filterDataAbsensi.value.length == 0){
                 filterDataAbsensi.value = resp.data
             }
             else{
-                filterDataAbsensi.value == []
+                filterDataAbsensi.value = []
             }
         })
 
@@ -126,7 +127,7 @@
     async function addStatus(x, index){
         let newStatus = document.getElementById('select-' + index).value
 
-        await apiClient.get('absensi/create', {
+        await apiClient.get('absensi/add', {
             params: {
                 id_mhswa: x.id_mhswa,
                 id_kelas: x.id_kelas,
@@ -187,28 +188,6 @@
             <fa icon="fas fa-search" class="text-darkbrown"></fa>
             <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari nama mahasiswa..." v-model="search">
         </div>
-
-        <div class="flex items-center justify-end gap-5">
-            <!-- <button @click="toggleModal('add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
-                <fa icon="fas fa-plus"></fa>
-                Tambahkan absensi baru
-            </button> -->
-            <!-- <div class="flex p-3 bg-darkbrown rounded-lg items-center gap-2 max-w-[50%]">
-                <fa icon="fas fa-door-closed" class="text-white"></fa>
-                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full" v-model="kelas">
-                    <option selected value="0">Semua kelas</option>
-                    <option v-for="x in dataKelas" :value="x.id_kelas">{{ x.nm_kelas }}</option>
-                </select>
-            </div> -->
-
-            <!-- <div class="flex p-3 bg-darkbrown rounded-lg items-center gap-2">
-                <fa icon="fas fa-book" class="text-white"></fa>
-                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full" v-model="hari">
-                    <option selected value="0">Semua hari</option>
-                    <option v-for="x in 6" :value="x">{{ new DayFormatter(x).convertToDayName() }}</option>
-                </select>
-            </div> -->
-        </div>
     </div>
     <div class="flex flex-col w-full h-full overflow-y-scroll justify-between px-5 my-4 scrollbar">
         <table class="w-full">
@@ -223,9 +202,18 @@
             </thead>
             <tbody>
                 <TransitionGroup name="slideUp" mode="out-in">
-                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in filterDataAbsensi" :key="index" v-if="filterDataAbsensi.length > 0">
+                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-3 *:text-sm *:tracking-wide" v-for="(x, index) in filterDataAbsensi" :key="index" v-if="filterDataAbsensi.length > 0">
                         <td>{{ x.nim }}</td>
-                        <td>{{ x.nm_mhswa }}</td>
+                        <td>
+                            <div class="flex gap-2 items-center">
+                                <div class="w-8 h-8 overflow-hidden flex items-center justify-center rounded-full">
+                                    <img v-if="x.user_pic == '-'" src="@/assets/fp.png">
+                                    <img v-else :src="'http://127.0.0.1:8000/storage/images/' + x.user_pic">
+                                </div>
+                                <p>{{ x.nm_mhswa }}</p>
+                            </div>
+                            
+                        </td>
                         <td>{{ x.angkatan }}</td>
                         <td>{{ x.updated_at != null ? new DateConverter(x.updated_at).format() : "Belum mengisi absen" }}</td>    
                         <td class="flex gap-2 text-white items-center">
@@ -248,14 +236,14 @@
                         </td>
                     </tr>
                     
-                    <tr class="odd:bg-[#f5f1e4] border-b-gray-200 text-darkbrown *:text-sm *:tracking-wide " v-else>
+                    <!-- <tr class="odd:bg-[#f5f1e4] border-b-gray-200 text-darkbrown *:text-sm *:tracking-wide " v-else>
                         <td colspan="5">
                             <div class="flex flex-col items-center justify-center py-7">
                                 <fa icon="fas fa-face-sad-cry" bounce class="text-3xl"></fa>
                                 <p class="pt-3">Tidak ada data kelas!</p>
                             </div>
                         </td>
-                    </tr>
+                    </tr> -->
                 </TransitionGroup>
                 
                 <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-10 *:text-sm *:tracking-wide" v-if="!dataAbsensi">

@@ -48,25 +48,42 @@ class MahasiswaController extends Controller
 
     // Ini mau disesuaikan dengan model yang baru nanti - WY
 
-    public function insert(Request $request){
+    public function create(Request $request){
+        $nama_rn = '-';
+
         $mhswa = Mahasiswa::create([
             'nim' => $request->nim,
-            'nm_mhswa' => $request->nm_mhswa,
             'id_kelas' => $request->id_kelas,
             'id_prodi' => $request->id_prodi,
+            'nm_mhswa' => $request->nm_mhswa,
             'angkatan' => $request->angkatan,
+            'isActive' => $request->is_active,
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat,
+            'gender' => $request->gender,
+            'agama' => $request->agama,
             'uid_rfid' => '-',
         ]);
+
+        if($request->hasFile('picture')){
+            $file = $request->file('picture');
+
+            $nama_asli = $file->getClientOriginalName();
+            $nama_rn = Str::random(12) . "." . $file->extension();
+
+            $request->picture->move(public_path('storage/images'), $nama_rn);
+        }
 
         $users = User::create([
             'role_id' => 2,
             'mhswa_id' => $mhswa->id_mhswa,
             'email' => $request->email,
             'password' => Hash::make($request->pw_mhswa),
+            'user_picture' => $nama_rn
         ]);
 
         if($mhswa && $users){
-            return response('success');
+            return response('Success');
         }
         else{
             return response('error');

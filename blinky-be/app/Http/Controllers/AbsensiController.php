@@ -7,6 +7,7 @@ use Illuminate\Support\Carbon;
 
 use App\Models\Absensi;
 use App\Models\Jadwal;
+use App\Models\User;
 
 class AbsensiController extends Controller
 {
@@ -20,7 +21,7 @@ class AbsensiController extends Controller
         $attendanceList = array();
 
         $mhswa = Jadwal::where('id_jadwal', $request->id_jadwal)
-        ->with(['kelas', 'kelas.mahasiswa'])
+        ->with(['kelas', 'kelas.mahasiswa', 'kelas.mahasiswa.acc'])
         ->first();
 
         foreach($mhswa->kelas->mahasiswa as $x){
@@ -37,6 +38,7 @@ class AbsensiController extends Controller
                     'id_kelas' => $x->id_kelas,
                     'nm_mhswa' => $x->nm_mhswa,
                     'angkatan' => $x->angkatan,
+                    'user_pic' => $x->acc[0]->user_picture,
                     'waktu_absen' => null,
                     'kode_status_absensi' => 0
                 ]);
@@ -51,22 +53,13 @@ class AbsensiController extends Controller
                     'id_kelas' => $x->id_kelas,
                     'nm_mhswa' => $x->nm_mhswa,
                     'angkatan' => $x->angkatan,
+                    'user_pic' => $x->acc[0]->user_picture,
                     'updated_at' => $absensi->updated_at,
                     'keterangan' => $absensi->keterangan,
                     'kode_status_absensi' => $absensi->kode_status_absensi
                 ]);
             }
         }
-
-        // $absensi = Absensi::
-
-        // $absensi = Absensi
-        // ->where([
-        //     ['id_pertemuan', '=', $request->id_pertemuan],
-        //     ['mahasiswa.nm_mhswa', 'like', '%' . $request->search . '%']
-        // ])
-        // ->with(['kelas', 'mahasiswa', 'pertemuan.jadwal.kelas'])
-        // ->get();
 
         return response($attendanceList);
     }
