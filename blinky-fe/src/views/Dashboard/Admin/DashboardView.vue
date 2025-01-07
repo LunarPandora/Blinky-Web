@@ -8,23 +8,32 @@
   const sessionStore = useSessionStore()
   const route = useRoute()
   const router = useRouter()
-  const userData = ref()
 
-  const role = sessionStore.session.role
+  const s = sessionStore.session
   const currentPage = route.path
+  const user_pic = ref('')
 
   watch(currentPage, (x, y) => {
     console.log(x, y)
   })
 
+  onMounted(() => {
+    setInterval(() => {
+      getUser()
+    }, 2000)
+  })
+
   async function getUser(){
-    await apiClient.get('users/', {
+    await apiClient.get('users', {
       params: {
         'id': sessionStore.session.id,
       }
     })
     .then(resp => {
-      userData.value = resp.data
+      sessionStore.registerSession(resp.data)
+      sessionStore.authenticate()
+
+      user_pic.value = 'http://localhost:8000/storage/images/' + resp.data.user_picture
     })
   }
 
@@ -57,10 +66,17 @@
       </div>
 
       <div class="flex items-center gap-3 bg-white p-3 rounded-lg">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" class="rounded-md w-1/6">
-        <div class="flex flex-col justify-center">  
-          <p class="font-medium text-xs">{{ userData.email }}</p>
-          <p class="text-xs">{{ userData.roles.role_name }}</p>
+        <!-- <img v-if="s.user_pic == '-'" src="@/assets/fp.png" class="rounded-md w-1/6">
+        <img v-else src="" class="rounded-md w-1/6"> -->
+
+        <div class="w-10 h-10 overflow-hidden flex items-center justify-center rounded-full">
+          <img v-if="s.user_pic == '-'" src="@/assets/fp.png">
+          <img v-else :src="user_pic">
+        </div>
+
+        <div class="flex flex-col justify-center">
+          <p class="font-medium text-xs">{{ s.email }}</p>
+          <p class="text-xs">{{ s.role }}</p>
         </div>
       </div>
 

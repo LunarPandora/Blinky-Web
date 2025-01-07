@@ -58,10 +58,10 @@
         })
     }
 
-    async function hapusMatkul(x){
+    async function hapusMatkul(){
         await apiClient.get('matkul/delete', {
             params: {
-                'id_matkul': x.id_matkul,
+                'id_matkul': temp_data.value.id_matkul,
             }
         })
         .then(resp => {
@@ -115,7 +115,7 @@
         </div>
 
         <div class="flex items-center justify-end gap-5">
-            <button @click="toggleModal('Add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
+            <button @click="toggleModal(0, 'Add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
                 <fa icon="fas fa-plus"></fa>
                 Tambahkan mata kuliah baru
             </button>
@@ -139,16 +139,16 @@
     <div class="flex flex-col w-full h-full overflow-y-scroll justify-between px-5 my-4 scrollbar">
         <table class="w-full">
             <thead>
-                <tr class="*:p-3 *:border-y-2 *:text-left *:font-medium sticky top-0 bg-indigo text-white *:text-center">
-                    <th width="20%">Nama</th>
+                <tr class="*:p-3 *:text-left *:font-medium sticky top-0 bg-darkbrown text-white">
+                    <th width="20%" class="rounded-tl-lg">Nama</th>
                     <th width="15%">Waktu Pendaftaran</th>
                     <th width="15%">Terakhir kali diedit</th>
-                    <th width="5%">Action</th>
+                    <th width="5%" class="rounded-tr-lg">Action</th>
                 </tr>
             </thead>
             <tbody>
-                <TransitionGroup name="fade" mode="out-in">
-                    <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataMatkul" :key="index" v-if="dataMatkul">
+                <TransitionGroup name="slideUp" mode="out-in">
+                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataMatkul" :key="index" v-if="dataMatkul">
                         <td>{{ x.nm_matkul }}</td>
                         <td>{{ new DateConverter(x.created_at).format() }}</td>
                         <td>{{ new DateConverter(x.updated_at).format() }}</td>
@@ -158,7 +158,7 @@
                                     <fa icon="fas fa-edit" fixed-width></fa>
                                 </button>
 
-                                <button @click="hapusMatkul(x)" class="bg-red-600 p-2 rounded-lg h-fit">
+                                <button class="bg-red-600 p-2 rounded-lg h-fit" @click="toggleModal(x, 'Delete')">
                                     <fa icon="fas fa-trash" fixed-width></fa>
                                 </button>
                             </div>
@@ -186,7 +186,7 @@
     </div>
 
     <div class="items-center justify-center w-screen h-screen bg-[#000000AA] z-50 absolute top-0 left-0 flex" v-if="isModalOn">
-        <div class="flex flex-col bg-white px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modalMode == 'Add'"">
+        <div class="flex flex-col bg-cream px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modalMode == 'Add'">
             <div class="flex w-full items-center justify-between pb-6">
                 <p class="text-2xl font-medium text-indigo">Tambah Mata Kuliah</p>
 
@@ -200,7 +200,7 @@
                         <input type="text" class="bg-transparent outline-none w-full" v-model="nama" placeholder="Masukkan nama mata kuliah">
                     </div>
 
-                    <button @click="tambahMatkul()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-indigo text-white rounded-lg">
+                    <button @click="tambahMatkul()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-darkbrown text-white rounded-lg">
                         <fa icon="fas fa-plus"></fa>
                         Tambahkan
                     </button>
@@ -208,7 +208,7 @@
             </div>
         </div>
 
-        <div class="flex flex-col bg-white px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modalMode == 'Edit'">
+        <div class="flex flex-col bg-cream px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modalMode == 'Edit'">
             <div class="flex w-full items-center justify-between pb-6">
                 <p class="text-2xl font-medium text-indigo">Edit Mata Kuliah</p>
 
@@ -222,9 +222,27 @@
                         <input type="text" class="bg-transparent outline-none w-full" v-model="nama" placeholder="Masukkan nama mata kuliah">
                     </div>
 
-                    <button @click="updateMatkul()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-indigo text-white rounded-lg">
+                    <button @click="updateMatkul()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-darkbrown text-white rounded-lg">
                         <fa icon="fas fa-floppy-disk"></fa>
                         Update
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col bg-cream px-5 py-7 rounded-xl w-1/3 justify-center" v-if="modalMode == 'Delete'">
+            <div class="flex w-full items-center justify-between pb-6">
+                <p class="text-2xl font-medium text-darkbrown">Hapus Matkul</p>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <p class="text-l text-darkbrown">Apakah anda yakin ingin menghapus data ini?</p>
+                <div class="flex flex-row items-center w-full justify-center gap-3">
+                    <button @click="toggleModal(0, 'Delete')" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-transparent outline outline-darkbrown [outline-offset:-2.5px] text-darkbrown rounded-lg">
+                        Tidak
+                    </button>
+
+                    <button @click="hapusMatkul()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-softred text-white rounded-lg">
+                        Ya
                     </button>
                 </div>
             </div>

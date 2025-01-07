@@ -17,11 +17,7 @@
 			'password': pass.value
 		})
 		.then(resp => {
-			console.log(resp.data)
-
 			if(resp.data[0] == 'LOGIN_SUCCESS'){
-				console.log(resp.data[1])
-
                 sessionStore.registerSession(resp.data[1])
                 sessionStore.authenticate()
 
@@ -42,31 +38,37 @@
 	}
 </script>
 <template>
-  	<div class="bg-indigo h-screen w-screen flex items-center justify-center">
-    	<div class="bg-white px-8 py-10 rounded-xl w-1/3 flex flex-col items-center justify-center gap-8">
-      		<img src="@/assets/icon.png" class="w-1/3">
+  	<div class="bg-darkbrown h-screen w-screen flex items-center justify-center">
+    	<div class="bg-cream px-8 py-10 rounded-xl w-1/3 flex flex-col items-center justify-center gap-8">
+			<div class="w-full flex gap-6 items-center justify-center">
+				<img src="@/assets/icon.svg" class="w-1/6">
+				<h1 class="logo text-6xl text-darkbrown">Blinky.</h1>
+			</div>
 
-			<p class="text-indigo font-medium">Masukkan akun anda untuk melanjutkan.</p>
+			<p class="text-lg">Masukkan akun anda untuk melanjutkan.</p>
 
 			<div class="flex flex-col gap-6 w-full text">
-				<div class="flex relative">
-					<p class="bg-white absolute top-[-11px] left-5 px-1 text-sm text-indigo">Email</p>
-					<div class="bg-white p-4 border-[2px] border-indigo rounded-xl flex items-center w-full gap-3">
-						<fa icon="fas fa-envelope" class="text-indigo" fixed-width />
-						<input type="email" v-model="email" class="border-0 p-0 outline-none w-full" placeholder="Masukkan email anda">
+				<div class="bg-softcream p-4 rounded-xl flex flex-col w-full gap-3">
+					<div class="flex items-center gap-3">
+						<fa icon="fas fa-envelope" class="text-darkbrown" fixed-width />
+						<p class="text-darkbrown">Email</p>
 					</div>
-				</div>
-				<div class="flex relative">
-					<p class="bg-white absolute top-[-11px] left-5 px-1 text-sm text-indigo">Password</p>
-					<div class="bg-white p-4 border-[2px] border-indigo rounded-xl flex items-center w-full gap-3">
-						<fa icon="fas fa-lock" class="text-indigo" fixed-width />
-						<input type="password" v-model="pass" class="border-0 p-0 outline-none w-full" placeholder="Masukkan password anda">
-					</div>
+
+					<input type="text" class="text-darkbrown text-sm bg-transparent w-full outline-none" placeholder="Masukkan email anda..." v-model="email" />
 				</div>
 
-				<button @click="login()" class="bg-indigo p-4 rounded-xl w-full text-white text-xl font-semibold flex items-center justify-center">Masuk</button>
+				<div class="bg-softcream p-4 rounded-xl flex flex-col w-full gap-3">
+					<div class="flex items-center gap-3">
+						<fa icon="fas fa-lock" class="text-darkbrown" fixed-width />
+						<p class="text-darkbrown">Password</p>
+					</div>
 
-				<!-- <p class="text-indigo w-full text-center">Lupa password? Klik disini</p> -->
+					<input type="password" class="text-darkbrown text-sm bg-transparent w-full outline-none" placeholder="Masukkan password anda" v-model="pass" />
+				</div>
+
+				<button @click="login()" class="bg-darkbrown p-4 rounded-xl w-full text-softcream text-xl font-semibold flex items-center justify-center">Masuk</button>
+
+				<!-- <p class="text-darkbrown w-full text-center">Lupa password? Klik disini</p> -->
 			</div>
     	</div>
 	</div>  

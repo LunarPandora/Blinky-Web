@@ -19,19 +19,18 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::get('/generate_pass', [LoginController::class, 'generate']);
-
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout']);
 
 Route::prefix('users')->group(function () {
     Route::get('/', [UserController::class, 'get']);
+    Route::post('/update', [UserController::class, 'update']);
 });
 
 Route::prefix('mahasiswa')->group(function () {
     Route::get('/', [MahasiswaController::class, 'fetch']);
     Route::get('/list', [MahasiswaController::class, 'list']);
-    Route::get('/add', [MahasiswaController::class, 'insert']);
+    Route::post('/add', [MahasiswaController::class, 'create']);
     Route::get('/update', [MahasiswaController::class, 'update']);
     Route::get('/delete', [MahasiswaController::class, 'delete']);
 });
@@ -61,7 +60,7 @@ Route::prefix('absensi')->group(function () {
     Route::get('/', [AbsensiController::class, 'fetch']);
     Route::get('/list', [AbsensiController::class, 'list']);
     // Route::get('/list_pertemuan', [AbsensiController::class, 'list_pertemuan']);
-    Route::get('/create', [AbsensiController::class, 'create']);
+    Route::get('/add', [AbsensiController::class, 'create']);
     Route::get('/update', [AbsensiController::class, 'update']);
     Route::get('/update_ket', [AbsensiController::class, 'update_ket']);
     Route::get('/delete', [AbsensiController::class, 'delete']);
@@ -83,6 +82,7 @@ Route::prefix('statusabsensi')->group(function () {
 
 Route::prefix('dosen')->group(function () {
     Route::get('/', [DosenController::class, 'fetch']);
+    Route::get('/get', [DosenController::class, 'get']);
     Route::get('/add', [DosenController::class, 'create']);
     Route::get('/update', [DosenController::class, 'update']);
     Route::get('/delete', [DosenController::class, 'delete']);

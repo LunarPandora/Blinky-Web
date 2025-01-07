@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Models\Dosen;
+use App\Models\User;
 
 class DosenController extends Controller
 {
     public function fetch(){
-        $dosen = Dosen::with(['prodi'])->get();
+        $dosen = Dosen::with(['prodi', 'acc'])->get();
 
         return response($dosen);
     }
@@ -21,12 +23,23 @@ class DosenController extends Controller
         return response($dosen);
     }
 
+    public function get(Request $request){
+        $dosen = Dosen::find($request->id);
+
+        return response($dosen);
+    }
+
     public function create(Request $request){
         $dosen = Dosen::create([
             'id_prodi' => $request->id_prodi,
             'nm_dosen' => $request->nm_dosen,
             'jabatan' => $request->jabatan,
-            'nidn' => $request->nidn
+            'nidn' => $request->nidn,
+            'isActive' => $request->isActive,
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat,
+            'gender' => $request->gender,
+            'agama' => $request->agama
         ]);
 
         $users = User::create([
@@ -34,6 +47,7 @@ class DosenController extends Controller
             'dosen_id' => $dosen->id,
             'email' => $request->email,
             'password' => Hash::make($request->pw_dosen),
+            'user_picture' => '-'
         ]);
 
         if($users){
@@ -51,6 +65,11 @@ class DosenController extends Controller
         $dosen->nm_dosen = $request->nm_dosen;
         $dosen->jabatan = $request->jabatan;
         $dosen->nidn = $request->nidn;
+        $dosen->isActive = $request->isActive;
+        $dosen->no_telp = $request->no_telp;
+        $dosen->alamat = $request->alamat;
+        $dosen->gender = $request->gender;
+        $dosen->agama = $request->agama;
 
         $dosen->save();
 

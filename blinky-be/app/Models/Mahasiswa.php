@@ -23,10 +23,14 @@ class Mahasiswa extends Model
         'nim',
         'id_kelas',
         'id_prodi',
-        'id_admin',
         'nm_mhswa',
         'angkatan',
-        'uid_rfid',
+        'isActive',
+        'no_telp',
+        'alamat',
+        'gender',
+        'agama',
+        'uid_rfid'
         // 'foto_mhswa',
     ];
 
@@ -40,5 +44,9 @@ class Mahasiswa extends Model
 
     public function absensi(): HasMany{
         return $this->hasMany(Absensi::class, 'id_mhswa', 'id_mhswa');
+    }
+
+    public function acc(): HasMany{
+        return $this->hasMany(User::class, 'mhswa_id', 'id_mhswa');
     }
 }
