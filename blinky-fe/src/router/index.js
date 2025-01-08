@@ -126,7 +126,7 @@ const router = createRouter({
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/mahasiswa/absensi/:id_pertemuan',
+              path: '/dashboard/mahasiswa/absensi/:id_jadwal',
               component: Mahasiswa_TableAbsensiPage,
               // alias: '/dashboard/'
             },

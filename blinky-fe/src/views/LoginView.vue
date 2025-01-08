@@ -11,7 +11,7 @@
     const router = useRouter()
     const sessionStore = useSessionStore()
 
-	async function login(){
+	async function login(){		
 		await apiClient.post('login', {
 			'email': email.value,
 			'password': pass.value

@@ -13,6 +13,12 @@ class DosenController extends Controller
         return response($dosen);
     }
 
+    public function fetch_list(Request $request){
+        $dosen = Dosen::where('id_prodi', '=', $request->id_prodi)->get();
+
+        return response($dosen);
+    }
+
     public function get(Request $request){
         $dosen = Dosen::find($request->id);
 

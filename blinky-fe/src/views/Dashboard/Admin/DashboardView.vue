@@ -133,9 +133,9 @@
         </div>
 
         <div name="navbar_mhswa" class="flex flex-col w-full h-full gap-5" v-if="sessionStore.session.role == 'Mahasiswa'">
-          <RouterLink to='/dashboard/mahasiswa/matkul' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-leafgreen *:text-white': currentPage.includes('/dashboard/mahasiswa/matkul')}">
-            <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Mata Kuliah</p>
+          <RouterLink to='/dashboard/mahasiswa/matkul' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+            <fa icon="fas fa-school" fixed-width class="text-md"></fa>
+            <p class="text-sm">Mata Kuliah</p>
           </RouterLink>
         </div>
 

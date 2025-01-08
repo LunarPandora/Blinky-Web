@@ -82,6 +82,7 @@ Route::prefix('statusabsensi')->group(function () {
 
 Route::prefix('dosen')->group(function () {
     Route::get('/', [DosenController::class, 'fetch']);
+    Route::get('/find', [DosenController::class, 'fetch_list']);
     Route::get('/get', [DosenController::class, 'get']);
     Route::get('/add', [DosenController::class, 'create']);
     Route::get('/update', [DosenController::class, 'update']);

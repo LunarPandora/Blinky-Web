@@ -3,8 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
+use App\Models\Kelas;
+use App\Models\Mahasiswa;
+use App\Models\Pertemuan;
+use App\Models\StatusAbsensi;
 
 class Absensi extends Model
 {
@@ -33,5 +39,9 @@ class Absensi extends Model
 
     public function pertemuan(): BelongsTo{
         return $this->belongsTo(Pertemuan::class, 'id_pertemuan', 'id_pertemuan');
+    }
+
+    public function status(): HasMany{
+        return $this->hasMany(StatusAbsensi::class, 'kode_status_absensi', 'kode_status_absensi');
     }
 }

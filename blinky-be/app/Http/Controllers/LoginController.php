@@ -22,7 +22,9 @@ class LoginController extends Controller
         if($auth){
             $request->session()->regenerate();
 
-            $ud = User::where('id', '=', Auth::id())->with(['dosen_acc', 'mhswa_acc', 'dosen_acc.prodi', 'mhswa_acc.prodi'])->first();
+            $ud = User::where('id', '=', Auth::id())
+            ->with(['dosen_acc', 'mhswa_acc', 'dosen_acc.prodi', 'mhswa_acc.prodi'])
+            ->first();
 
             $session_dt = array(
                 'id' => $ud->id,

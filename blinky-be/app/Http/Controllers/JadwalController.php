@@ -32,10 +32,9 @@ class JadwalController extends Controller
             $jadwal = $jadwal->with(['kelas', 'dosen', 'matkul'])->get();
         } 
         else if($request->role == "Mahasiswa"){
-            $jadwal = Jadwal::where([
-                ['id_mahasiswa', '=', $request->id],
-            ])
-            ->with(['kelas', 'dosen', 'matkul'])->get();
+            $jadwal = Jadwal::where('id_kelas', '=', $request->id_kelas)
+            ->with(['kelas', 'dosen', 'matkul'])
+            ->get();
         }
         
         return response($jadwal);

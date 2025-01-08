@@ -12,7 +12,7 @@ class PertemuanController extends Controller
 {
     public function fetch(Request $request){
         $pertemuan = Pertemuan::where('id_jadwal', '=', $request->id_jadwal)
-        ->with(['absensi'])
+        ->with(['jadwal','absensi', 'absensi.status'])
         ->get();
 
         return response()->json($pertemuan);
