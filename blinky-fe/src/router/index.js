@@ -12,6 +12,7 @@ import Admin_TableMahasiswa from '../pages/Admin/TableMahasiswa.vue'
 import Admin_TableDosen from '../pages/Admin/TableDosen.vue'
 import Admin_TableKelas from '../pages/Admin/TableKelas.vue'
 import Admin_TableMatkul from '../pages/Admin/TableMatkul.vue'
+import Admin_TableJadwal from '../pages/Admin/TableJadwal.vue'
 
 import Dosen_ProfilPage from '../pages/Dosen/ProfilDosen.vue'
 import Dosen_TableMatkulPage from '../pages/Dosen/TableMatkul.vue'
@@ -70,6 +71,11 @@ const router = createRouter({
             {
               path: '/dashboard/admin/kelas',
               component: Admin_TableKelas,
+              // alias: '/dashboard/'
+            },
+            {
+              path: '/dashboard/admin/jadwal',
+              component: Admin_TableJadwal,
               // alias: '/dashboard/'
             },
             {

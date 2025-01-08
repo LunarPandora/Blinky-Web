@@ -73,6 +73,7 @@ class JadwalController extends Controller
                     'tanggal_pertemuan' => $cur->format('Y-m-d'),
                 ]);
 
+
                 $cur = $cur->add(7, 'day');
             }
 
