@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use App\Models\Prodi;
+use App\Models\User;
 
 class Dosen extends Model
 {
@@ -29,5 +31,9 @@ class Dosen extends Model
 
     public function prodi(): BelongsTo{
         return $this->belongsTo(Prodi::class, 'id_prodi', 'id_prodi');
+    }
+
+    public function acc(): HasMany{
+        return $this->hasMany(User::class, 'dosen_id', 'id_dosen');
     }
 }
