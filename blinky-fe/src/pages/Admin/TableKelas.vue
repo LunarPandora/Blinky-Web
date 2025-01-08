@@ -2,233 +2,234 @@
     import { ref, onMounted, watch } from 'vue'
     import { useRoute } from 'vue-router'
 
-    import apiClient from '@/services/api'
     import DateConverter from '@/services/date'
-
-    const route = useRoute()
+    import apiClient from '@/services/api';
 
     const dataKelas = ref()
-    const temp_id = ref(0)
+    const temp_data = ref()
+
+    const kelas = ref()
 
     const isModalOn = ref(false)
-    const modeModal = ref()
-
-    onMounted(() => {
-        fetchData()
-    })
+    const modalMode = ref('Add')
 
     async function fetchData(){
-        await apiClient.get('kelas/')
+        await apiClient.get('kelas')
         .then(resp => {
             dataKelas.value = resp.data
-            console.log(resp.data)
         })
     }
 
-    function toggleModal(mode, val){
-        isModalOn.value = !isModalOn.value
-        modeModal.value = mode
+    async function resetInput(){
+        kelas.value = ''
+    }
 
-        if(mode == 'delete'){
-            temp_id.value = val
+    async function tambahKelas(){
+        await apiClient.get('kelas/add', {
+            params: {
+                'nm_kelas': kelas.value
+            }
+        })
+        .then(resp => {
+            if(resp.data == "Success!"){
+                alert('Data mahasiswa berhasil didaftarkan!')
+            }
+            else{
+                alert('Data mahasiswa gagal didaftarkan!')
+            }
+
+            resetInput()
+            toggleModal(0, 'Add')
+        })
+    }
+
+    async function updateKelas(){
+        await apiClient.get('kelas/update', {
+            params: {
+                'id_kelas': temp_data.value.id_kelas,
+                'nm_kelas': kelas.value
+            }
+        })
+        .then(resp => {
+            if(resp.data == "Success!"){
+                alert('Data kelas berhasil diupdate!')
+            }
+            else{
+                alert('Data kelas gagal diupdate!')
+            }
+
+            toggleModal(0, 'Edit')
+        })
+    }
+
+    async function deleteKelas(){
+        await apiClient.get('kelas/delete', {
+            params: {
+                'id_kelas': temp_data.value.id_kelas,
+            }
+        })
+        .then(resp => {
+            if(resp.data == "Success!"){
+                alert('Data kelas berhasil dihapus!')
+            }
+            else{
+                alert('Data kelas gagal dihapus!')
+            }
+
+            toggleModal(0, 'Delete')
+        })
+    }
+
+    function toggleModal(val, mode){
+        isModalOn.value = !isModalOn.value
+        modalMode.value = mode
+
+        temp_data.value = val
+        
+        if(mode == 'Edit'){
+            kelas.value = val.nm_kelas
+        }
+        else{
+            resetInput()
         }
 
         fetchData()
     }
 
-    // async function tambahAbsensi(){
-    //     await apiClient.get('absensi/add', {
-    //         params: {
-    //             id_mhswa: mahasiswa.value,
-    //             id_jadwal: route.params.id_jadwal,
-    //             id_kelas: jadwal.value.kelas.id_kelas,
-    //             date: date.value,
-    //             time: time.value,
-    //             kode_status_absensi: status.value,
-    //             pertemuan: route.params.id_tanggal
-    //         }
-    //     })
-    //     .then(resp => {
-    //         if(resp.data == 'Success!'){
-    //             alert('Absensi berhasil ditambahkan!')
-    //         }
-    //         else{
-    //             alert('Absensi gagal ditambahkan!')
-    //         }
-
-    //         toggleModal('', 0)
-    //     })
-    // }
-
-    // async function updateStatus(x, index){
-    //     let newStatus = document.getElementById('select-' + index).value
-
-    //     await apiClient.get('absensi/update', {
-    //         params: {
-    //             id_absensi: x.id_absensi,
-    //             kode_status_absensi: newStatus,
-    //         }
-    //     })
-    //     .then(resp => {
-    //         if(resp.data == 'Success!'){
-    //             alert('Absensi berhasil diupdate!')
-    //         }
-    //         else{
-    //             alert('Absensi gagal diupdate!')
-    //         }
-    //     })
-    // }
-
-    // async function hapusAbsensi(){
-    //     await apiClient.get('absensi/delete', {
-    //         params: {
-    //             id_absensi: temp_id.value,
-    //         }
-    //     })
-    //     .then(resp => {
-    //         if(resp.data == 'Success!'){
-    //             alert('Absensi berhasil dihapus!')
-    //         }
-    //         else{
-    //             alert('Absensi gagal dihapus!')
-    //         }
-
-    //         toggleModal('', 0)
-    //     })    
-    // }
+    onMounted(() => {
+        fetchData()
+    })
 </script>
 
 <template>
-    <div class="flex items-center justify-between bg-keppel sticky top-0 right-0 h-fit w-full p-5 border-b-[2px] border-b-gray-200">
+    <div class="flex items-center justify-between sticky top-0 right-0 h-fit w-full p-5 border-b-[2px] border-b-gray-200">
         <div>
-            <h1 class="text-indigo font-medium text-lg">
+            <h1 class="text-darkbrown font-medium text-lg">
             Dashboard
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
                 Kelas
             </h1>
         </div>
-    </div>
+    </div>  
     <div class="flex items-center justify-between gap-3 px-5 py-3 border-b-[2px] border-b-gray-200">
-        <div class="flex p-2 bg-gray-200 rounded-lg items-center gap-3 w-[30%] leading-relaxed tracking-wide text-sm">
-            <fa icon="fas fa-search" class="text-gray-500"></fa>
-            <input class="bg-transparent border-0 outline-none w-full" type="text" placeholder="Cari nama mata kuliah...">
+        <div class="flex p-2 bg-cream rounded-lg items-center gap-3 w-[30%] text-sm leading-relaxed tracking-wide">
+            <fa icon="fas fa-search" class="text-darkbrown"></fa>
+            <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari kelas...">
         </div>
 
         <div class="flex items-center justify-end gap-5">
-            <button @click="toggleModal('add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-blue-500 text-white rounded-lg">
+            <button @click="toggleModal(0, 'Add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-darkbrown text-white rounded-lg">
                 <fa icon="fas fa-plus"></fa>
                 Tambahkan kelas baru
             </button>
-            <!-- <div class="flex p-3 bg-indigo rounded-lg items-center gap-2 max-w-[50%]">
-                <fa icon="fas fa-door-closed" class="text-white"></fa>
-                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full" v-model="kelas">
-                    <option selected value="0">Semua kelas</option>
-                    <option v-for="x in dataKelas" :value="x.id_kelas">{{ x.nm_kelas }}</option>
-                </select>
-            </div> -->
-
-            <!-- <div class="flex p-3 bg-indigo rounded-lg items-center gap-2">
-                <fa icon="fas fa-book" class="text-white"></fa>
-                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full" v-model="hari">
-                    <option selected value="0">Semua hari</option>
-                    <option v-for="x in 6" :value="x">{{ new DayFormatter(x).convertToDayName() }}</option>
-                </select>
-            </div> -->
         </div>
     </div>
     <div class="flex flex-col w-full h-full overflow-y-scroll justify-between px-5 my-4 scrollbar">
         <table class="w-full">
             <thead>
-                <tr class="*:p-3 *:border-y-2 *:text-left *:font-medium sticky top-0 bg-indigo text-white">
-                    <th width="15%">No</th>
-                    <th width="35%">Nama Kelas</th>
-                    <th width="25%">Terakhir kali diedit</th>
-                    <th width="20%">Action</th>
+                <tr class="*:p-3 *:text-left *:font-medium sticky top-0 bg-darkbrown text-white">
+                    <th width="65%" class="rounded-tl-lg">Nama Kelas</th>
+                    <th width="20%">Terakhir kali diedit</th>
+                    <th width="10%" class="rounded-tr-lg">Action</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- <tr class="*:odd:bg-gray- *:even:bg-blueprism text-white *:p-3"></tr> -->
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataAbsensi" :key="index">
-                    <td>{{ x.mahasiswa.nim }}</td>
-                    <td>{{ x.mahasiswa.nm_mhswa }}</td>
-                    <td>{{ x.mahasiswa.angkatan }}</td>
-                    <td>{{ new DateConverter(x.waktu_absen).format() }}</td>
-                    <td class="flex gap-2 text-white items-center">
-                        <div class="flex p-2 bg-indigo rounded-lg items-center gap-2 h-fit">
-                            <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full text-sm" :value="x.kode_status_absensi" :id="'select-' + index" @change="updateStatus(x, index)">
-                                <option v-for="y in dataStatus" :value="y.kode_status_absensi">{{ y.status_absensi}}</option>
-                            </select>
-                        </div>
+                <TransitionGroup name="fade" mode="out-in">
+                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataKelas" :key="index" v-if="dataKelas">
+                        <td>{{ x.nm_kelas }}</td>
+                        <td>{{ new DateConverter(x.updated_at).format() }}</td>
+                        <td class="text-white justify-center h-full">
+                            <div class="flex items-center gap-1">
+                                <button class="bg-orange-400 p-2 rounded-lg h-fit" @click="toggleModal(x, 'Edit')">
+                                    <fa icon="fas fa-edit" fixed-width></fa>
+                                </button>
 
-                        <button @click="toggleModal('delete', x.id_absensi)" class="flex p-2 bg-red-500 rounded-lg items-center gap-2 h-fit text-sm">
-                            <fa icon="fas fa-trash"></fa>
-                            <p>Hapus</p>
-                        </button>
-                    </td>
-                </tr>
+                                <button class="bg-red-600 p-2 rounded-lg h-fit" @click="toggleModal(x, 'Delete')">
+                                    <fa icon="fas fa-trash" fixed-width></fa>
+                                </button>
+                            </div>
+                            <!-- <div class="flex p-2 bg-indigo rounded-lg items-center gap-2 h-fit">
+                                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full text-sm" :value="x.kode_status_absensi" :id="'select-' + index" @change="updateStatus(x, index)">
+                                    <option v-for="y in dataStatus" :value="y.kode_status_absensi">{{ y.status_absensi}}</option>
+                                </select>
+                            </div>
+
+                            <button @click="toggleModal(x)" class="flex p-2 bg-orange-400 rounded-lg items-center gap-2 h-fit">
+                                <fa icon="fas fa-edit"></fa>
+                                Keterangan
+                            </button> -->
+                        </td>
+                    </tr>
+                </TransitionGroup>
             </tbody>
         </table>
     </div>
+    <TransitionGroup name="fade" mode="out-in">
+        <div class="items-center justify-center w-screen h-screen bg-[#000000AA] z-50 absolute top-0 left-0 flex" v-if="isModalOn">
+            <div class="flex flex-col bg-cream px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modalMode == 'Add'">
+                <div class="flex w-full items-center justify-between pb-6">
+                    <p class="text-2xl font-medium text-darkbrown">Tambah Kelas</p>
 
-    <div class="items-center justify-center w-screen h-screen bg-[#000000AA] z-50 absolute top-0 left-0" :class="isModalOn ? 'flex' : 'hidden'">
-        <div class="flex flex-col bg-white px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modeModal == 'add'">
-            <div class="flex w-full items-center justify-between pb-6">
-                <p class="text-2xl font-medium text-indigo">Tambah Absensi Baru</p>
+                    <fa @click="toggleModal(0, 'Add')" icon="fas fa-times" class="text-2xl" fixed-width></fa>
+                </div>
 
-                <fa @click="toggleModal('', 0)" icon="fas fa-times" class="text-2xl" fixed-width></fa>
+                <div class="flex flex-col gap-8">
+                    <div class="flex flex-col items-center w-full justify-center gap-3">
+                        <div class="bg-softcream p-4 rounded-xl flex items-center w-full gap-3">
+                            <fa icon="fas fa-door-closed" class="text-darkbrown" fixed-width />
+                            <input type="text" class="bg-transparent outline-none w-full" v-model="kelas" placeholder="Masukkan nama kelas">
+                        </div>
+
+                        <button @click="tambahKelas()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-leafgreen text-white rounded-lg">
+                            <fa icon="fas fa-plus"></fa>
+                            Tambahkan
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div class="flex flex-col gap-8">
-                <div class="flex flex-col items-center w-full justify-center gap-2">
-                    <div class="bg-indigo p-4 rounded-xl flex items-center w-full gap-3">
-                        <fa icon="fas fa-user" class="text-white" fixed-width />
-                        <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full *:font-light" v-model="mahasiswa">
-                            <option readonly hidden value="0">Pilih mahasiswa</option>
-                            <option v-for="x in dataMahasiswa" :value="x.id_mhswa">{{ x.nm_mhswa }} - {{ x.nim }}</option>
-                        </select>
-                    </div>
-                    <div class="bg-indigo p-4 rounded-xl flex items-center w-full gap-3">
-                        <fa icon="fas fa-clipboard" class="text-white" fixed-width />
-                        <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full *:font-light" v-model="status">
-                            <option readonly hidden value="0">Pilih status absensi</option>
-                            <option v-for="x in dataStatus" :value="x.kode_status_absensi">{{ x.status_absensi }}</option>
-                        </select>
-                    </div>
+            <div class="flex flex-col bg-cream px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modalMode == 'Edit'">
+                <div class="flex w-full items-center justify-between pb-6">
+                    <p class="text-2xl font-medium text-darkbrown">Edit Kelas</p>
 
-                    <div class="bg-indigo p-4 rounded-xl flex items-center w-full gap-3">
-                        <fa icon="fas fa-clock" class="text-white" fixed-width />
-                        <DatePicker input-class-name="dateInput font-medium text-white" v-model="time" :time-picker="true" :hide-input-icon="true" minutes-increment="5" />
-                    </div>
+                    <fa @click="toggleModal(0, 'Edit')" icon="fas fa-times" class="text-2xl" fixed-width></fa>
+                </div>
 
-                    <button @click="tambahAbsensi()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-indigo text-white rounded-lg">
-                        <fa icon="fas fa-plus"></fa>
-                        Tambahkan
-                    </button>
+                <div class="flex flex-col gap-8">
+                    <div class="flex flex-col items-center w-full justify-center gap-3">
+                        <div class="bg-softcream p-4 rounded-xl flex items-center w-full gap-3">
+                            <fa icon="fas fa-door-closed" class="text-darkbrown" fixed-width />
+                            <input type="text" class="bg-transparent outline-none w-full" v-model="kelas" placeholder="Masukkan nama kelas">
+                        </div>
+
+                        <button @click="updateKelas()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-leafgreen text-white rounded-lg">
+                            <fa icon="fas fa-floppy-disk"></fa>
+                            Update
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col bg-cream px-5 py-7 rounded-xl w-1/3 justify-center" v-if="modalMode == 'Delete'">
+                <div class="flex w-full items-center justify-between pb-6">
+                    <p class="text-2xl font-medium text-darkbrown">Hapus Kelas</p>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <p class="text-l text-darkbrown">Apakah anda yakin ingin menghapus data ini?</p>
+                    <div class="flex flex-row items-center w-full justify-center gap-3">
+                        <button @click="toggleModal(0, 'Delete')" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-transparent outline outline-darkbrown [outline-offset:-2.5px] text-darkbrown rounded-lg">
+                            Tidak
+                        </button>
+
+                        <button @click="deleteKelas()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-softred text-white rounded-lg">
+                            Ya
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-        
-        <div class="flex flex-col bg-darkpurple text-white px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-else>
-            <div class="flex w-full items-center justify-between pb-6">
-                <p class="text-2xl font-semibold">Hapus</p>
-
-                <fa @click="toggleModal('', 0)" icon="fas fa-times" class="text-white text-2xl" fixed-width></fa>
-            </div>
-
-            <div class="flex flex-col gap-8">
-                <p class="text-lg">Apakah anda yakin ingin <span class="font-bold text-red-500">menghapus</span> absensi ini?</p>
-
-                <div class="flex gap-3 items-center justify-end">
-                    <button class="bg-darkslate px-6 py-3 rounded-xl text-lg text-white" @click="toggleModal('', 0)">
-                        Kembali
-                    </button>
-                    <button class="bg-indigo px-6 py-3 rounded-xl text-lg text-white" @click="hapusAbsensi()">
-                        Hapus
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+    </TransitionGroup>
 </template>
 
 <style>
