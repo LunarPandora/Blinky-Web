@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('no_pengajar');
             $table->enum('tipe_pengajar', ['Dosen', 'Guru'])->default('Dosen');
             
-            $table->enum('agama', ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'])->after('angkatan')->default('Islam');
-            $table->enum('gender', ['L', 'P'])->after('angkatan')->default('L');
-            $table->text('alamat')->after('angkatan')->default('-');
-            $table->string('no_telp')->after('angkatan')->default('-');
-            $table->enum('isActive', ['Aktif', 'Tidak aktif'])->after('angkatan')->default('Aktif');
+            $table->enum('agama', ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'])->default('Islam');
+            $table->enum('gender', ['L', 'P'])->default('L');
+            $table->text('alamat')->default('-');
+            $table->string('no_telp')->default('-');
+            $table->enum('isActive', ['Aktif', 'Tidak aktif'])->default('Aktif');
             $table->timestamps();
         });
 
