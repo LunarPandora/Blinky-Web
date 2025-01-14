@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('jadwal', function (Blueprint $table) {
             $table->integer('id_jadwal')->primary()->autoIncrement();
             $table->mediumInteger('id_kelas');
-            $table->integer('id_dosen');
-            $table->integer('id_matkul');
+            $table->integer('id_pengajar');
+            $table->integer('id_mata_studi');
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->smallInteger('hari');
@@ -25,8 +25,8 @@ return new class extends Migration
 
         Schema::table('jadwal', function (Blueprint $table) {
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('id_dosen')->references('id_dosen')->on('dosen')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('id_matkul')->references('id_matkul')->on('matkul')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_pengajar')->references('id_pengajar')->on('pengajar')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('id_mata_studi')->references('id_mata_studi')->on('mata_studi')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

@@ -3,22 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\StatusAbsensi;
+use App\Models\StatusPresensi;
 
-class StatusAbsensiController extends Controller
+class StatusPresensiController extends Controller
 {
     public function fetch(){
-        $statusabsensi = StatusAbsensi::all();
+        $statuspresensi = StatusPresensi::all();
 
-        return response($statusabsensi);
+        return response($statuspresensi);
     }
 
     public function create(Request $request){
-        $statusabsensi = StatusAbsensi::create([
-            'status_absensi' => $request->status_absensi
+        $statuspresensi = StatusPresensi::create([
+            'status_presensi' => $request->status_presensi
         ]);
 
-        if($statusabsensi){
+        if($statuspresensi){
             return response('Success!');
         }
         else{
@@ -27,13 +27,13 @@ class StatusAbsensiController extends Controller
     }
 
     public function update(Request $request){
-        $statusabsensi = StatusAbsensi::find($request->kode_status_absensi);
+        $statuspresensi = StatusPresensi::find($request->kode_status_presensi);
 
-        $statusabsensi->status_absensi = $request->status_absensi;
+        $statuspresensi->status_presensi = $request->status_presensi;
 
-        $statusabsensi->save();
+        $statuspresensi->save();
 
-        if($statusabsensi){
+        if($statuspresensi){
             return response('Success!');
         }
         else{
@@ -42,10 +42,10 @@ class StatusAbsensiController extends Controller
     }
 
     public function delete(Request $request){
-        $statusabsensi = StatusAbsensi::find($request->kode_status_absensi);
-        $statusabsensi->delete();
+        $statuspresensi = StatusPresensi::find($request->kode_status_presensi);
+        $statuspresensi->delete();
 
-        if($statusabsensi){
+        if($statuspresensi){
             return response('Success!');
         }
         else{

@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Pertemuan;
-use App\Models\Absensi;
-use App\Models\Mahasiswa;
+use App\Models\Presensi;
+use App\Models\Pelajar;
 
 class PertemuanController extends Controller
 {
     public function fetch(Request $request){
         $pertemuan = Pertemuan::where('id_jadwal', '=', $request->id_jadwal)
-        ->with(['jadwal','absensi', 'absensi.status'])
+        ->with(['jadwal','presensi', 'presensi.status'])
         ->get();
 
         return response()->json($pertemuan);
@@ -20,7 +20,7 @@ class PertemuanController extends Controller
 
     public function find(Request $request){
         $pertemuan = Pertemuan::where('id_pertemuan', $request->id_pertemuan)
-                    ->with(['jadwal', 'absensi'])
+                    ->with(['jadwal', 'presensi'])
                     ->first();
 
         return response($pertemuan);

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->integer('id')->primary()->autoIncrement();
             $table->mediumInteger('role_id');
-            $table->integer('dosen_id')->nullable();
-            $table->integer('mhswa_id')->nullable();
+            $table->integer('pengajar_id')->nullable();
+            $table->integer('pelajar_id')->nullable();
             $table->string('email');
             $table->string('password');
             $table->text('user_picture');
@@ -24,8 +24,8 @@ return new class extends Migration
 
         Schema::table('users', function (Blueprint $table) {
             $table->foreign('role_id')->references('id')->on('roles')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('dosen_id')->references('id_dosen')->on('dosen')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('mhswa_id')->references('id_mhswa')->on('mahasiswa')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('pengajar_id')->references('id_pengajar')->on('pengajar')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('pelajar_id')->references('id_pelajar')->on('pelajar')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

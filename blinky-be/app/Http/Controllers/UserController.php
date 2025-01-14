@@ -8,20 +8,21 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use App\Models\Dosen;
+use App\Models\Pengajar;
+use App\Models\Pelajar;
 
 class UserController extends Controller
-{
+{   
     public function get(Request $request){
         $u = User::where("id", $request->id)
-        ->with(['roles', 'dosen_acc', 'mhswa_acc', 'dosen_acc.prodi', 'mhswa_acc.prodi'])
+        ->with(['roles', 'pengajar_acc', 'pelajar_acc', 'pengajar_acc.jurusan', 'pelajar_acc.jurusan'])
         ->first();
 
         $session_dt = array(
             'id' => $u->id,
             'role' => $u->roles->role_name,
-            'dosen' => $u->dosen_acc,
-            'mhswa' => $u->mhswa_acc,
+            'pengajar' => $u->pengajar_acc,
+            'pelajar' => $u->pelajar_acc,
             'email' => $u->email,
             'user_picture' => $u->user_picture,
         );
@@ -32,9 +33,9 @@ class UserController extends Controller
     public function update(Request $request){
         $role = $request->role;
 
-        if($role == 'Dosen'){
+        if($role == 'Pengajar'){
             $u = User::find($request->id);
-            $d = Dosen::find($u->dosen_id);
+            $d = Pengajar::find($u->pengajar_id);
 
             $u->email = $request->email;
 
@@ -68,9 +69,9 @@ class UserController extends Controller
                 return response('Failed!');
             }
         }
-        elseif($role == 'Mahasiswa'){
+        elseif($role == 'Pelajar'){
             $u = User::find($request->id);
-            $m = Mahasiswa::find($u->mhswa_id);
+            $m = Pelajar::find($u->pelajar_id);
 
             $u->email = $request->email;
 

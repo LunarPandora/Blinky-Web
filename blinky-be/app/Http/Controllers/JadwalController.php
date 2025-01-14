@@ -14,26 +14,26 @@ use Illuminate\Support\Carbon;
 class JadwalController extends Controller
 {
     public function fetch(Request $request){
-        if($request->role == "Dosen"){
-            $jadwal = Jadwal::whereRelation('dosen', 'id_dosen', '=', $request->id);
+        if($request->role == "Pengajar"){
+            $jadwal = Jadwal::whereRelation('pengajar', 'id_pengajar', '=', $request->id);
             
             if($request->id_kelas != '0'){
                 $jadwal = $jadwal->whereRelation('kelas', 'id_kelas', '=', $request->id_kelas);
             }
 
             if($request->search != '' && !is_null($request->search)){
-                $jadwal = $jadwal->whereRelation('matkul', 'nm_matkul', 'LIKE', '%' . $request->search . '%');
+                $jadwal = $jadwal->whereRelation('mata_studi', 'nm_mata_studi', 'LIKE', '%' . $request->search . '%');
             }
 
             if($request->hari != '0'){
                 $jadwal = $jadwal->where('hari', '=', $request->hari);
             }
 
-            $jadwal = $jadwal->with(['kelas', 'dosen', 'matkul'])->get();
+            $jadwal = $jadwal->with(['kelas', 'pengajar', 'mata_studi'])->get();
         } 
-        else if($request->role == "Mahasiswa"){
+        else if($request->role == "Pelajar"){
             $jadwal = Jadwal::where('id_kelas', '=', $request->id_kelas)
-            ->with(['kelas', 'dosen', 'matkul'])
+            ->with(['kelas', 'pengajar', 'mata_studi'])
             ->get();
         }
         
@@ -44,7 +44,7 @@ class JadwalController extends Controller
         $jadwal = Jadwal::where([
             ['id_jadwal', '=', $request->id_jadwal],
         ])
-        ->with(['kelas', 'dosen', 'matkul', 'kelas.mahasiswa'])
+        ->with(['kelas', 'pengajar', 'mata_studi', 'kelas.pelajar'])
         ->first();
 
         return response($jadwal);
@@ -53,8 +53,8 @@ class JadwalController extends Controller
     public function create(Request $request){
         $jadwal = Jadwal::create([
             'id_kelas' => $request->id_kelas,
-            'id_dosen' => $request->id_dosen,
-            'id_matkul' => $request->id_matkul,
+            'id_pengajar' => $request->id_pengajar,
+            'id_mata_studi' => $request->id_mata_studi,
             'jam_mulai' => $request->jam_mulai,
             'jam_selesai' => $request->jam_selesai,
             'hari' => $request->hari,
@@ -64,7 +64,7 @@ class JadwalController extends Controller
         if($jadwal){
             $cur = Carbon::createFromFormat('d-m-Y H:i:s', $request->date);
             $kel = Kelas::where('id_kelas', $request->id_kelas)
-            ->with(['mahasiswa'])
+            ->with(['pelajar'])
             ->first();
 
             for($i = 0; $i < $request->pertemuan; $i++){
@@ -88,8 +88,8 @@ class JadwalController extends Controller
         $jadwal = Jadwal::find($request->id_jadwal);
 
         $jadwal->id_kelas = $request->id_kelas;
-        $jadwal->id_dosen = $request->id_dosen;
-        $jadwal->id_matkul = $request->id_matkul;
+        $jadwal->id_pengajar = $request->id_pengajar;
+        $jadwal->id_mata_studi = $request->id_mata_studi;
         $jadwal->jam_mulai = $request->jam_mulai;
         $jadwal->jam_selesai = $request->jam_selesai;
         $jadwal->hari = $request->hari;

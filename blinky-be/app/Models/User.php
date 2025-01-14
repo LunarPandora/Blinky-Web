@@ -24,8 +24,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'dosen_id',
-        'mhswa_id',
+        'pengajar_id',
+        'pelajar_id',
         'user_picture'
     ];
 
@@ -43,12 +43,12 @@ class User extends Authenticatable
         return $this->belongsTo(Roles::class, 'role_id', 'id');
     }
 
-    public function dosen_acc(): BelongsTo{
-        return $this->belongsTo(Dosen::class, 'dosen_id', 'id_dosen');
+    public function pengajar_acc(): BelongsTo{
+        return $this->belongsTo(Pengajar::class, 'pengajar_id', 'id_pengajar');
     }
 
-    public function mhswa_acc(): BelongsTo{
-        return $this->belongsTo(Mahasiswa::class, 'mhswa_id', 'id_mhswa');
+    public function pelajar_acc(): BelongsTo{
+        return $this->belongsTo(Pelajar::class, 'pelajar_id', 'id_pelajar');
     }
 
     /**

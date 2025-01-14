@@ -2,15 +2,16 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MahasiswaController;
-use App\Http\Controllers\ProdiController;
+
+use App\Http\Controllers\PelajarController;
+use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KelasController;
-use App\Http\Controllers\MatkulController;
-use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\MataStudiController;
+use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\PertemuanController;
 use App\Http\Controllers\RolesController;
-use App\Http\Controllers\StatusAbsensiController;
-use App\Http\Controllers\DosenController;
+use App\Http\Controllers\StatusPresensiController;
+use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
@@ -27,19 +28,19 @@ Route::prefix('users')->group(function () {
     Route::post('/update', [UserController::class, 'update']);
 });
 
-Route::prefix('mahasiswa')->group(function () {
-    Route::get('/', [MahasiswaController::class, 'fetch']);
-    Route::get('/list', [MahasiswaController::class, 'list']);
-    Route::post('/add', [MahasiswaController::class, 'create']);
-    Route::get('/update', [MahasiswaController::class, 'update']);
-    Route::get('/delete', [MahasiswaController::class, 'delete']);
+Route::prefix('pelajar')->group(function () {
+    Route::get('/', [PelajarController::class, 'fetch']);
+    Route::get('/list', [PelajarController::class, 'list']);
+    Route::post('/add', [PelajarController::class, 'create']);
+    Route::get('/update', [PelajarController::class, 'update']);
+    Route::get('/delete', [PelajarController::class, 'delete']);
 });
 
-Route::prefix('prodi')->group(function () {
-    Route::get('/', [ProdiController::class, 'fetch']);
-    Route::get('/add', [ProdiController::class, 'create']);
-    Route::get('/update', [ProdiController::class, 'update']);
-    Route::get('/delete', [ProdiController::class, 'delete']);
+Route::prefix('jurusan')->group(function () {
+    Route::get('/', [JurusanController::class, 'fetch']);
+    Route::get('/add', [JurusanController::class, 'create']);
+    Route::get('/update', [JurusanController::class, 'update']);
+    Route::get('/delete', [JurusanController::class, 'delete']);
 });
 
 Route::prefix('kelas')->group(function () {
@@ -49,21 +50,21 @@ Route::prefix('kelas')->group(function () {
     Route::get('/delete', [KelasController::class, 'delete']);
 });
 
-Route::prefix('matkul')->group(function () {
-    Route::get('/', [MatkulController::class, 'fetch']);
-    Route::get('/add', [MatkulController::class, 'create']);
-    Route::get('/update', [MatkulController::class, 'update']);
-    Route::get('/delete', [MatkulController::class, 'delete']);
+Route::prefix('mata_studi')->group(function () {
+    Route::get('/', [MataStudiController::class, 'fetch']);
+    Route::get('/add', [MataStudiController::class, 'create']);
+    Route::get('/update', [MataStudiController::class, 'update']);
+    Route::get('/delete', [MataStudiController::class, 'delete']);
 });
 
-Route::prefix('absensi')->group(function () {
-    Route::get('/', [AbsensiController::class, 'fetch']);
-    Route::get('/list', [AbsensiController::class, 'list']);
-    // Route::get('/list_pertemuan', [AbsensiController::class, 'list_pertemuan']);
-    Route::get('/add', [AbsensiController::class, 'create']);
-    Route::get('/update', [AbsensiController::class, 'update']);
-    Route::get('/update_ket', [AbsensiController::class, 'update_ket']);
-    Route::get('/delete', [AbsensiController::class, 'delete']);
+Route::prefix('presensi')->group(function () {
+    Route::get('/', [PresensiController::class, 'fetch']);
+    Route::get('/list', [PresensiController::class, 'list']);
+    // Route::get('/list_pertemuan', [PresensiController::class, 'list_pertemuan']);
+    Route::get('/add', [PresensiController::class, 'create']);
+    Route::get('/update', [PresensiController::class, 'update']);
+    Route::get('/update_ket', [PresensiController::class, 'update_ket']);
+    Route::get('/delete', [PresensiController::class, 'delete']);
 });
 
 Route::prefix('roles')->group(function () {
@@ -73,20 +74,20 @@ Route::prefix('roles')->group(function () {
     Route::get('/delete', [RolesController::class, 'delete']);
 });
 
-Route::prefix('statusabsensi')->group(function () {
-    Route::get('/', [StatusAbsensiController::class, 'fetch']);
-    Route::get('/add', [StatusAbsensiController::class, 'create']);
-    Route::get('/update', [StatusAbsensiController::class, 'update']);
-    Route::get('/delete', [StatusAbsensiController::class, 'delete']);
+Route::prefix('statuspresensi')->group(function () {
+    Route::get('/', [StatusPresensiController::class, 'fetch']);
+    Route::get('/add', [StatusPresensiController::class, 'create']);
+    Route::get('/update', [StatusPresensiController::class, 'update']);
+    Route::get('/delete', [StatusPresensiController::class, 'delete']);
 });
 
-Route::prefix('dosen')->group(function () {
-    Route::get('/', [DosenController::class, 'fetch']);
-    Route::get('/find', [DosenController::class, 'fetch_list']);
-    Route::get('/get', [DosenController::class, 'get']);
-    Route::get('/add', [DosenController::class, 'create']);
-    Route::get('/update', [DosenController::class, 'update']);
-    Route::get('/delete', [DosenController::class, 'delete']);
+Route::prefix('pengajar')->group(function () {
+    Route::get('/', [PengajarController::class, 'fetch']);
+    Route::get('/find', [PengajarController::class, 'fetch_list']);
+    Route::get('/get', [PengajarController::class, 'get']);
+    Route::get('/add', [PengajarController::class, 'create']);
+    Route::get('/update', [PengajarController::class, 'update']);
+    Route::get('/delete', [PengajarController::class, 'delete']);
 });
 
 Route::prefix('jadwal')->group(function () {

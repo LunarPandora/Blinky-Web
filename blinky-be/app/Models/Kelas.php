@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use Database\Factories\KelasFactory;
 
-use App\Models\Mahasiswa;
+use App\Models\Pelajar;
 
 class Kelas extends Model
 {
@@ -22,6 +22,6 @@ class Kelas extends Model
     ];
 
     public function mahasiswa(): HasMany{
-        return $this->hasMany(Mahasiswa::class, 'id_kelas', 'id_kelas');
+        return $this->hasMany(Pelajar::class, 'id_kelas', 'id_kelas');
     }
 }

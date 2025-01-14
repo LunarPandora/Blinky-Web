@@ -14,7 +14,7 @@ class LoginController extends Controller
         $cred = $request->validate([
             'email' => 'required',
             'password' => 'required',
-            // 'role' => ['required'] (Untuk bedakan mahasiswa dan dosen)
+            // 'role' => ['required'] (Untuk bedakan pelajar dan pengajar)
         ]);
 
         $auth = Auth::attempt($cred);
@@ -23,14 +23,14 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $ud = User::where('id', '=', Auth::id())
-            ->with(['dosen_acc', 'mhswa_acc', 'dosen_acc.prodi', 'mhswa_acc.prodi'])
+            ->with(['pengajar_acc', 'pelajar_acc', 'pengajar_acc.jurusan', 'pelajar_acc.jurusan'])
             ->first();
 
             $session_dt = array(
                 'id' => $ud->id,
                 'role' => $ud->roles->role_name,
-                'dosen' => $ud->dosen_acc,
-                'mhswa' => $ud->mhswa_acc,
+                'pengajar' => $ud->pengajar_acc,
+                'pelajar' => $ud->pelajar_acc,
                 'email' => $ud->email,
                 'user_picture' => $ud->user_picture,
             );

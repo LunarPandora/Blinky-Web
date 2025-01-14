@@ -16,8 +16,8 @@ class Jadwal extends Model
 
     protected $fillable = [
         'id_kelas',
-        'id_dosen',
-        'id_matkul',
+        'id_pengajar',
+        'id_mata_studi',
         'jam_mulai',
         'jam_selesai',
         'hari',
@@ -28,12 +28,12 @@ class Jadwal extends Model
         return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
     }
 
-    public function dosen(): BelongsTo{
-        return $this->belongsTo(Dosen::class, 'id_dosen', 'id_dosen');
+    public function pengajar(): BelongsTo{
+        return $this->belongsTo(Pengajar::class, 'id_pengajar', 'id_pengajar');
     }
 
-    public function matkul(): BelongsTo{
-        return $this->belongsTo(Matkul::class, 'id_matkul', 'id_matkul');
+    public function mata_studi(): BelongsTo{
+        return $this->belongsTo(MataStudi::class, 'id_mata_studi', 'id_mata_studi');
     }
 
     public function pertemuan(): HasMany{

@@ -24,7 +24,7 @@ class Pertemuan extends Model
         return $this->belongsTo(Jadwal::class, 'id_jadwal', 'id_jadwal');
     }
 
-    public function absensi(): HasMany{
-        return $this->hasMany(Absensi::class, 'id_pertemuan', 'id_pertemuan');
+    public function presensi(): HasMany{
+        return $this->hasMany(Presensi::class, 'id_pertemuan', 'id_pertemuan');
     }
 }
