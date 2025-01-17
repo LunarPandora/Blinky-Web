@@ -10,6 +10,7 @@
   const router = useRouter()
 
   const s = sessionStore.session
+  
   const currentPage = route.path
   const user_pic = ref('')
 

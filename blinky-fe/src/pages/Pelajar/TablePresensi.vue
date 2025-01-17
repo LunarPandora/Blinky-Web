@@ -11,11 +11,11 @@
     const sessionStore = useSessionStore()
     const currentDate = ref(Date.now())
 
-    const dataAbsensi = ref([]);
+    const dataPresensi = ref([]);
     const dataStatus = ref([]);
     const jadwal = ref();
 
-    const mahasiswa = ref(0);
+    const pelajar = ref(0);
     const temp_id = ref(null);
     const modeModal = ref('');
     const date = ref(new Date());
@@ -34,12 +34,12 @@
         progress.value = 'loading'
         loadingResult.value = true
 
-        await apiClient.post('absensi/add', {
+        await apiClient.post('presensi/add', {
             params: {
                 id_kelas: jadwal.value.kelas.id_kelas,
-                id_mhswa: sessionStore.session.mhswa.id_mhswa,
+                id_pelajar: sessionStore.session.pelajar.id_pelajar,
                 id_pertemuan: x.id_pertemuan,
-                kode_status_absensi: 1
+                kode_status_presensi: 1
             }
         })
         .then(resp =>{
@@ -78,22 +78,22 @@
             },
         })
         .then(resp => {
-            dataAbsensi.value = []
+            dataPresensi.value = []
 
             resp.data.map((x, i) => {
                 let kehadiran = false
-                x.absensi.map((y) => {
-                    if(y.id_mhswa == sessionStore.session.mhswa.id_mhswa){
-                        kehadiran = y.status[0].status_absensi
+                x.presensi.map((y) => {
+                    if(y.id_pelajar == sessionStore.session.pelajar.id_pelajar){
+                        kehadiran = y.status[0].status_presensi
                         return;
                     }
                 })
 
-                dataAbsensi.value.push(
+                dataPresensi.value.push(
                     {
                         'pertemuan': 'Pertemuan ke-' + (i + 1),
                         'tanggal': x.tanggal_pertemuan,
-                        'absensi': x.updated_at,
+                        'presensi': x.updated_at,
                         'kehadiran': kehadiran,
                         'date_eligible_start': new Date(x.tanggal_pertemuan + 'T' + x.jadwal.jam_mulai),
                         'date_eligible_stop': new Date(x.tanggal_pertemuan + 'T' + x.jadwal.jam_selesai)
@@ -110,16 +110,16 @@
             <h1 class="text-darkbrown font-medium text-lg">
                 Dashboard
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                Absensi
+                Presensi
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                <span v-if="jadwal">{{ jadwal.matkul.nm_matkul }} - {{ jadwal.kelas.nm_kelas }}</span>
+                <span v-if="jadwal">{{ jadwal.mata_studi.nm_mata_studi }} - {{ jadwal.kelas.nm_kelas }}</span>
             </h1>
         </div>
     </div>  
     <div class="flex gap-16 items-center justify-start sticky top-0 right-0 h-fit w-full p-5 ">
         <div class="flex flex-col">
-            <h4 class="text-darkbrown font-medium text-md">Mata Kuliah</h4>
-            <h3>{{ jadwal ? jadwal.matkul.nm_matkul : '-' }}</h3>
+            <h4 class="text-darkbrown font-medium text-md">Mata Studi</h4>
+            <h3>{{ jadwal ? jadwal.mata_studi.nm_mata_studi : '-' }}</h3>
         </div>
         <div class="flex flex-col">
             <h4 class="text-darkbrown font-medium text-md">Kelas</h4>
@@ -143,17 +143,17 @@
                 <tr class="*:p-3 *:text-left *:font-medium sticky top-0 bg-darkbrown text-white">
                     <th width="20%" class="rounded-tl-lg">Pertemuan</th>
                     <th width="25%">Tanggal</th>
-                    <th width="25%">Absensi</th>
+                    <th width="25%">Presensi</th>
                     <th width="10%">Kehadiran</th>
                     <th width="20%" class="rounded-tr-lg">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <TransitionGroup name="slideUp" mode="out-in">
-                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-3 *:text-sm *:tracking-wide" v-for="(x, index) in dataAbsensi" :key="index" v-if="dataAbsensi.length > 0">
+                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-3 *:text-sm *:tracking-wide" v-for="(x, index) in dataPresensi" :key="index" v-if="dataPresensi.length > 0">
                         <td>{{ x.pertemuan }}</td>
                         <td>{{ new DateConverter(x.tanggal).format(false) }}</td>
-                        <td>{{ x.kehadiran != false ? new DateConverter(x.absensi).format() : 'Belum diabsen' }}</td>
+                        <td>{{ x.kehadiran != false ? new DateConverter(x.presensi).format() : 'Belum diabsen' }}</td>
                         <td>
                             <p v-if="x.kehadiran == false">Belum diabsen</p>
                             <p v-else>{{ x.kehadiran }}</p>
@@ -161,11 +161,11 @@
                         <td class="flex gap-2 text-white items-center">
                             <div v-if="x.kehadiran == false">
                                 <div class="flex gap-2" v-if="currentDate < x.date_eligible_start || currentDate > x.date_eligible_stop">
-                                    <button class="flex p-2 bg-gray-400 rounded-lg items-center gap-2 h-fit" onclick="alert('Pengisian absensi sedang diluar jadwal! Harap coba saat tanggal dan waktu absensi sesuai!')">
+                                    <button class="flex p-2 bg-gray-400 rounded-lg items-center gap-2 h-fit" onclick="alert('Pengisian presensi sedang diluar jadwal! Harap coba saat tanggal dan waktu presensi sesuai!')">
                                         <fa icon="fas fa-check"></fa>
                                         Isi Kehadiran
                                     </button>
-                                    <!-- <button class="flex p-2 bg-gray-400 rounded-lg items-center gap-2 h-fit" onclick="alert('Pengisian absensi sedang diluar jadwal! Harap coba saat tanggal dan waktu absensi sesuai!')">
+                                    <!-- <button class="flex p-2 bg-gray-400 rounded-lg items-center gap-2 h-fit" onclick="alert('Pengisian presensi sedang diluar jadwal! Harap coba saat tanggal dan waktu presensi sesuai!')">
                                         <fa icon="fas fa-times"></fa>
                                         Tidak Hadir
                                     </button> -->
@@ -200,7 +200,7 @@
                     </tr> -->
                 </TransitionGroup>
                 
-                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-10 *:text-sm *:tracking-wide" v-if="!dataAbsensi">
+                <tr class="bg-white border-b-2 border-b-gray-200 text-black *:px-3 *:py-10 *:text-sm *:tracking-wide" v-if="!dataPresensi">
                     <td colspan="5" class="text-center">
                         <p class="pb-5">Harap menunggu...</p>
                         <fa icon="fas fa-spinner" spin class="text-3xl"></fa>
@@ -220,11 +220,11 @@
                         </div>
                         <div class="flex flex-col gap-4" v-else-if="progress == 'Success!'">
                             <fa icon="fas fa-check" bounce class="text-3xl text-leafgreen"></fa>
-                            <p class="text-lg">Absensi berhasil terisi!</p>
+                            <p class="text-lg">Presensi berhasil terisi!</p>
                         </div>
                         <div class="flex flex-col gap-4" v-else-if="progress == 'Failed!'">
                             <fa icon="fas fa-times" bounce class="text-3xl text-softred"></fa>
-                            <p class="text-lg">Absensi gagal diisi!</p>
+                            <p class="text-lg">Presensi gagal diisi!</p>
                         </div>
                     </Transition>
                 </div>

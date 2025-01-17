@@ -90,11 +90,17 @@
 
         if(isModalOn.value){
             email.value = s.session.email
-            telp.value = s.session.dosen.no_telp
-            alamat.value = s.session.dosen.alamat
-            agama.value = s.session.dosen.agama
-            gender.value = s.session.dosen.gender
-            tempImage.value = 'http://localhost:8000/storage/images/' + s.session.user_pic
+            telp.value = s.session.pengajar.no_telp
+            alamat.value = s.session.pengajar.alamat
+            agama.value = s.session.pengajar.agama
+            gender.value = s.session.pengajar.gender
+
+            if(s.session.user_pic != '-'){
+                tempImage.value = 'http://localhost:8000/storage/images/' + s.session.user_pic
+            }
+            else{
+                tempImage.value = '-'
+            }
         }
         else{
             email.value = ''
@@ -139,8 +145,8 @@
             </div>
 
             <div class="flex flex-col gap-2">
-                <p class="text-2xl font-medium text-darkbrown">{{ s.session.dosen.nm_dosen }}</p>
-                <p class="text-md">Dosen - {{ s.session.dosen.jabatan }}</p>
+                <p class="text-2xl font-medium text-darkbrown">{{ s.session.pengajar.nm_pengajar }}</p>
+                <p class="text-md">Dosen - {{ s.session.pengajar.jabatan }}</p>
             </div>
 
             <div class="flex w-full gap-28 pt-3">
@@ -151,47 +157,49 @@
                     </div>
 
                     <div class="flex flex-col gap-2">
-                        <p class="text-darkbrown font-medium text-md">NIDN</p>
-                        <p class="text-black font-light text-md mb-4">{{ s.session.dosen.nidn }}</p>
+                        <p class="text-darkbrown font-medium text-md">
+                            {{ s.session.pengajar.tipe_pengajar == 'Dosen' ? 'NIDN' : 'NUPTK' }}
+                        </p>
+                        <p class="text-black font-light text-md mb-4">{{ s.session.pengajar.no_pengajar }}</p>
                     </div>
                     
                     <div class="flex flex-col gap-2">
                         <p class="text-darkbrown font-medium text-md">Prodi</p>
-                        <p class="text-black font-light text-md mb-4">{{ s.session.dosen.prodi.nm_prodi }}</p>
+                        <p class="text-black font-light text-md mb-4">{{ s.session.pengajar.jurusan.nm_jurusan }}</p>
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-3 pt-6">
                     <div class="flex flex-col gap-2">
                         <p class="text-darkbrown font-medium text-md">Jabatan</p>
-                        <p class="text-black font-light text-md mb-4">{{ s.session.dosen.jabatan }}</p>
+                        <p class="text-black font-light text-md mb-4">{{ s.session.pengajar.jabatan }}</p>
                     </div>
 
                     <div class="flex flex-col gap-2">
                         <p class="text-darkbrown font-medium text-md">Status</p>
-                        <p class="text-black font-light text-md mb-4">{{ s.session.dosen.isActive }}</p>
+                        <p class="text-black font-light text-md mb-4">{{ s.session.pengajar.isActive }}</p>
                     </div>
                     
                     <div class="flex flex-col gap-2">
                         <p class="text-darkbrown font-medium text-md">Nomor Telepon</p>
-                        <p class="text-black font-light text-md mb-4">{{ s.session.dosen.no_telp }}</p>
+                        <p class="text-black font-light text-md mb-4">{{ s.session.pengajar.no_telp }}</p>
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-3 pt-6">
                     <div class="flex flex-col gap-2">
                         <p class="text-darkbrown font-medium text-md">Alamat</p>
-                        <p class="text-black font-light text-md mb-4">{{ s.session.dosen.alamat }}</p>
+                        <p class="text-black font-light text-md mb-4">{{ s.session.pengajar.alamat }}</p>
                     </div>
 
                     <div class="flex flex-col gap-2">
                         <p class="text-darkbrown font-medium text-md">Gender</p>
-                        <p class="text-black font-light text-md mb-4">{{ s.session.dosen.gender == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
+                        <p class="text-black font-light text-md mb-4">{{ s.session.pengajar.gender == 'L' ? 'Laki-laki' : 'Perempuan' }}</p>
                     </div>
                     
                     <div class="flex flex-col gap-2">
                         <p class="text-darkbrown font-medium text-md">Agama</p>
-                        <p class="text-black font-light text-md mb-4">{{ s.session.dosen.agama }}</p>
+                        <p class="text-black font-light text-md mb-4">{{ s.session.pengajar.agama }}</p>
                     </div>
                 </div>
 
