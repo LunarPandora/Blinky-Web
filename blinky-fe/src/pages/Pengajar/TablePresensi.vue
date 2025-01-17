@@ -4,7 +4,10 @@
 
     import DateConverter from '@/services/date'
     import apiClient from '@/services/api';
-    
+
+    import { useSessionStore } from '@/stores/session';
+
+    const s = useSessionStore()
     const route = useRoute()
 
     const jadwal = ref()
@@ -33,7 +36,7 @@
     watch(search, (x, y) => {
         fetchData()
 
-        filterDataAbsensi.value = dataAbsensi.value.filter((m) => m.nm_mhswa.toLowerCase().includes(x.toLowerCase()) === true)
+        filterDataAbsensi.value = dataAbsensi.value.filter((m) => m.nm_pelajar.toLowerCase().includes(x.toLowerCase()) === true)
     })
 
     watch(dataAbsensi, (x, y) => {
@@ -41,7 +44,7 @@
             filterDataAbsensi.value = []
 
             x.forEach((val) => {
-                if(val.nm_mhswa.toLowerCase().includes(search.value.toLowerCase())){
+                if(val.nm_pelajar.toLowerCase().includes(search.value.toLowerCase())){
                     filterDataAbsensi.value.push(val)
                 }
             })
@@ -49,7 +52,7 @@
     })
 
     async function fetchData(){
-        await apiClient.get('absensi/list', {
+        await apiClient.get('presensi/list', {
             params: {
                 id_jadwal: route.params.id_jadwal,
                 id_pertemuan: route.params.id_pertemuan,
@@ -57,7 +60,6 @@
             }
         })
         .then(resp => {
-            console.log(resp.data)
             dataAbsensi.value = resp.data
 
             if(filterDataAbsensi.value.length == 0){
@@ -77,7 +79,7 @@
             jadwal.value = resp.data
         })
         
-        await apiClient.get('statusabsensi')
+        await apiClient.get('statuspresensi')
         .then(resp => {
             dataStatus.value = resp.data
         })
@@ -94,18 +96,18 @@
     
     // Update keterangan
     async function editKeterangan(){
-        await apiClient.get('absensi/update_ket', {
+        await apiClient.get('presensi/update_ket', {
             params: {
-                id_absensi: temp_mhs.value.id_absensi,
+                id_presensi: temp_mhs.value.id_presensi,
                 keterangan: ket.value
             }
         })
         .then(resp => {
             if(resp.data == 'Success!'){
-                alert("Keterangan absensi berhasil diupdate!")
+                alert("Keterangan presensi berhasil diupdate!")
             }
             else{
-                alert("Keterangan absensi gagal diupdate!")
+                alert("Keterangan presensi gagal diupdate!")
             }
             
             ket.value = ""
@@ -114,8 +116,6 @@
     }
 
     async function checkStatus(x, index, isUpdate){
-        console.log(x)
-
         if(isUpdate){
             updateStatus(x, index)
         }
@@ -127,12 +127,12 @@
     async function addStatus(x, index){
         let newStatus = document.getElementById('select-' + index).value
 
-        await apiClient.get('absensi/add', {
+        await apiClient.get('presensi/add', {
             params: {
-                id_mhswa: x.id_mhswa,
+                id_pelajar: x.id_pelajar,
                 id_kelas: x.id_kelas,
                 id_pertemuan: route.params.id_pertemuan,
-                kode_status_absensi: newStatus,
+                kode_status_presensi: newStatus,
             }
         })
         .then(resp => {
@@ -150,10 +150,10 @@
     async function updateStatus(x, index){
         let newStatus = document.getElementById('select-' + index).value
 
-        await apiClient.get('absensi/update', {
+        await apiClient.get('presensi/update', {
             params: {
-                id_absensi: x.id_absensi,
-                kode_status_absensi: newStatus,
+                id_presensi: x.id_presensi,
+                kode_status_presensi: newStatus,
             }
         })
         .then(resp => {
@@ -177,7 +177,7 @@
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
                 Mata Kuliah
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                <span v-if="jadwal">{{ jadwal.matkul.nm_matkul }} - {{ jadwal.kelas.nm_kelas }}</span>
+                <span v-if="jadwal">{{ jadwal.mata_studi.nm_mata_studi }} - {{ jadwal.kelas.nm_kelas }}</span>
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
                 <span v-if="route.params.pertemuan">Pertemuan ke-{{ route.params.pertemuan }}</span>
             </h1>
@@ -186,14 +186,16 @@
     <div class="flex items-center justify-between gap-3 px-5 py-3 border-b-[2px] border-b-gray-200">
         <div class="flex p-2 bg-cream rounded-lg items-center gap-3 w-[30%] leading-relaxed tracking-wide text-sm">
             <fa icon="fas fa-search" class="text-darkbrown"></fa>
-            <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari nama mahasiswa..." v-model="search">
+            <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari nama pelajar..." v-model="search">
         </div>
     </div>
     <div class="flex flex-col w-full h-full overflow-y-scroll justify-between px-5 my-4 scrollbar">
         <table class="w-full">
             <thead>
                 <tr class="*:p-3 *:text-left *:font-medium sticky top-0 bg-darkbrown text-white">
-                    <th width="15%" class="rounded-tl-lg">NIM</th>
+                    <th width="15%" class="rounded-tl-lg">
+                        {{ s.session.pengajar.tipe_pengajar == 'Dosen' ? 'NIM' : 'NISN' }}
+                    </th>
                     <th width="30%">Nama</th>
                     <th width="5%">Angkatan</th>
                     <th width="25%">Terakhir kali diedit</th>
@@ -203,14 +205,14 @@
             <tbody>
                 <TransitionGroup name="slideUp" mode="out-in">
                     <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-3 *:text-sm *:tracking-wide" v-for="(x, index) in filterDataAbsensi" :key="index" v-if="filterDataAbsensi.length > 0">
-                        <td>{{ x.nim }}</td>
+                        <td>{{ x.no_pelajar }}</td>
                         <td>
                             <div class="flex gap-2 items-center">
                                 <div class="w-8 h-8 overflow-hidden flex items-center justify-center rounded-full">
                                     <img v-if="x.user_pic == '-'" src="@/assets/fp.png">
                                     <img v-else :src="'http://127.0.0.1:8000/storage/images/' + x.user_pic">
                                 </div>
-                                <p>{{ x.nm_mhswa }}</p>
+                                <p>{{ x.nm_pelajar }}</p>
                             </div>
                             
                         </td>
@@ -218,9 +220,9 @@
                         <td>{{ x.updated_at != null ? new DateConverter(x.updated_at).format() : "Belum mengisi absen" }}</td>    
                         <td class="flex gap-2 text-white items-center">
                             <div class="flex p-2 bg-leafgreen rounded-lg items-center gap-2 h-fit">
-                                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full text-sm" :value="x.kode_status_absensi" :id="'select-' + index" @change="checkStatus(x, index, x.updated_at != null ? true : false)">
+                                <select class="bg-transparent text-white outline-none *:bg-white *:text-black w-full text-sm" :value="x.kode_status_presensi" :id="'select-' + index" @change="checkStatus(x, index, x.updated_at != null ? true : false)">
                                     <option hidden value="0">Pilih</option>
-                                    <option v-for="y in dataStatus" :value="y.kode_status_absensi">{{ y.status_absensi}}</option>
+                                    <option v-for="y in dataStatus" :value="y.kode_status_presensi">{{ y.status_presensi}}</option>
                                 </select>
                             </div>
 
@@ -229,7 +231,7 @@
                                 Keterangan
                             </button>
 
-                            <button v-else onclick="alert('Tentukan absensi terlebih dahulu sebelum memberi keterangan!')" class="flex p-2 bg-orange-400 rounded-lg items-center gap-2 h-fit">
+                            <button v-else onclick="alert('Tentukan presensi terlebih dahulu sebelum memberi keterangan!')" class="flex p-2 bg-orange-400 rounded-lg items-center gap-2 h-fit">
                                 <fa icon="fas fa-edit"></fa>
                                 Keterangan
                             </button>
@@ -269,7 +271,7 @@
                     <div class="flex flex-col items-center w-full justify-center gap-3">
                         <div class="bg-darkbrown p-4 rounded-xl flex items-center w-full gap-3">
                             <fa icon="fas fa-user" class="text-white" fixed-width />
-                            <p class="text-white">{{ temp_mhs.nm_mhswa }}</p>
+                            <p class="text-white">{{ temp_mhs.nm_pelajar }}</p>
                         </div>
                         <div class="bg-softcream p-4 rounded-xl flex flex-col justify-center w-full gap-3">
                             <p class="flex gap-3 items-center">

@@ -6,8 +6,8 @@ export const useSessionStore = defineStore('session', () => {
     const session = ref({
         'id': '-',
         'role': '-',
-        'dosen': '-',
-        'mhswa': '-',
+        'pengajar': '-',
+        'pelajar': '-',
         'email': '-',
         'user_pic': '-'
     })
@@ -31,8 +31,8 @@ export const useSessionStore = defineStore('session', () => {
         session.value = {
             'id': '-',
             'role': '-',
-            'dosen': '-',
-            'mhswa': '-',
+            'pengajar': '-',
+            'pelajar': '-',
             'email': '-',
             'user_pic': '-'
         }
@@ -42,8 +42,8 @@ export const useSessionStore = defineStore('session', () => {
         session.value = {
             'id': user.id,
             'role': user.role,
-            'dosen': user.dosen,
-            'mhswa': user.mhswa,
+            'pengajar': user.pengajar,
+            'pelajar': user.pelajar,
             'email': user.email,
             'user_pic': user.user_picture
         }

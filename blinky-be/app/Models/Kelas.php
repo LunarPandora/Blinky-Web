@@ -21,7 +21,7 @@ class Kelas extends Model
         'nm_kelas',
     ];
 
-    public function mahasiswa(): HasMany{
+    public function pelajar(): HasMany{
         return $this->hasMany(Pelajar::class, 'id_kelas', 'id_kelas');
     }
 }

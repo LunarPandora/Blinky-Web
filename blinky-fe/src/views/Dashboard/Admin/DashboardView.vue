@@ -32,7 +32,7 @@
     .then(resp => {
       sessionStore.registerSession(resp.data)
       sessionStore.authenticate()
-
+      
       user_pic.value = 'http://localhost:8000/storage/images/' + resp.data.user_picture
     })
   }
@@ -76,7 +76,9 @@
 
         <div class="flex flex-col justify-center">
           <p class="font-medium text-xs">{{ s.email }}</p>
-          <p class="text-xs">{{ s.role }}</p>
+          <p class="text-xs" v-if="s.role == 'Pengajar'">{{ s.pengajar.tipe_pengajar }}</p>
+          <p class="text-xs" v-else-if="s.role == 'Pelajar'">{{ s.pelajar.tipe_pelajar }}</p>
+          <p class="text-xs" v-else>Admin</p>
         </div>
       </div>
 
@@ -84,9 +86,9 @@
         <p class="font-medium text-sm text-darkbrown pb-2">Menu</p>
 
         <div name="navbar_admin" class="flex flex-col w-full h-full gap-2" v-if="sessionStore.session.role == 'Admin'">
-          <RouterLink to='/dashboard/admin/mahasiswa' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/mahasiswa')}">
+          <RouterLink to='/dashboard/admin/pelajar' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/pelajar')}">
             <fa icon="fas fa-user-graduate" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Mahasiswa</p>
+            <p class="text-white">Pelajar</p>
           </RouterLink>
 
           <RouterLink to='/dashboard/admin/users' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/users')}">
@@ -94,9 +96,9 @@
             <p class="text-white">User</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/prodi' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/prodi')}">
+          <RouterLink to='/dashboard/admin/jurusan' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/jurusan')}">
             <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Prodi</p>
+            <p class="text-white">Jurusan</p>
           </RouterLink>
 
           <RouterLink to='/dashboard/admin/jadwal' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/jadwal')}">
@@ -109,33 +111,33 @@
             <p class="text-white">Kelas</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/dosen' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/dosen')}">
+          <RouterLink to='/dashboard/admin/pengajar' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/pengajar')}">
             <fa icon="fas fa-graduation-cap" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Dosen</p>
+            <p class="text-white">Pengajar</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/matkul' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/matkul')}">
+          <RouterLink to='/dashboard/admin/mata_studi' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/mata_studi')}">
             <fa icon="fas fa-book" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Mata Kuliah</p>
+            <p class="text-white">Mata Studi</p>
           </RouterLink>
         </div>
 
-        <div name="navbar_dosen" class="flex flex-col w-full h-full gap-1" v-if="sessionStore.session.role == 'Dosen'">
-          <RouterLink to='/dashboard/dosen/matkul' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+        <div name="navbar_pengajar" class="flex flex-col w-full h-full gap-1" v-if="sessionStore.session.role == 'Pengajar'">
+          <RouterLink to='/dashboard/pengajar/mata_studi' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
             <fa icon="fas fa-school" fixed-width class="text-md"></fa>
-            <p class="text-sm">Mata Kuliah</p>
+            <p class="text-sm">Mata Studi</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/dosen/profil' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+          <RouterLink to='/dashboard/pengajar/profil' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
             <fa icon="fas fa-user" fixed-width class="text-md"></fa>
-            <p class="text-sm">Profil Dosen</p>
+            <p class="text-sm">Profil Pengajar</p>
           </RouterLink>
         </div>
 
-        <div name="navbar_mhswa" class="flex flex-col w-full h-full gap-5" v-if="sessionStore.session.role == 'Mahasiswa'">
-          <RouterLink to='/dashboard/mahasiswa/matkul' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+        <div name="navbar_mhswa" class="flex flex-col w-full h-full gap-5" v-if="sessionStore.session.role == 'Pelajar'">
+          <RouterLink to='/dashboard/pelajar/mata_studi' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
             <fa icon="fas fa-school" fixed-width class="text-md"></fa>
-            <p class="text-sm">Mata Kuliah</p>
+            <p class="text-sm">Mata Studi</p>
           </RouterLink>
         </div>
 
@@ -159,16 +161,16 @@
       <img src="@/assets/icon.png" class="w-[6%]">
       <div class="flex items-center gap-5">
         <div>
-          <p class="text-right text-lg font-semibold">{{ role == 'Dosen' ? sessionStore.session.acc.nm_dosen : sessionStore.session.acc.nm_mhswa }}</p>
+          <p class="text-right text-lg font-semibold">{{ role == 'Pengajar' ? sessionStore.session.acc.nm_pengajar : sessionStore.session.acc.nm_mhswa }}</p>
           <p class="text-right text-sm">{{ role }}</p>
         </div>
         <img src="@/assets/fp.png" class="w-16">
       </div>
     </div>
     <div class="bg-white rounded-xl px-10 py-5 w-full h-full max-h-full overflow-hidden flex flex-col items-center justify-center">
-      <div name="routerDosen" class="flex gap-5 py-3 border-b-[1px] border-b-leafgreen w-full" v-if="role == 'Dosen'">
-        <RouterLink to="/dashboard/dosen/mahasiswa">
-          <p class="text-sm font-medium">Data Mahasiswa</p>
+      <div name="routerPengajar" class="flex gap-5 py-3 border-b-[1px] border-b-leafgreen w-full" v-if="role == 'Pengajar'">
+        <RouterLink to="/dashboard/pengajar/pelajar">
+          <p class="text-sm font-medium">Data Pelajar</p>
         </RouterLink>
         <RouterLink to="/">
           <p class="text-sm font-medium">Data Status Absensi</p>
@@ -180,7 +182,7 @@
           <p class="text-sm font-medium">Data Kelas</p>
         </RouterLink>
         <RouterLink to="/">
-          <p class="text-sm font-medium">Data Prodi</p>
+          <p class="text-sm font-medium">Data Jurusan</p>
         </RouterLink>
         <RouterLink to="/">
           <p class="text-sm font-medium">Data Matkul</p>
