@@ -5,23 +5,22 @@ import { useSessionStore } from '@/stores/session';
 
 import DashboardView from '../views/Dashboard/Admin/DashboardView.vue'
 
-import Admin_TableProdiPage from '../pages/Admin/TableProdi.vue'
-import Admin_StatusAbsensiPage from '../pages/Admin/StatusAbsensi.vue'
+import Admin_TableJurusanPage from '../pages/Admin/TableJurusan.vue'
 import Admin_UsersPage from '../pages/Admin/Users.vue'
-import Admin_TableMahasiswa from '../pages/Admin/TableMahasiswa.vue'
-import Admin_TableDosen from '../pages/Admin/TableDosen.vue'
+import Admin_TablePelajar from '../pages/Admin/TablePelajar.vue'
+import Admin_TablePengajar from '../pages/Admin/TablePengajar.vue'
 import Admin_TableKelas from '../pages/Admin/TableKelas.vue'
-import Admin_TableMatkul from '../pages/Admin/TableMatkul.vue'
+import Admin_TableMataStudi from '../pages/Admin/TableMataStudi.vue'
 import Admin_TableJadwal from '../pages/Admin/TableJadwal.vue'
 
-import Dosen_ProfilPage from '../pages/Dosen/ProfilDosen.vue'
-import Dosen_TableMatkulPage from '../pages/Dosen/TableMatkul.vue'
-import Dosen_TableTanggalPage from '../pages/Dosen/TableTanggal.vue'
-import Dosen_TableAbsensiPage from '../pages/Dosen/TableAbsensi.vue'
+import Pengajar_ProfilPage from '../pages/Pengajar/ProfilPengajar.vue'
+import Pengajar_TableMataStudiPage from '../pages/Pengajar/TableMataStudi.vue'
+import Pengajar_TableTanggalPage from '../pages/Pengajar/TableTanggal.vue'
+import Pengajar_TablePresensiPage from '../pages/Pengajar/TablePresensi.vue'
 
-import Mahasiswa_ProfilPage from '../pages/Mahasiswa/ProfilMahasiswa.vue'
-import Mahasiswa_TableMatkulPage from '../pages/Mahasiswa/TableMatkul.vue'
-import Mahasiswa_TableAbsensiPage from '../pages/Mahasiswa/TableAbsensi.vue'
+import Pelajar_ProfilPage from '../pages/Pelajar/ProfilPelajar.vue'
+import Pelajar_TableMataStudiPage from '../pages/Pelajar/TableMataStudi.vue'
+import Pelajar_TablePresensiPage from '../pages/Pelajar/TablePresensi.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,17 +39,12 @@ const router = createRouter({
           path: '/dashboard/admin',
           name: 'dashboard_admin',
           redirect: {
-            path: '/dashboard/admin/mahasiswa'
+            path: '/dashboard/admin/pelajar'
           },
           children: [
             {
-              path: '/dashboard/admin/prodi',
-              component: Admin_TableProdiPage,
-              // alias: '/dashboard/'
-            },
-            {
-              path: '/dashboard/admin/statusabsensi',
-              component: Admin_StatusAbsensiPage,
+              path: '/dashboard/admin/jurusan',
+              component: Admin_TableJurusanPage,
               // alias: '/dashboard/'
             },
             {
@@ -59,13 +53,13 @@ const router = createRouter({
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/admin/mahasiswa',
-              component: Admin_TableMahasiswa,
+              path: '/dashboard/admin/pelajar',
+              component: Admin_TablePelajar,
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/admin/dosen',
-              component: Admin_TableDosen,
+              path: '/dashboard/admin/pengajar',
+              component: Admin_TablePengajar,
               // alias: '/dashboard/'
             },
             {
@@ -79,66 +73,66 @@ const router = createRouter({
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/admin/matkul',
-              component: Admin_TableMatkul,
+              path: '/dashboard/admin/mata_studi',
+              component: Admin_TableMataStudi,
               // alias: '/dashboard/'
             }
           ]
         },
         {
-          path: '/dashboard/dosen',
-          name: 'dashboard_dosen',
+          path: '/dashboard/pengajar',
+          name: 'dashboard_pengajar',
           redirect: {
-            path: '/dashboard/dosen/matkul'
+            path: '/dashboard/pengajar/mata_studi'
           },
           children: [
             {
-              path: '/dashboard/dosen/profil',
-              component: Dosen_ProfilPage,
+              path: '/dashboard/pengajar/profil',
+              component: Pengajar_ProfilPage,
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/matkul',
-              component: Dosen_TableMatkulPage,
+              path: '/dashboard/pengajar/mata_studi',
+              component: Pengajar_TableMataStudiPage,
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/matkul/absensi/:id_jadwal',
-              component: Dosen_TableTanggalPage,
+              path: '/dashboard/pengajar/mata_studi/presensi/:id_jadwal',
+              component: Pengajar_TableTanggalPage,
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/dosen/matkul/absensi/:id_jadwal/:id_pertemuan/:pertemuan',
-              component: Dosen_TableAbsensiPage,
+              path: '/dashboard/pengajar/mata_studi/presensi/:id_jadwal/:id_pertemuan/:pertemuan',
+              component: Pengajar_TablePresensiPage,
               // alias: '/dashboard/'
             }
           ]
         },
         {
-          path: '/dashboard/mahasiswa',
-          name: 'dashboard_mahasiswa',
+          path: '/dashboard/pelajar',
+          name: 'dashboard_pelajar',
           redirect: {
-            path: '/dashboard/mahasiswa/matkul'
+            path: '/dashboard/pelajar/mata_studi'
           },
           children: [
             {
-              path: '/dashboard/mahasiswa/profil',
-              component: Mahasiswa_ProfilPage,
+              path: '/dashboard/pelajar/profil',
+              component: Pelajar_ProfilPage,
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/mahasiswa/matkul',
-              component: Mahasiswa_TableMatkulPage,
+              path: '/dashboard/pelajar/mata_studi',
+              component: Pelajar_TableMataStudiPage,
               // alias: '/dashboard/'
             },
             {
-              path: '/dashboard/mahasiswa/absensi/:id_jadwal',
-              component: Mahasiswa_TableAbsensiPage,
+              path: '/dashboard/pelajar/presensi/:id_jadwal',
+              component: Pelajar_TablePresensiPage,
               // alias: '/dashboard/'
             },
             // {
-            //   path: '/dashboard/dosen/mahasiswa',
-            //   component: Dosen_TableMahasiswaPage,
+            //   path: '/dashboard/pengajar/pelajar',
+            //   component: Pengajar_TablePelajarPage,
             // }
           ]
         }

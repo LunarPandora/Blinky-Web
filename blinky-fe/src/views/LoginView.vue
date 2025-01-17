@@ -21,11 +21,11 @@
                 sessionStore.registerSession(resp.data[1])
                 sessionStore.authenticate()
 
-				if(sessionStore.session.role == 'Dosen'){
-					router.push('/dashboard/dosen')
+				if(sessionStore.session.role == 'Pengajar'){
+					router.push('/dashboard/pengajar')
 				}
-				else if(sessionStore.session.role == 'Mahasiswa'){
-					router.push('/dashboard/mahasiswa')
+				else if(sessionStore.session.role == 'Pelajar'){
+					router.push('/dashboard/pelajar')
 				}
 				else if(sessionStore.session.role == 'Admin'){
 					router.push('/dashboard/admin')

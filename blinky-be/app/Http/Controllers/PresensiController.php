@@ -33,7 +33,7 @@ class PresensiController extends Controller
 
             if(!$presensi->exists()){
                 array_push($attendanceList, [
-                    'nim' => $x->nim,
+                    'no_pelajar' => $x->no_pelajar,
                     'id_pelajar' => $x->id_pelajar,
                     'id_kelas' => $x->id_kelas,
                     'nm_pelajar' => $x->nm_pelajar,
@@ -47,7 +47,7 @@ class PresensiController extends Controller
                 $presensi = $presensi->first();
  
                 array_push($attendanceList, [
-                    'nim' => $x->nim,
+                    'no_pelajar' => $x->no_pelajar,
                     'id_presensi' => $presensi->id_presensi,
                     'id_pelajar' => $x->id_pelajar,
                     'id_kelas' => $x->id_kelas,

@@ -8,7 +8,7 @@
     const route = useRoute()
     const router = useRouter()
 
-    const jlh_mhswa = ref(0)
+    const jlh_pelajar = ref(0)
     const isLoaded = ref(false)
     
     const jadwal = ref()
@@ -30,7 +30,7 @@
         })
         .then(resp => {
             jadwal.value = resp.data
-            jlh_mhswa.value = jadwal.value.kelas.mahasiswa.length
+            jlh_pelajar.value = jadwal.value.kelas.pelajar.length
         })
 
         await apiClient.get('pertemuan', {
@@ -44,7 +44,7 @@
     }
 
     function openAbsensi(id, idx){
-        router.push(`/dashboard/dosen/matkul/absensi/${route.params.id_jadwal}/${id}/${idx}`)
+        router.push(`/dashboard/pengajar/mata_studi/presensi/${route.params.id_jadwal}/${id}/${idx}`)
     }
 </script>
 <template>
@@ -55,7 +55,7 @@
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
                 Mata Kuliah
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                <span v-if="jadwal">{{ jadwal.matkul.nm_matkul }} - {{ jadwal.kelas.nm_kelas }}</span>
+                <span v-if="jadwal">{{ jadwal.mata_studi.nm_mata_studi }} - {{ jadwal.kelas.nm_kelas }}</span>
             </h1>
         </div>
     </div>      
@@ -79,12 +79,12 @@
                     <p class="flex gap-4 items-center">
                         <div>
                             <fa icon="fas fa-check"></fa>
-                            {{ x.absensi.length }}
+                            {{ x.presensi.length }}
                         </div>
     
                         <div>
                             <fa icon="fas fa-multiply"></fa>
-                            {{ jlh_mhswa - x.absensi.length }}
+                            {{ jlh_pelajar - x.presensi.length }}
                         </div>
                     </p>
                 </div>

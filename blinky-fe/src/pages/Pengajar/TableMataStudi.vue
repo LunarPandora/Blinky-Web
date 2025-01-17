@@ -76,7 +76,7 @@
     })
 
     function openTanggal(x){
-        router.push(`/dashboard/dosen/matkul/absensi/${x.id_jadwal}`)
+        router.push(`/dashboard/pengajar/mata_studi/presensi/${x.id_jadwal}`)
     }
 </script>
 
@@ -86,14 +86,14 @@
             <h1 class="text-darkbrown font-medium text-lg">
             Dashboard
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                Mata Kuliah
+                Mata Studi
             </h1>
         </div>
     </div>  
     <div class="flex items-center justify-between gap-3 px-5 py-3 border-b-[2px] border-b-gray-200 bg-softcream">
         <div class="flex p-2 bg-cream rounded-lg items-center gap-3 w-[30%] text-sm leading-relaxed tracking-wide">
             <fa icon="fas fa-search" class="text-darkbrown"></fa>
-            <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari nama mata kuliah..." v-model="search">
+            <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari nama mata studi..." v-model="search">
         </div>
 
         <div class="flex items-center justify-end gap-3">
@@ -118,7 +118,7 @@
     <div class="grid grid-cols-3 gap-3 w-full h-fit p-5 overflow-y-scroll scrollbar">
         <TransitionGroup name="slide" mode="out-in">
             <div @click="openTanggal(x)" v-for="x in dataJadwal" class="bg-darkbrown p-4 rounded-xl text-white flex flex-col gap-2 h-fit" v-if="isLoaded">
-                <p class="text-lg font-medium">{{ x.matkul.nm_matkul }}</p>
+                <p class="text-lg font-medium">{{ x.mata_studi.nm_mata_studi }}</p>
                 <div class="flex w-full items-center justify-between">
                     <p class="text-md">{{ x.kelas.nm_kelas }} - {{ new DayFormatter(x.hari).convertToDayName() }}</p>
 
