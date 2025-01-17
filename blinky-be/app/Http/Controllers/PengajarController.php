@@ -41,6 +41,7 @@ class PengajarController extends Controller
             'nm_pengajar' => $request->nm_pengajar,
             'jabatan' => $request->jabatan,
             'no_pengajar' => $request->no_pengajar,
+            'tipe_pengajar' => $request->tipe_pengajar,
             'isActive' => $request->isActive,
             'no_telp' => $request->no_telp,
             'alamat' => $request->alamat,
@@ -49,8 +50,8 @@ class PengajarController extends Controller
         ]);
 
         $users = User::create([
-            'role_id' => 1,
-            'pengajar_id' => $pengajar->id,
+            'role_id' => 2,
+            'pengajar_id' => $pengajar->id_pengajar,
             'email' => $request->email,
             'password' => Hash::make($request->pw_pengajar),
             'user_picture' => '-'

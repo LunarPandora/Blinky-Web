@@ -32,10 +32,10 @@
         })
         .then(resp => {
             if(resp.data == "Success!"){
-                alert('Data mahasiswa berhasil didaftarkan!')
+                alert('Data jurusan berhasil didaftarkan!')
             }
             else{
-                alert('Data mahasiswa gagal didaftarkan!')
+                alert('Data jurusan gagal didaftarkan!')
             }
 
             resetInput()

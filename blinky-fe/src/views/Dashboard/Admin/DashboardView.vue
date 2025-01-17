@@ -86,39 +86,39 @@
         <p class="font-medium text-sm text-darkbrown pb-2">Menu</p>
 
         <div name="navbar_admin" class="flex flex-col w-full h-full gap-2" v-if="sessionStore.session.role == 'Admin'">
-          <RouterLink to='/dashboard/admin/pelajar' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/pelajar')}">
-            <fa icon="fas fa-user-graduate" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Pelajar</p>
+          <RouterLink to='/dashboard/admin/pelajar' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+            <fa icon="fas fa-user-graduate" fixed-width class="text-xl"></fa>
+            <p class="text-sm">Pelajar</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/users' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/users')}">
-            <fa icon="fas fa-users" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">User</p>
+          <RouterLink to='/dashboard/admin/users' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+            <fa icon="fas fa-users" fixed-width class="text-xl"></fa>
+            <p class="text-sm">User</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/jurusan' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/jurusan')}">
-            <fa icon="fas fa-school" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Jurusan</p>
+          <RouterLink to='/dashboard/admin/jurusan' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+            <fa icon="fas fa-school" fixed-width class="text-xl"></fa>
+            <p class="text-sm">Jurusan</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/jadwal' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/jadwal')}">
-            <fa icon="fas fa-calendar" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Jadwal</p>
+          <RouterLink to='/dashboard/admin/jadwal' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+            <fa icon="fas fa-calendar" fixed-width class="text-xl"></fa>
+            <p class="text-sm">Jadwal</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/kelas' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/kelas')}">
-            <fa icon="fas fa-door-closed" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Kelas</p>
+          <RouterLink to='/dashboard/admin/kelas' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+            <fa icon="fas fa-door-closed" fixed-width class="text-xl"></fa>
+            <p class="text-sm">Kelas</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/pengajar' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/pengajar')}">
-            <fa icon="fas fa-graduation-cap" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Pengajar</p>
+          <RouterLink to='/dashboard/admin/pengajar' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+            <fa icon="fas fa-graduation-cap" fixed-width class="text-xl"></fa>
+            <p class="text-sm">Pengajar</p>
           </RouterLink>
 
-          <RouterLink to='/dashboard/admin/mata_studi' class="flex items-center gap-3 p-3 rounded-xl" :class="{'bg-white *:text-leafgreen': currentPage.includes('/dashboard/admin/mata_studi')}">
-            <fa icon="fas fa-book" fixed-width class="text-xl text-white"></fa>
-            <p class="text-white">Mata Studi</p>
+          <RouterLink to='/dashboard/admin/mata_studi' class="flex items-center gap-3 p-3 rounded-lg transition-all hover:bg-softbrown text-darkbrown" active-class="bg-leafgreen *:text-white hover:bg-leafgreen">
+            <fa icon="fas fa-book" fixed-width class="text-xl"></fa>
+            <p class="text-sm">Mata Studi</p>
           </RouterLink>
         </div>
 

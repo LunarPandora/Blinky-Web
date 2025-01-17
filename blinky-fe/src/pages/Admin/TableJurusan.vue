@@ -5,37 +5,37 @@
     import DateConverter from '@/services/date'
     import apiClient from '@/services/api';
 
-    const dataProdi = ref()
+    const dataJurusan = ref()
     const temp_data = ref()
 
-    const prodi = ref()
+    const jurusan = ref()
 
     const isModalOn = ref(false)
     const modalMode = ref('Add')
 
     async function fetchData(){
-        await apiClient.get('prodi')
+        await apiClient.get('jurusan')
         .then(resp => {
-            dataProdi.value = resp.data
+            dataJurusan.value = resp.data
         })
     }
 
     async function resetInput(){
-        prodi.value = ''
+        jurusan.value = ''
     }
 
-    async function tambahProdi(){
-        await apiClient.get('prodi/add', {
+    async function tambahJurusan(){
+        await apiClient.get('jurusan/add', {
             params: {
-                'nm_prodi': prodi.value
+                'nm_jurusan': jurusan.value
             }
         })
         .then(resp => {
             if(resp.data == "Success!"){
-                alert('Data mahasiswa berhasil didaftarkan!')
+                alert('Data jurusan berhasil didaftarkan!')
             }
             else{
-                alert('Data mahasiswa gagal didaftarkan!')
+                alert('Data jurusan gagal didaftarkan!')
             }
 
             resetInput()
@@ -43,37 +43,37 @@
         })
     }
 
-    async function updateProdi(){
-        await apiClient.get('prodi/update', {
+    async function updateJurusan(){
+        await apiClient.get('jurusan/update', {
             params: {
-                'id_prodi': temp_data.value.id_prodi,
-                'nm_prodi': prodi.value
+                'id_jurusan': temp_data.value.id_jurusan,
+                'nm_jurusan': jurusan.value
             }
         })
         .then(resp => {
             if(resp.data == "Success!"){
-                alert('Data prodi berhasil diupdate!')
+                alert('Data jurusan berhasil diupdate!')
             }
             else{
-                alert('Data prodi gagal diupdate!')
+                alert('Data jurusan gagal diupdate!')
             }
 
             toggleModal(0, 'Edit')
         })
     }
 
-    async function deleteProdi(){
-        await apiClient.get('prodi/delete', {
+    async function deleteJurusan(){
+        await apiClient.get('jurusan/delete', {
             params: {
-                'id_prodi': temp_data.value.id_prodi,
+                'id_jurusan': temp_data.value.id_jurusan,
             }
         })
         .then(resp => {
             if(resp.data == "Success!"){
-                alert('Data prodi berhasil dihapus!')
+                alert('Data jurusan berhasil dihapus!')
             }
             else{
-                alert('Data prodi gagal dihapus!')
+                alert('Data jurusan gagal dihapus!')
             }
 
             toggleModal(0, 'Delete')
@@ -87,7 +87,7 @@
         temp_data.value = val
         
         if(mode == 'Edit'){
-            prodi.value = val.nm_prodi
+            jurusan.value = val.nm_jurusan
         }
         else{
             resetInput()
@@ -107,20 +107,20 @@
             <h1 class="text-darkbrown font-medium text-lg">
             Dashboard
                 <fa icon="fas fa-chevron-right" fixed-width class="text-sm"></fa>
-                Prodi
+                Jurusan
             </h1>
         </div>
     </div>  
     <div class="flex items-center justify-between gap-3 px-5 py-3 border-b-[2px] border-b-gray-200">
         <div class="flex p-2 bg-cream rounded-lg items-center gap-3 w-[30%] text-sm leading-relaxed tracking-wide">
             <fa icon="fas fa-search" class="text-darkbrown"></fa>
-            <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari prodi...">
+            <input class="bg-transparent border-0 outline-none w-full placeholder:text-darkbrown" type="text" placeholder="Cari jurusan...">
         </div>
 
         <div class="flex items-center justify-end gap-5">
             <button @click="toggleModal(0, 'Add')" class="flex gap-2 items-center p-2 leading-relaxed tracking-wide text-sm bg-darkbrown text-white rounded-lg">
                 <fa icon="fas fa-plus"></fa>
-                Tambahkan prodi baru
+                Tambahkan jurusan baru
             </button>
         </div>
     </div>
@@ -128,15 +128,15 @@
         <table class="w-full">
             <thead>
                 <tr class="*:p-3 *:text-left *:font-medium sticky top-0 bg-darkbrown text-white">
-                    <th width="65%" class="rounded-tl-lg">Nama Prodi</th>
+                    <th width="65%" class="rounded-tl-lg">Nama Jurusan</th>
                     <th width="20%">Terakhir kali diedit</th>
                     <th width="10%" class="rounded-tr-lg">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <TransitionGroup name="fade" mode="out-in">
-                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataProdi" :key="index" v-if="dataProdi">
-                        <td>{{ x.nm_prodi }}</td>
+                    <tr class="bg-white odd:bg-[#f5f1e4] border-b-gray-200 text-black *:px-3 *:py-2 *:text-sm *:tracking-wide" v-for="(x, index) in dataJurusan" :key="index" v-if="dataJurusan">
+                        <td>{{ x.nm_jurusan }}</td>
                         <td>{{ new DateConverter(x.updated_at).format() }}</td>
                         <td class="text-white justify-center h-full">
                             <div class="flex items-center gap-1">
@@ -169,7 +169,7 @@
         <div class="items-center justify-center w-screen h-screen bg-[#000000AA] z-50 absolute top-0 left-0 flex" v-if="isModalOn">
             <div class="flex flex-col bg-cream px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modalMode == 'Add'">
                 <div class="flex w-full items-center justify-between pb-6">
-                    <p class="text-2xl font-medium text-darkbrown">Tambah Prodi</p>
+                    <p class="text-2xl font-medium text-darkbrown">Tambah Jurusan</p>
 
                     <fa @click="toggleModal(0, 'Add')" icon="fas fa-times" class="text-2xl" fixed-width></fa>
                 </div>
@@ -178,10 +178,10 @@
                     <div class="flex flex-col items-center w-full justify-center gap-3">
                         <div class="bg-softcream p-4 rounded-xl flex items-center w-full gap-3">
                             <fa icon="fas fa-school" class="text-darkbrown" fixed-width />
-                            <input type="text" class="bg-transparent outline-none w-full" v-model="prodi" placeholder="Masukkan nama prodi">
+                            <input type="text" class="bg-transparent outline-none w-full" v-model="jurusan" placeholder="Masukkan nama jurusan">
                         </div>
 
-                        <button @click="tambahProdi()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-leafgreen text-white rounded-lg">
+                        <button @click="tambahJurusan()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-leafgreen text-white rounded-lg">
                             <fa icon="fas fa-plus"></fa>
                             Tambahkan
                         </button>
@@ -191,7 +191,7 @@
 
             <div class="flex flex-col bg-cream px-5 py-7 rounded-xl gap-4 w-1/3 justify-center" v-if="modalMode == 'Edit'">
                 <div class="flex w-full items-center justify-between pb-6">
-                    <p class="text-2xl font-medium text-darkbrown">Edit Prodi</p>
+                    <p class="text-2xl font-medium text-darkbrown">Edit Jurusan</p>
 
                     <fa @click="toggleModal(0, 'Edit')" icon="fas fa-times" class="text-2xl" fixed-width></fa>
                 </div>
@@ -200,10 +200,10 @@
                     <div class="flex flex-col items-center w-full justify-center gap-3">
                         <div class="bg-softcream p-4 rounded-xl flex items-center w-full gap-3">
                             <fa icon="fas fa-school" class="text-darkbrown" fixed-width />
-                            <input type="text" class="bg-transparent outline-none w-full" v-model="prodi" placeholder="Masukkan nama prodi">
+                            <input type="text" class="bg-transparent outline-none w-full" v-model="jurusan" placeholder="Masukkan nama jurusan">
                         </div>
 
-                        <button @click="updateProdi()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-leafgreen text-white rounded-lg">
+                        <button @click="updateJurusan()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-leafgreen text-white rounded-lg">
                             <fa icon="fas fa-floppy-disk"></fa>
                             Update
                         </button>
@@ -213,7 +213,7 @@
 
             <div class="flex flex-col bg-cream px-5 py-7 rounded-xl w-1/3 justify-center" v-if="modalMode == 'Delete'">
                 <div class="flex w-full items-center justify-between pb-6">
-                    <p class="text-2xl font-medium text-darkbrown">Hapus Prodi</p>
+                    <p class="text-2xl font-medium text-darkbrown">Hapus Jurusan</p>
                 </div>
 
                 <div class="flex flex-col gap-2">
@@ -223,7 +223,7 @@
                             Tidak
                         </button>
 
-                        <button @click="deleteProdi()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-softred text-white rounded-lg">
+                        <button @click="deleteJurusan()" class="w-full flex gap-2 items-center justify-center mt-5 p-3 bg-softred text-white rounded-lg">
                             Ya
                         </button>
                     </div>
